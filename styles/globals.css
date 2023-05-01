@@ -6,6 +6,11 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --dark-blue: #0B0B15;
+  --gradient-pink: "D20ED2";
+  --gradient-blue: "11A4DA";
+  --gradient-dull-pink: "#C816D3";
+  --gradient-dull-blue: "#1A9EDA";
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,12 +21,20 @@
   }
 }
 
+.special-gradient-text {
+  background: linear-gradient(90deg, #D20ED2 0%, #11A4DA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heading-text{
+  background: linear-gradient(90deg, #FFFFFFE5 0%, #FFFFFFB2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: var(--dark-blue);
 }

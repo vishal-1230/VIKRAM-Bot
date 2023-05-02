@@ -5,6 +5,8 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './layouts/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -16,8 +18,8 @@ module.exports = {
       },
       colors: {
         "bg-dark-blue": "#101629",
-        "gradient-pink": "D20ED2",
-        "gradient-blue": "11A4DA",
+        "gradient-pink": "#D20ED2",
+        "gradient-blue": "#11A4DA",
         "gradient-dull-pink": "#C816D3",
         "gradient-dull-blue": "#1A9EDA",
         "white": "#fff",

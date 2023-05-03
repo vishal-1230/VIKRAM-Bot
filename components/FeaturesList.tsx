@@ -14,7 +14,7 @@ function FeaturesList({features} : {features: {image: string, description: strin
                     "bg-gradient-to-t from-[#FFFFFF4D] to-transparent p-[0.5px] px-[0.6px]"
                     :
                     "bg-gradient-to-b from-[#FFFFFF4D] to-transparent p-[0.5px] px-[0.6px]"
-                    }>
+                    } key={index}>
                 <div className={index%2==0 ? 
                     "flex flex-col items-center gap-6 h-full p-10 bg-[#0B0B15] bg-gradient-to-t from-[#10101b] to-[rgba(26, 158, 218, 0)]"
                     :

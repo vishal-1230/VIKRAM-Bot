@@ -30,7 +30,7 @@ function Features() {
           }
         ]} />
       </div>
-        <Button title='So, Go Ahead and Get your Bot' buttonStyle='self-center mt-2' />
+        <Button title='So, Go Ahead and Get your Bot' buttonStyle='self-center mt-1' />
     </div>
   )
 }

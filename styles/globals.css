@@ -49,3 +49,6 @@ transform: rotate(-20.22deg);
   border-radius: 52.5071px;
   transform: matrix(-1, 0, 0, 1, 0, 0);
 }
+.szh-accordion__item-content{
+  transition: height 0.2s ease-in-out;
+}

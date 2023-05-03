@@ -25,7 +25,8 @@ module.exports = {
         "white": "#fff",
         "white-gray": "#FFFFFFB2",
         "black": "#000",
-        "selected-text": "#11A4DA"
+        "selected-text": "#11A4DA",
+        "footer-bg": "#1D51FE"
       }
     },
   },

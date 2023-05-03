@@ -5,7 +5,7 @@ import { Accordion, AccordionItem as Item } from '@szhsin/react-accordion'
 const orbitron = Orbitron({ subsets: ['latin'] })
 const inter = Inter({ subsets: ['latin'] })
 
-const AccordionItem = ({ header, ...rest }) => (
+const AccordionItem = ({ header, ...rest } : {header: string}) => (
   <Item
     {...rest}
     header={({ state: { isEnter } }) => (

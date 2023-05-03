@@ -16,10 +16,14 @@ export default function Home() {
     >
         <Navbar />
         <HeroSection />
+
         <div className='mt-48'>
           <AboutSection />
         </div>
-        <Features />
+
+        <div className='mt-36 px-24'>
+          <Features />
+        </div>
         <FAQs />
         <Footer />
     </main>

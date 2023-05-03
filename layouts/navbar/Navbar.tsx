@@ -8,7 +8,7 @@ function Navbar(  ) {
   return (
     <div className='flex flex-row justify-evenly items-center w-screen h-24 px-24 py-16' style={{justifyContent: 'space-evenly', alignItems: 'center', paddingTop: 26, paddingBottom: 26}}>
         
-        <div className='navbar-logo'>
+        <div className='navbar-logo cursor-pointer'>
             <Image src='/assets/navlogo1.png' alt='VIKRAM Logo' width={70} height={34} priority />
         </div>
 
@@ -21,7 +21,7 @@ function Navbar(  ) {
             <NavLink>Contact Us</NavLink>
         </div>
 
-        <div className='profile'>
+        <div className='profile cursor-pointer'>
             <Image src='/assets/profileIcon.svg' alt='Profile' width={43} height={43} priority />
         </div>
 

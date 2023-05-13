@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 function Footer() {
   return (
-    <div className='text-white flex flex-row justify-evenly bg-footer-bg py-14'>
+    <div className='text-white flex flex-col md:flex-row justify-evenly bg-footer-bg py-14'>
       
       {/* ShortAbout */}
       <div className="flex flex-col w-72">

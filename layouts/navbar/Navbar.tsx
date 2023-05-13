@@ -1,28 +1,30 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import NavLink from '@/components/NavLink'
+import OutlineButton from '@/components/OutlineButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
 function Navbar(  ) {
   return (
-    <div className='flex flex-row justify-evenly items-center w-screen h-24 px-24 py-16' style={{justifyContent: 'space-evenly', alignItems: 'center', paddingTop: 26, paddingBottom: 26}}>
+    <div className={`bg-bg-900 flex flex-row justify-evenly items-center w-screen h-20 px-0 py-8 z-50 ${inter.className}`} style={{justifyContent: 'space-evenly', alignItems: 'center', boxShadow: "0px 20px 24px -4px rgba(3, 5, 12, 0.08), 0px 8px 8px -4px rgba(3, 5, 12, 0.03)"}}>
         
         <div className='navbar-logo cursor-pointer'>
-            <Image src='/assets/navlogo1.png' alt='VIKRAM Logo' width={70} height={34} priority />
+            <Image src='/assets/navlogo1.png' alt='VIKRAM Logo' width={55} height={34} priority />
         </div>
 
-        <div className='navbar-links'>
+        <div className='navbar-links hidden md:block'>
             <NavLink active>Home</NavLink>
             <NavLink>About</NavLink>
             <NavLink>Features</NavLink>
             <NavLink>Use Case</NavLink>
             <NavLink>Blog</NavLink>
-            <NavLink>Contact Us</NavLink>
+            {/* <NavLink>Contact Us</NavLink> */}
         </div>
 
-        <div className='profile cursor-pointer'>
-            <Image src='/assets/profileIcon.svg' alt='Profile' width={43} height={43} priority />
+        <div className='profile cursor-pointer flex'>
+            <OutlineButton title='Contact Us' buttonStyle='mr-8' />
+            <Image src='/assets/profileIcon.svg' alt='Profile' width={30} height={30} priority />
         </div>
 
     </div>

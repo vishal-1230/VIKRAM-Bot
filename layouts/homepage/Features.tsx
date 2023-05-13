@@ -1,4 +1,4 @@
-import Button from '@/components/Button'
+import Button from '@/components/SpecialButton'
 import FeaturesList from '@/components/FeaturesList'
 import SpecialText from '@/components/SpecialText'
 import { Orbitron } from 'next/font/google'
@@ -9,7 +9,8 @@ const orbitron = Orbitron({ subsets: ['latin'] })
 function Features() {
   return (
     <div className='text-white flex flex-col'>
-      <span className={`${orbitron.className} font-semibold text-4xl`}>Our <SpecialText extra={`${orbitron.className} font-semibold text-4xl`}>Features</SpecialText></span>
+      <span className={`${orbitron.className} font-medium text-5xl text-center`}>Our <SpecialText extra={`${orbitron.className} font-medium text-5xl`}>Features</SpecialText></span>
+      <span className='text-lg text-neutral-500 text-center mt-5'>The bot you create via VIKRAM would be unlike anything you or anyone else would have seen. It will have:</span>
       <div>
         <FeaturesList features={[
           {
@@ -30,7 +31,7 @@ function Features() {
           }
         ]} />
       </div>
-        <Button title='So, Go Ahead and Get your Bot' buttonStyle='self-center mt-1' />
+        {/* <Button title='So, Go Ahead and Get your Bot' buttonStyle='self-center mt-1' /> */}
     </div>
   )
 }

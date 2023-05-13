@@ -3,7 +3,7 @@ import SpecialText from '@/components/SpecialText'
 import Image from 'next/image'
 import { Orbitron } from 'next/font/google'
 import React from 'react'
-import Button from '@/components/Button'
+import Button from '@/components/SpecialButton'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 

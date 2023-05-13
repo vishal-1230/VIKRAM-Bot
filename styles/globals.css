@@ -28,9 +28,7 @@
   -webkit-text-fill-color: transparent;
 }
 
-body {
-  background-color: var(--dark-blue);
-}
+
 
 .gradient-pink-left {
   background: conic-gradient(from 142.49deg at 14.71% 29.7%, rgba(12, 12, 12, 0) -18.83deg, #D20ED2 129.17deg, rgba(210, 14, 210, 0.6) 157.15deg, rgba(12, 12, 12, 0) 341.17deg, #D20ED2 489.17deg);

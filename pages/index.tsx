@@ -12,9 +12,8 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <main
-      className={`flex flex-col w-screen ${inter.className}`}
+      className={`bg-bg-900 flex flex-col w-screen ${inter.className}`}
     >
-        <Navbar />
         <HeroSection />
 
         <div className='mt-48'>
@@ -24,8 +23,9 @@ export default function Home() {
         <div className='mt-36 px-24'>
           <Features />
         </div>
+
         <FAQs />
-        <Footer />
+        {/* <Footer /> */}
     </main>
   )
 }

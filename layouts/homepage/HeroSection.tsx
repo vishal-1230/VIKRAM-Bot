@@ -11,7 +11,7 @@ function HeroSection() {
 
   return (
     <div className='flex flex-col'>
-        <span className={`text-white ${orbitron.className} font-bold text-5xl text-center heading-text mt-24`}>
+        <span className={`text-white ${orbitron.className} font-semibold text-5xl text-center heading-text mt-24`}>
             Get Your Own <SpecialText>PERSONAL BOT</SpecialText><br />And Have It Work For You!
         </span>
         <span className='font-normal text-xl text-center mt-5 text-[#FFFFFFB2]'>

@@ -1,6 +1,6 @@
 import InputGroup from '@/components/InputGroup'
 import PrimaryButton from '@/components/PrimaryButton'
-import RightAuthContainer from '@/components/RightAuthContainer'
+import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import Link from 'next/link'
 import React from 'react'
 
@@ -26,7 +26,7 @@ function LoginForm() {
 
         <PrimaryButton title='Log In' buttonStyle='w-full mt-5 mb-5' />
 
-        <span className="text-sm font-medium text-neutral-900">Don't have an account? <Link href="/auth/create-account" className='text-primary-500'>Create an account</Link></span>
+        <span className="text-sm font-medium text-neutral-900">Don't have an account? <Link href="/auth/create-account" className='text-primary-500 text-sm'>Create an account</Link></span>
 
     </RightAuthContainer>
   )

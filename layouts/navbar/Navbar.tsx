@@ -16,9 +16,9 @@ function Navbar(  ) {
 
         <div className='navbar-links hidden md:block'>
             <NavLink href="/" active>Home</NavLink>
-            <NavLink>About</NavLink>
-            <NavLink>Features</NavLink>
-            <NavLink>Use Case</NavLink>
+            <NavLink href="/about-us">About</NavLink>
+            <NavLink href="/features">Features</NavLink>
+            <NavLink href="/use-cases">Use Case</NavLink>
             <NavLink href="/blogs">Blogs</NavLink>
             {/* <NavLink>Contact Us</NavLink> */}
         </div>

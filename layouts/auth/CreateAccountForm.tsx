@@ -6,7 +6,7 @@ import { VisibilityOffOutlined } from '@mui/icons-material'
 import Link from 'next/link'
 import PrimaryButton from '@/components/PrimaryButton'
 import InputGroup from '@/components/InputGroup'
-import RightAuthContainer from '@/components/RightAuthContainer'
+import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 

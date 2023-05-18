@@ -1,3 +1,5 @@
+import PrimaryButton from '@/components/PrimaryButton'
+import { Instagram, Twitter } from '@mui/icons-material'
 import { Inter, Orbitron } from 'next/font/google'
 import Image from 'next/image'
 import React from 'react'
@@ -7,31 +9,41 @@ const inter = Inter({ subsets: ['latin'] })
 
 function Footer() {
   return (
-    <div className='text-white flex flex-col md:flex-row justify-evenly bg-footer-bg py-14'>
+    <div className='text-bg-900 flex flex-col items-center lg:items-start lg:flex-row justify-evenly bg-white py-8 lg:py-14'>
       
       {/* ShortAbout */}
       <div className="flex flex-col w-72">
-        <Image src="/assets/logoTemp.svg" alt="Logo" width={100} height={100} />
-        <span className={`${orbitron.className} font-bold pt-1 pb-6`}>V.I.K.R.A.M. <span className={`${inter.className} font-normal`}>is a  variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words.</span></span>
-        <div className="socials flex-row grid grid-cols-4">
-          <Image src="/assets/fb.svg" alt="Facebook" width={30} height={30} className='fill-white' />
+        {/* <Image src="/assets/logo2.svg" alt="Logo" width={100} height={100} className='fill-black text-black' /> */}
+        <img src="/assets/logo2black.svg" alt="" className="w-40 h-24" />
+        <span className={`${inter.className} font-semibold pt-4 pb-5`}>V.I.K.R.A.M. <span className={`${inter.className} font-normal`}>is a platform that lets you create your own bot that learns your preferences and skills. And then helps others on your behalf!!</span></span>
+        <div className="socials w-fit flex-row grid grid-cols-4 gap-4">
+          {/* <Image src="/assets/fb.svg" alt="Facebook" width={30} height={30} className='fill-black' />
           <Image src="/assets/insta.svg" alt="Instagram" width={30} height={30} />
           <Image src="/assets/dc.svg" alt="Discord" width={30} height={30} />
-          <Image src="/assets/twitter.svg" alt="Twitter" width={30} height={30} />
+          <Image src="/assets/twitter.svg" alt="Twitter" width={30} height={30} /> */}
+          <Instagram className='fill-black w-8 h-8' />
+          <Twitter className='fill-black w-8 h-8' />
+        </div>
+        <div className="flex flex-row mt-5">
+          <span className="font-semibold text-sm">Terms and Conditions</span>
+          <span className="font-semibold text-sm border-l-[1px] ml-3 pl-3 border-l-bg-900">Privacy Policy</span>
         </div>
       </div>
 
-      {/* Our Team */}
+      {/* Common Links */}
       <div className={`flex flex-col ${inter.className} text-sm`}>
-        <span className={`${orbitron.className} font-bold text-lg py-5 mt-3`}>Our Team</span>
-        <span className='my-1'>The Algorithm Team</span>
-        <span className='my-1'>Design Team</span>
-        <span className='my-1'>Web Interface Team</span>
+        <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Common Links</span>
+        <span className='my-1'>Home</span>
+        <span className='my-1'>About Us</span>
+        <span className='my-1'>Features</span>
+        <span className='my-1'>Pricing & plans</span>
+        <span className='my-1'>Blogs</span>
       </div>
 
       {/* Contact */}
+      <div className="flex flex-col">
       <div className={`flex flex-col ${inter.className} text-sm`}>
-        <span className={`${orbitron.className} font-bold text-lg py-5 mt-3`}>Contact Us</span>
+        <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Contact Us</span>
         <span className='my-1'>mail@vikram.ai</span>
         <span className='my-1'>+91 9999999999</span>
         <span className='my-1'>Web Interface Team</span>
@@ -39,11 +51,12 @@ function Footer() {
         
       {/* Newsletter */}
       <div className={`flex flex-col ${inter.className} text-sm`}>
-        <span className={`${orbitron.className} font-bold text-lg py-5 mt-3`}>Subscribe to Newsletter</span>
+        <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Subscribe to Newsletter</span>
         <div className='flex flex-row gap-3'>
-          <input type="email" className='py-2 px-3 bg-[#d9d9d92f] text-white outline-none font-medium placeholder-[#FFFFFFD9]' placeholder='Email Id' />
-          <button className={`${orbitron.className} font-medium bg-black text-white py-3.5 px-5`}>Subscribe</button>
+          <input type="email" className='py-2 px-3 bg-[#fff] text-white border-[1px] border-neutral-500 rounded outline-none font-medium' placeholder='Email Id' />
+          <PrimaryButton title='Subscribe' />
         </div>
+      </div>
       </div>
 
     </div>

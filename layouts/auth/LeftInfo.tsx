@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 function LeftInfo(props: { robotIcon?: string, style?: string }) {
@@ -9,7 +10,9 @@ function LeftInfo(props: { robotIcon?: string, style?: string }) {
                 <img src="/assets/bg-ai-bars.svg" alt="" className='w-full mt-12' />
                 <img src="/assets/bg-ai-bars.svg" alt="" className='w-full mt-12' />
             </div>
-            <img src="/assets/logo2.svg" alt="" className="fill-white w-32 h-32 mt-10 z-10" />
+            <Link href="/" className='z-10'>
+                <img src="/assets/logo2.svg" alt="" className="fill-white w-32 h-32 mt-10 z-10" />
+            </Link>
             <span className="text-2xl text-white mt-10 z-10">V.I.K.R.A.M.</span>
             <span className="font-semibold text-4xl z-10">Your personal bot!</span>
             <span className='mt-5 z-10'>VIKRAM is a platform that lets you create your own bot that learns your preferences and skills.</span>

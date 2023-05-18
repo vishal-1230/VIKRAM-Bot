@@ -1,5 +1,5 @@
 import PrimaryButton from '@/components/PrimaryButton'
-import RightAuthContainer from '@/components/RightAuthContainer'
+import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import React from 'react'
 
 function VerifyOTPForm() {
@@ -9,7 +9,7 @@ function VerifyOTPForm() {
         <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 82******01</span>
 
         <div className="flex gap-2 mt-10">
-            <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
+            <input autoFocus type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
             <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
             <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
             <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />

@@ -24,8 +24,10 @@ function Navbar(  ) {
         </div>
 
         <div className='profile cursor-pointer flex'>
+          <Link href="/contact-us">
             <OutlineButton title='Contact Us' buttonStyle='mr-8' />
-            <Image src='/assets/profileIcon.svg' alt='Profile' width={30} height={30} priority />
+          </Link>
+          <Image src='/assets/profileIcon.svg' alt='Profile' width={30} height={30} priority />
         </div>
 
     </div>

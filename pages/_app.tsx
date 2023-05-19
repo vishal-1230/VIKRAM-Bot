@@ -11,13 +11,18 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   const [isAuthPage, setIsAuthPage] = useState(false)
+  const [invertColors, setInvertColors] = useState(false)
 
   useEffect(() => {
     console.log(router.pathname)
+
     if (router.pathname.startsWith('/auth')) {
       setIsAuthPage(true)
     } else {
       setIsAuthPage(false)
+    }
+    if (router.pathname.startsWith('/contact-us')) {
+      setInvertColors(true)
     }
   }, [router.pathname])
 
@@ -28,7 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
   <Component {...pageProps} />
   {
-    !isAuthPage && <Footer />
+    !isAuthPage && <Footer invertColor={invertColors} />
   }
   </>
 }

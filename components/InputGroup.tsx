@@ -1,14 +1,14 @@
 import { RemoveRedEyeOutlined, VisibilityOffOutlined } from '@mui/icons-material'
 import { useState } from 'react'
 
-function InputGroup(props: { className?: string, label?: string, type?: string, placeholder?: string, value?: string, onChange?: any, passwordAccessory?:React.ReactNode } = {type: "text"}) {
+function InputGroup(props: { className?: string, label?: string, type?: string, placeholder?: string, value?: string, onChange?: any, passwordAccessory?:React.ReactNode, textareaRows?:number, textareaCols?:number }) {
 
     const [showPassword, setShowPassword] = useState(false)
 
     const [countrySelectedForNumber, setcountrySelectedForNumber] = useState(undefined)
 
     {
-        return (props.type != "password" ? props.type != "number" ?
+        return (props.type != "password" ? props.type != "number" ? props.type != "description" ?
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label}</span>
                 <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={props.onChange} />
@@ -16,20 +16,12 @@ function InputGroup(props: { className?: string, label?: string, type?: string, 
             :
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label}</span>
-                {/* Adding list of countries to choose from phone number codes like india +91, us +1 and so on in the following div */}
+                <textarea placeholder={props.placeholder} rows={props.textareaRows} cols={props.textareaCols} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={props.onChange} />
+            </div>
+            :
+            <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
+                <span className="font-medium text-bg-50">{props.label}</span>
                 <div className="flex relative items-center border-[1px] border-[#DDD6D6] rounded-md">
-                    {/* <div className="relative">
-                        <select className="appearance-none py-2 px-4 pr-8 bg-transparent rounded-lg text-gray-700 leading-tight focus:outline-none focus:border-blue-500">
-                            <option className='h-10 w-10'>Option 1</option>
-                            <option>Option 2</option>
-                            <option>Option 3</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M10 12l-6-6h12l-6 6z" />
-                            </svg>
-                        </div>
-                    </div> */}
                     <CustomDropdown2 />
                     <input type={props.type} minLength={10} maxLength={12} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none" value={props.value} onChange={props.onChange} />
                 </div>
@@ -113,6 +105,17 @@ const countryOptions = [
         )}
       </div>
     );
+  };
+
+  InputGroup.defaultProps = {
+    className: '',
+    type: 'text',
+    placeholder: 'Input Area',
+    value: '',
+    onChange: () => {},
+    label: 'Input Label',
+    textareaRows: 4,
+    passwordAccessory: null,
   };
   
 

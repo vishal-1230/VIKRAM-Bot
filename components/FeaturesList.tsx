@@ -2,7 +2,7 @@ import Image from "next/image"
 
 function FeaturesList({features} : {features: {image: string, description: string}[]}) {
   return (
-    <div className="grid grid-cols-4 px-0 my-[5.5rem] flex-0">
+    <div className="grid grid-cols-1 md:grid-cols-4 px-0 my-[5.5rem] flex-0">
     {
         features.map((feature, index) => {
             return (
@@ -11,9 +11,9 @@ function FeaturesList({features} : {features: {image: string, description: strin
                     : index === features.length - 1 ?
                     "bg-gradient-to-b from-[#FFFFFF4D] to-transparent p-[1px]"
                     : index%2 === 0 ?
-                    "bg-gradient-to-t from-[#FFFFFF4D] to-transparent p-[1px]"
+                    "bg-[#FFFFFF4D] md:bg-transparent md:bg-gradient-to-t md:from-[#FFFFFF4D] md:to-transparent p-[1px]"
                     :
-                    "bg-gradient-to-b from-[#FFFFFF4D] to-transparent p-[1px]"
+                    "bg-[#FFFFFF4D] md:bg-transparent md:bg-gradient-to-b md:from-[#FFFFFF4D] md:to-transparent p-[1px]"
                     } key={index}>
                 <div className={index%2==0 ? 
                     "flex flex-col items-center gap-6 h-full p-10 bg-bg-900 bg-gradient-to-t from-[#181e2c] to-[#141824]"

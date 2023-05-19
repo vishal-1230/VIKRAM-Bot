@@ -11,20 +11,20 @@ function HeroSection() {
 
   return (
     <div className='flex flex-col'>
-        <span className={`text-white ${orbitron.className} font-semibold text-5xl text-center heading-text mt-24`}>
+        <span className={`text-white px-4 md:px-0 ${orbitron.className} font-semibold text-3xl md:text-5xl text-center heading-text mt-10 md:mt-24`}>
             Get Your Own <SpecialText>PERSONAL BOT</SpecialText><br />And Have It Work For You!
         </span>
-        <span className='font-normal text-xl text-center mt-5 text-[#FFFFFFB2]'>
-            VIKRAM is a platform that lets you create your own bot that learns your preferences and<br /> skills. Then helps others on your behalf!!
+        <span className='font-normal px-4 md:px-0 text-sm md:text-xl text-center mt-5 text-[#FFFFFFB2]'>
+            VIKRAM is a platform that lets you create your own bot that learns your preferences and<br className='hidden md:block' /> skills. Then helps others on your behalf!!
         </span>
         {/* <Button title="Start Asking" buttonStyle='mt-10' Icon={({extras} : {extras : string})=>{
             return <Image src='/assets/button-arrow.svg' className={extras} alt='Arrow' width={15} height={15} priority />
         }} /> */}
         <PrimaryButton title="Start Asking" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer' />
-        <div className='flex flex-row justify-between relative -mt-24'>
-          <Image src='/assets/gradient-pink-left.png' alt='Gradient Pink' width={800} height={320} className='-mt-0 absolute left-0' />
-          <Image src='/assets/macbook.png' alt='Macbook' width={900} height={320} className='mt-36 z-10 ml-auto mr-auto' />
-          <Image src='/assets/gradient-blue-right.png' alt='Gradient Blue' width={1000} height={340} className='-mt-[6.2rem] absolute right-0' />
+        <div className='flex flex-row justify-between relative md:-mt-24'>
+          <Image src='/assets/gradient-pink-left.png' alt='Gradient Pink' width={800} height={320} className='mt-2 md:-mt-0 w-2/3 md:w-fit object-cover absolute left-0 bg-gradient-to-r from-current' />
+          <Image src='/assets/macbook.png' alt='Macbook' width={900} height={320} className='mt-8 md:mt-36 px-4 md:px-0 z-10 ml-auto mr-auto' />
+          <Image src='/assets/gradient-blue-right.png' alt='Gradient Blue' width={1000} height={340} className='-mt-3 md:-mt-16 w-2/3 md:w-fit object-cover absolute right-0' />
         </div>
     </div>
   )

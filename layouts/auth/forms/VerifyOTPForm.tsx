@@ -8,13 +8,13 @@ function VerifyOTPForm() {
 
         <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 82******01</span>
 
-        <div className="flex gap-2 mt-10">
-            <input autoFocus type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-300 rounded-md' />
+        <div className="flex gap-2 mt-10 self-center md:self-start">
+            <input autoFocus type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
+            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
+            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
+            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
+            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
+            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
         </div>
 
         <span className="text-sm text-neutral-900 mt-5 self-center">Didn't recieve an OTP?</span>

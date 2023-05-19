@@ -16,11 +16,11 @@ export default function Home() {
     >
         <HeroSection />
 
-        <div className='mt-48'>
+        <div className='mt-28 md:mt-48 px-4 md:px-0'>
           <AboutSection />
         </div>
 
-        <div className='mt-36 px-24'>
+        <div className='mt-36 px-4 md:px-24'>
           <Features />
         </div>
 

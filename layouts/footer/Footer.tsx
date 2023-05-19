@@ -14,7 +14,7 @@ function Footer(props: {invertColor?: boolean}) {
       {/* ShortAbout */}
       <div className="flex flex-col md:px-0 w-full md:w-72">
         {/* <Image src="/assets/logo2.svg" alt="Logo" width={100} height={100} className='fill-black text-black' /> */}
-        <img src={props.invertColor ? "/assets/logo2.svg" : "/assets/logo2black.svg"} alt="" className="w-fit h-24" />
+        <img src={props.invertColor ? "/assets/logo2.svg" : "/assets/logo2black.svg"} alt="" className="w-fit h-20 mb-2 md:mb-0 md:h-24" />
         <span className={`${inter.className} font-semibold text-base pt-4 pb-5`}>V.I.K.R.A.M. <span className={`${inter.className} font-normal`}>is a platform that lets you create your own bot that learns your preferences and skills. And then helps others on your behalf!!</span></span>
         <div className="socials w-fit flex-row grid grid-cols-4 gap-4">
           {/* <Image src="/assets/fb.svg" alt="Facebook" width={30} height={30} className='fill-black' />
@@ -53,7 +53,7 @@ function Footer(props: {invertColor?: boolean}) {
       <div className={`flex flex-col ${inter.className} text-sm`}>
         <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Subscribe to Newsletter</span>
         <div className='flex flex-col md:flex-row gap-3'>
-          <input type="email" className='py-2 w-full px-3 bg-[#fff] text-white border-[1px] border-neutral-500 rounded outline-none font-medium' placeholder='Email Id' />
+          <input type="email" className='py-2 px-3 bg-[#fff] text-white border-[1px] border-neutral-500 rounded outline-none font-medium' placeholder='Email Id' />
           <PrimaryButton title='Subscribe' />
         </div>
       </div>

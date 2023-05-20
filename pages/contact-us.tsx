@@ -16,7 +16,7 @@ function ContactUs() {
             Get in <SpecialText extra="text-5xl font-bold">Touch</SpecialText>
         </span>
 
-        <span className="mt-5 text-neutral-500">Got questions or ideas? We'd love to chat! Hit us up through our contact form or email, and we'll get back to you ASAP.</span>
+        <span className="mt-5 text-neutral-500">Got questions or ideas? We&apos;d love to chat! Hit us up through our contact form or email, and we&apos;ll get back to you ASAP.</span>
 
         <Link href="mailto:mail@vikram.ai" className='text-lg md:text-xl mb-12 font-medium text-neutral-500 mt-10'><Mail className='fill-neutral-500 w-5 h-6 mr-1.5 align-text-top' />Email us at: <span className='text-primary-500'>contact@vikram.com</span></Link>
 

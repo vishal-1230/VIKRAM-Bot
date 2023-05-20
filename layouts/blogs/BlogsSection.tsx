@@ -3,6 +3,7 @@ import SpecialText from '@/components/SpecialText'
 import { Orbitron } from 'next/font/google'
 import { BlogCardProps } from '@/components/BlogCard'
 import React from 'react'
+import Link from 'next/link'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 
@@ -13,10 +14,10 @@ function TrendingTopics(props: {title?: string, blogs?: BlogCardProps[]}) {
         <div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4">
           {
             props.blogs ? props.blogs.map((blog, index) => {
-              return <BlogCard key={index} title={blog.title} previewParagraph={blog.previewParagraph} image={blog.image} category={blog.category} date={blog.date} author={blog.author} authorImage={blog.authorImage} />
+              return <BlogCard blogId={blog.blogId} key={index} title={blog.title} previewParagraph={blog.previewParagraph} image={blog.image} category={blog.category} date={blog.date} author={blog.author} authorImage={blog.authorImage} />
             }
             ) : [0,1,2].map((blog, index) => {
-              return <BlogCard key={index} title="Blog Title" previewParagraph="Lorem ipsum dolor sit amet consectetur. Varius nulla in elit interdum. Nisl et metus a sem lacus aliquet." image="/assets/temporaryBlog2.png" category="AI and ML" date="12 June, 2023" author="John Doe" authorImage="/assets/temporaryAuthor.png" />
+              return <BlogCard blogId={blog.toString()} key={index} title="Blog Title" previewParagraph="Lorem ipsum dolor sit amet consectetur. Varius nulla in elit interdum. Nisl et metus a sem lacus aliquet." image="/assets/temporaryBlog2.png" category="AI and ML" date="12 June, 2023" author="John Doe" authorImage="/assets/temporaryAuthor.png" />
             })
           }
         </div>

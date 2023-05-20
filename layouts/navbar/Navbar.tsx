@@ -27,7 +27,9 @@ function Navbar(  ) {
           <Link href="/contact-us">
             <OutlineButton title='Contact Us' buttonStyle='mr-8' />
           </Link>
-          <Image src='/assets/profileIcon.svg' alt='Profile' width={30} height={30} priority />
+          <Link href="/auth/create-account">
+            <Image src='/assets/profileIcon.svg' alt='Profile' width={30} height={30} priority />
+          </Link>
         </div>
 
     </div>

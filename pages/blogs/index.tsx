@@ -12,6 +12,7 @@ function Blogs() {
     const [blogs, setBlogs] = React.useState([
         {
             title: "Blog Title",
+            bolgId: "1",
             previewParagraph: "Lorem ipsum dolor sit amet consectetur. Varius nulla in elit interdum. Nisl et metus a sem lacus aliquet.",
             image: "/assets/temporaryBlog2.png",
             category: "AI and ML",
@@ -21,6 +22,7 @@ function Blogs() {
         },
         {
             title: "Blog Title",
+            bolgId: "2",
             previewParagraph: "Lorem ipsum dolor sit amet consectetur. Varius nulla in elit interdum. Nisl et metus a sem lacus aliquet.",
             image: "/assets/temporaryBlog2.png",
             category: "AI and ML",
@@ -30,6 +32,7 @@ function Blogs() {
         },
         {
             title: "Blog Title",
+            bolgId: "3",
             previewParagraph: "Lorem ipsum dolor sit amet consectetur. Varius nulla in elit interdum. Nisl et metus a sem lacus aliquet.",
             image: "/assets/temporaryBlog2.png",
             category: "AI and ML",

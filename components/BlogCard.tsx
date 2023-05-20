@@ -1,7 +1,9 @@
+import Link from 'next/link'
 import React from 'react'
 
 function BlogCard(props: BlogCardProps = DefaultBlogProps) {
   return (
+    <Link href={`/blogs/${props.blogId}`}>
     <div className='flex flex-col cursor-pointer p-6 rounded-lg mx-5 mb-5' style={{boxShadow: "0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)"}}>
         <img src={props.image} alt="Blog Image" className='w-full mb-3' />
         <span className='text-secondary-500 font-semibold text-sm'>{props.category}</span>
@@ -18,22 +20,25 @@ function BlogCard(props: BlogCardProps = DefaultBlogProps) {
             </div>
         </div>
     </div>
+    </Link>
   )
 }
 
 export interface BlogCardProps {
-    title: string
+    title: string,
+    blogId?: string,
     previewParagraph: string,
     image: string,
     category: string,
     date: string,
-    author: string
+    author: string,
     authorImage: string
 }
 
 // defining default props
 const DefaultBlogProps: BlogCardProps = {
     title: "Blog Title",
+    blogId: "1",
     previewParagraph: "Lorem ipsum dolor sit amet consectetur. Varius nulla in elit interdum. Nisl et metus a sem lacus aliquet. Vulputate arcu eget quam sed purus mattis duis in ante. Viverra ac enim massa maecenas. Et praesent maecenas sed augue eu nisl condimentum.",
     image: "/assets/temporaryBlog2.png",
     category: "AI and ML",

@@ -14,17 +14,17 @@ function UseCases() {
     }
 
   return (
-    <div className="flex flex-col bg-white w-full p-24 items-center">
+    <div className="flex flex-col bg-white w-full p-14 md:p-24 items-center" id="use-cases">
         <SpecialText extra="text-5xl font-medium">USE CASES FOR EVERYONE</SpecialText>
         <span className="text-lg text-bg-50 mt-2.5">VIKRAM caters to both normal users and professionals who are looking to monetize their skills by making the bots serve others.</span>
 
         <div className="flex flex-col mt-14 gap-2.5">
             <SpecialText extra="text-4xl">Normal Users</SpecialText>
             <span className="font-semibold text-bg-50">Your personal bot comes with a range of pre-built use cases to help you with various tasks. Here's what you can expect from your VIKRAM bot:</span>
-            <div className="flex gap-32 mt-5">
-                <img src="/assets/temp-usecasebg.png" className="pl-14" alt="" />
+            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-32 mt-5">
+                <img src="/assets/temp-usecasebg.png" className="md:pl-14 self-center md:self-start" alt="" />
                 <div className="flex flex-col">
-                    <ul className="ml-5">
+                    <ul className="md:ml-5">
                     {
                         useCases["Normal Users"].map((useCase, index) => {
                             return <li key={index} className="text-sm text-bg-50 list-disc list-outside">{useCase}</li>
@@ -34,7 +34,7 @@ function UseCases() {
                     <span className="font-semibold text-bg-50 mt-3">Experience the power of VIKRAM and make your life easier by having a personalized AI bot that caters to your individual needs!</span>
                 </div>
             </div>
-            <div className="flex gap-10 mt-14">
+            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-10 mt-14">
                 <SpecialText extra="text-4xl">Professionals</SpecialText>
                 <span className="font-semibold text-bg-50">As an expert, you can use VIKRAM to monetize your skills by building on top of the built-in learning. Create commercial bots that share your expertise, and rest easy knowing your knowledge is protected.</span>
             </div>

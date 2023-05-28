@@ -23,8 +23,8 @@ function Navbar(  ) {
         <div className='navbar-links hidden md:block'>
             <NavLink href="/" active ={router.pathname === "/"}>Home</NavLink>
             <NavLink href="/about-us" active ={router.pathname === "/about-us"}>About</NavLink>
-            <NavLink href="/features" active ={router.pathname === "/features"}>Features</NavLink>
-            <NavLink href="/use-cases" active ={router.pathname === "/use-cases"}>Use Case</NavLink>
+            <NavLink href="/#features" active ={router.pathname === "/#features"}>Features</NavLink>
+            <NavLink href="/#use-cases" active ={router.pathname === "/#use-cases"}>Use Case</NavLink>
             <NavLink href="/blogs" active ={router.pathname === "/blogs"}>Blogs</NavLink>
             {/* <NavLink>Contact Us</NavLink> */}
         </div>

@@ -24,7 +24,7 @@ export default function Home() {
           <AboutSection />
         </div>
 
-        <div className='mt-36 px-4 md:px-24'>
+        <div className='mt-36 px-4 md:px-24' id="features">
           <Features />
         </div>
 

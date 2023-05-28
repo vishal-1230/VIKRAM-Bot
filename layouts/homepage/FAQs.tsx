@@ -1,41 +1,41 @@
 import { Inter, Orbitron } from 'next/font/google'
-import React from 'react'
-import { Accordion, AccordionItem as Item } from '@szhsin/react-accordion'
+// import { Accordion, AccordionItem as Item } from '@szhsin/react-accordion'
 import Button from '@/components/SpecialButton'
 import SubscribeBox from '@/components/SubscribeBox'
+import Accordion from '@/components/Accordion'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 const inter = Inter({ subsets: ['latin'] })
 
-const AccordionItem = ({ header, ...rest } : {header: string, children: any}) => (
-  <Item
-    {...rest}
-    header={({ state: { isEnter } }) => (
-      <>
-        {header}
-        <img
-          className={`ml-auto transition-transform duration-200 ease-in-out ${
-            isEnter && "rotate-225"
-          }`}
-          src="/assets/add.svg"
-          alt="Chevron"
-        />
-      </>
-    )}
-    className="border-b py-1 !bg-transparent select-none"
-    buttonProps={{
-      className: ({ isEnter }) =>
-        `flex w-full p-4 text-left`
-        // ${
-          // isEnter && "bg-slate-200"
-        // }
-    }}
-    contentProps={{
-      className: "transition-height duration-200 ease-in-out"
-    }}
-    panelProps={{ className: "p-4" }}
-  />
-);
+// const AccordionItem = ({ header, ...rest } : {header: string, children: any}) => (
+//   <Item
+//     {...rest}
+//     header={({ state: { isEnter } }) => (
+//       <>
+//         <span className='text-lg font-semibold'>{header}</span>
+//         <img
+//           className={`ml-auto transition-transform duration-200 ease-in-out ${
+//             isEnter && "rotate-225"
+//           }`}
+//           src="/assets/add.svg"
+//           alt="Chevron"
+//         />
+//       </>
+//     )}
+//     className="border-b py-1 !bg-transparent select-none"
+//     buttonProps={{
+//       className: ({ isEnter }) =>
+//         `flex w-full p-4 text-left`
+//         // ${
+//           // isEnter && "bg-slate-200"
+//         // }
+//     }}
+//     contentProps={{
+//       className: "transition-height duration-200 ease-in-out text-left"
+//     }}
+//     panelProps={{ className: "p-4" }}
+//   />
+// );
 
 const faqs = [
   {
@@ -63,19 +63,10 @@ const faqs = [
 
 function FAQs() {
   return (
-    <div className={`text-white flex flex-col relative self-center text-center w-full mt-2 md:mt-32 px-5 md:px-32 py-16 md:py-32 md:p-32 mb-52 md:mb-44 lg:px-60 ${inter.className} bg-gradient-to-r from-[#C816D333] to-[#1A9EDA33]`}>
+    <div className={`text-white flex flex-col relative self-center text-center w-full px-5 md:px-32 py-16 md:py-32 md:p-32 lg:px-60 ${inter.className} bg-gradient-to-r from-[#C816D333] to-[#1A9EDA33]`}>
       <span className={`font-semibold text-4xl mb-10 ${orbitron.className}`}>FAQS</span>
-      <Accordion transition transitionTimeout={200}>
-        {
-          faqs.map((faq, index) => (
-            <AccordionItem key={index} header={faq.header}>
-              {faq.content}
-            </AccordionItem>
-          ))
-        }
-      </Accordion>
-      
-      <SubscribeBox boxStyle='mt-24 -bottom-24 -mb-56' />
+      <Accordion faqs={faqs} expandButon={2} showBorder={false} numbering={true} />
+      {/* <SubscribeBox boxStyle='mt-24 -bottom-24 -mb-56' /> */}
 
     </div>
   )

@@ -3,10 +3,16 @@ import { Inter } from 'next/font/google'
 import NavLink from '@/components/NavLink'
 import OutlineButton from '@/components/OutlineButton'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
 function Navbar(  ) {
+
+  const router = useRouter()
+  console.log(router.pathname)
+  
+
   return (
     <div className={`bg-bg-900 flex flex-row justify-evenly items-center w-screen h-20 px-0 py-8 z-50 ${inter.className}`} style={{justifyContent: 'space-evenly', alignItems: 'center', boxShadow: "0px 20px 24px -4px rgba(3, 5, 12, 0.08), 0px 8px 8px -4px rgba(3, 5, 12, 0.03)"}}>
         
@@ -15,11 +21,11 @@ function Navbar(  ) {
         </Link>
 
         <div className='navbar-links hidden md:block'>
-            <NavLink href="/" active>Home</NavLink>
-            <NavLink href="/about-us">About</NavLink>
-            <NavLink href="/features">Features</NavLink>
-            <NavLink href="/use-cases">Use Case</NavLink>
-            <NavLink href="/blogs">Blogs</NavLink>
+            <NavLink href="/" active ={router.pathname === "/"}>Home</NavLink>
+            <NavLink href="/about-us" active ={router.pathname === "/about-us"}>About</NavLink>
+            <NavLink href="/features" active ={router.pathname === "/features"}>Features</NavLink>
+            <NavLink href="/use-cases" active ={router.pathname === "/use-cases"}>Use Case</NavLink>
+            <NavLink href="/blogs" active ={router.pathname === "/blogs"}>Blogs</NavLink>
             {/* <NavLink>Contact Us</NavLink> */}
         </div>
 

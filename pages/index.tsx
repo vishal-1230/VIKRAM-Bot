@@ -6,6 +6,10 @@ import AboutSection from '@/layouts/homepage/AboutSection'
 import Features from '@/layouts/homepage/Features'
 import FAQs from '@/layouts/homepage/FAQs'
 import Footer from '@/layouts/footer/Footer'
+import UseCases from '@/layouts/homepage/UseCases'
+import ExpertiseProtection from '@/layouts/homepage/ExpertiseProtection'
+import ContactForm from '@/layouts/contact-box/ContactForm'
+import SubscribeBox from '@/components/SubscribeBox'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +28,16 @@ export default function Home() {
           <Features />
         </div>
 
+        <UseCases />
+
         <FAQs />
+
+        <ExpertiseProtection />
+
+        <div className="flex flex-col bg-white pb-24">
+          <ContactForm showDescription showMail showTitle />
+          <SubscribeBox />
+        </div>
         {/* <Footer /> */}
     </main>
   )

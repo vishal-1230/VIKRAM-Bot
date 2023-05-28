@@ -20,7 +20,7 @@ function HeroSection() {
         {/* <Button title="Start Asking" buttonStyle='mt-10' Icon={({extras} : {extras : string})=>{
             return <Image src='/assets/button-arrow.svg' className={extras} alt='Arrow' width={15} height={15} priority />
         }} /> */}
-        <PrimaryButton title="Start Asking" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer' />
+        <PrimaryButton title="Start Asking" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer' showIcon />
         <div className='flex flex-row justify-between relative md:-mt-24'>
           <Image src='/assets/gradient-pink-left.png' alt='Gradient Pink' width={800} height={320} className='mt-2 md:-mt-0 w-2/3 md:w-fit object-cover absolute left-0 bg-gradient-to-r from-current' />
           <Image src='/assets/macbook.png' alt='Macbook' width={900} height={320} className='mt-8 md:mt-36 px-4 md:px-0 z-10 ml-auto mr-auto' />

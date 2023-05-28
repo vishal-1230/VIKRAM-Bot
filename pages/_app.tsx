@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
     } else {
       setIsAuthPage(false)
     }
-    if (router.pathname.startsWith('/contact-us')) {
+    if (router.pathname.startsWith('/contact-us') || router.pathname.startsWith('/blogs') || router.pathname.startsWith('/')) {
       setInvertColors(true)
     }
   }, [router.pathname])

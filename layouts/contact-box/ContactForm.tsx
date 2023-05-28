@@ -9,7 +9,7 @@ const orbitron = Orbitron({subsets: ["latin"]})
 
 function ContactForm(props: {className?: string, showTitle: boolean, showDescription?: boolean, showMail?: boolean}) {
   return (
-    <div className={`flex flex-row mx-4 md:px-24 py-8 md:py-20 bg-white w-screen relative ${props.className}`}>
+    <div className={`flex flex-row md:px-24 py-8 md:py-20 bg-white w-screen relative ${props.className}`}>
         <div className="flex flex-col grow justify-center px-3 md:px-0 z-10">
             
             {props.showTitle && <span className={`font-bold text-5xl text-bg-900 ${orbitron.className}`}>Get in <SpecialText extra="text-5xl font-bold">Touch</SpecialText></span>}

@@ -10,10 +10,10 @@ function Tribute() {
     ]
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center p-24 md:gap-32 bg-white">
-        <img src="/assets/vikrambhai.png" alt="" className="rounded-full rounded-tr-none w-80 h-80" />
+    <div className="flex flex-col md:flex-row md:items-center px-4 md:px-24 p-14 md:p-24 gap-10 md:gap-32 bg-white">
+        <img src="/assets/vikrambhai.png" alt="" className="rounded-full md:rounded-tr-none w-80 h-80 self-center md:self-start" />
         <div className="flex flex-col">
-            <SpecialText extra="text-5xl font-bold mb-6">Tribute to Vikrambhai</SpecialText>
+            <SpecialText extra="text-5xl font-bold mb-6 text-center md:text-left">Tribute to Vikrambhai</SpecialText>
             {
                 tributeTextArray.map((paragraph, index) => {
                     return <p key={index} className="text-bg-50 mt-4">{paragraph}</p>

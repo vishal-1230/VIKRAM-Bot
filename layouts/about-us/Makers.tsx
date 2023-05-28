@@ -4,7 +4,7 @@ import SubscribeBox from "@/components/SubscribeBox"
 
 function Makers() {
   return (
-    <div className="flex flex-col p-24 items-center">
+    <div className="flex flex-col px-4 md:px-24 p-14 md:p-24 items-center">
         <SpecialText extra="text-5xl font-bold">Our Makers</SpecialText>
         <span className="text-bg-50 mt-5 text-center">They say that ChatGpt is going to take away jobs. Well if that happens, the world will surely be a drab place! Every person is brings in unique perspectives.</span>
 

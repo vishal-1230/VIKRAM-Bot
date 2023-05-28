@@ -10,8 +10,8 @@ function MissionVision() {
     const vision = "Lorem ipsum dolor sit amet consectetur. Lectus nisl sed tempus aliquam. Aliquam sit ultrices lectus dolor venenatis viverra tempor neque placerat. Dui suscipit convallis diam integer nullam. Ultrices non condimentum libero tincidunt eget purus. Nunc sed nunc nullam pulvinar lectus donec adipiscing suspendisse elit. Ornare facilisis elementum pulvinar turpis. Aliquet platea aliquet ipsum proin nunc."
 
   return (
-    <div className="bg-bg-900 w-full p-24 flex flex-col items-center">
-        <span className={`font-bold text-5xl text-white ${orbitron.className}`}>Our <SpecialText>Mission & Vision</SpecialText></span>
+    <div className="bg-bg-900 w-full px-4 md:px-24 p-14 md:p-24 flex flex-col items-center">
+        <span className={`font-bold text-5xl text-white text-center md:text-left ${orbitron.className}`}>Our <SpecialText>Mission & Vision</SpecialText></span>
         <span className="mt-5 text-neutral-500 text-center">They say that ChatGpt is going to take away jobs. Well if that happens, the world will surely be a drab place! Every person is brings in unique perspectives.</span>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-14">

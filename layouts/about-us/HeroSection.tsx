@@ -7,7 +7,7 @@ const orbitron = Orbitron({ subsets: ['latin'] })
 
 function HeroSection(props: { title: string, previewParagraph: string[], image: string, buttonText?: string, buttonLink?: string }) {
   return (
-    <div className='bg-bg-900 flex gap-24 flex-col-reverse md:flex-row md:items-center py-24 px-6 md:px-24'>
+    <div className='bg-bg-900 flex gap-12 md:gap-24 flex-col-reverse md:flex-row md:items-center py-14 md:py-24 px-6 md:px-24'>
         <div className="flex flex-col">
           <span className={`text-white font-bold text-5xl mb-5 ${orbitron.className}`}>About <SpecialText>Us</SpecialText></span>
           {

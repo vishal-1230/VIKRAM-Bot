@@ -7,7 +7,7 @@ const AccordionItem = ({ header, headerStyle, contentStyle, numbering, expandBut
       {...rest}
       header={({ state: { isEnter } }) => (
         <>
-          <span className={`text-lg font-semibold ${headerStyle}`}>{header}</span>
+          <span className={`text-lg font-semibold max-w-[85%] ${headerStyle}`}>{header}</span>
           {
             expandButton == 0 && <img
                 className={`ml-auto transition-transform duration-200 ease-in-out ${

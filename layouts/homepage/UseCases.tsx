@@ -14,12 +14,12 @@ function UseCases() {
     }
 
   return (
-    <div className="flex flex-col bg-white w-full p-14 md:p-24 items-center" id="use-cases">
-        <SpecialText extra="text-5xl font-medium">USE CASES FOR EVERYONE</SpecialText>
+    <div className="flex flex-col bg-white w-full p-8 pt-12 md:p-24 items-center" id="use-cases">
+        <SpecialText extra="text-4xl md:text-5xl font-medium">USE CASES FOR EVERYONE</SpecialText>
         <span className="text-lg text-bg-50 mt-2.5">VIKRAM caters to both normal users and professionals who are looking to monetize their skills by making the bots serve others.</span>
 
         <div className="flex flex-col mt-14 gap-2.5">
-            <SpecialText extra="text-4xl">Normal Users</SpecialText>
+            <SpecialText extra="text-3xl md:text-4xl">Normal Users</SpecialText>
             <span className="font-semibold text-bg-50">Your personal bot comes with a range of pre-built use cases to help you with various tasks. Here's what you can expect from your VIKRAM bot:</span>
             <div className="flex flex-col md:flex-row px-4 md:px-0 gap-0 mt-5">
                 <img src="/assets/use-case.png" className="self-center md:self-start" alt="" />

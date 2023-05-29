@@ -6,12 +6,12 @@ const orbitron = Orbitron({ subsets: ['latin'] })
 
 function HeroSection(props: { title: string, previewParagraph: string[], image: string, buttonText?: string, buttonLink?: string }) {
   return (
-    <div className='bg-bg-900 flex gap-12 flex-col-reverse md:flex-row py-28 px-6 md:px-24'>
+    <div className='bg-bg-900 flex gap-6 md:gap-12 flex-col-reverse md:flex-row pt-6 pb-10 md:py-28 px-6 md:px-24'>
         <div className="flex flex-col">
-          <span className={`text-white font-medium text-5xl mb-5 ${orbitron.className}`}>{props.title}</span>
+          <span className={`text-white font-medium text-4xl md:text-5xl mb-5 ${orbitron.className}`}>{props.title}</span>
           {
             props.previewParagraph.map((paragraph, index) => {
-              return <p key={index} className='text-neutral-500 font-normal text-lg mt-5'>{paragraph}</p>
+              return <p key={index} className='text-neutral-500 font-normal text-base md:text-lg mt-5'>{paragraph}</p>
             })
           }
           <OutlineButton title={props.buttonText ? props.buttonText : "Learn more"} buttonStyle='mt-10 w-fit' />

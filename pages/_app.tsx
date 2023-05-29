@@ -26,14 +26,14 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.pathname])
 
-  return <>
+  return <div>
   {/* <Navbar /> */}
   {
     !isAuthPage && <Navbar />
   }
   <Component {...pageProps} />
   {
-    !isAuthPage && <Footer invertColor={invertColors} />
+    !isAuthPage && !router.pathname.startsWith("/chat-bot") && <Footer invertColor={invertColors} />
   }
-  </>
+  </div>
 }

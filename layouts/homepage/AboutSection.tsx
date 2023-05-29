@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Orbitron } from 'next/font/google'
 import React from 'react'
 import Button from '@/components/SpecialButton'
+import Link from 'next/link'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 
@@ -20,7 +21,9 @@ function AboutSection() {
           </div>
           <img src="/assets/about-robot.svg" alt="About Robot" className='w-48 ml-5 md:ml-0 md:w-96 self-center' />
         </div>
-        <Button title="So, Go Ahead and Get your Bot" buttonStyle='mt-10' />
+        <Link href="/chat-bot" className='self-center z-20'>
+          <Button title="So, Go Ahead and Get your Bot" buttonStyle='mt-10' />
+        </Link>
       </FadedAboutBox>      
     </div>
   )

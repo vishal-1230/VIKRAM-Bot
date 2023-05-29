@@ -21,10 +21,10 @@ function UseCases() {
         <div className="flex flex-col mt-14 gap-2.5">
             <SpecialText extra="text-4xl">Normal Users</SpecialText>
             <span className="font-semibold text-bg-50">Your personal bot comes with a range of pre-built use cases to help you with various tasks. Here's what you can expect from your VIKRAM bot:</span>
-            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-32 mt-5">
-                <img src="/assets/temp-usecasebg.png" className="md:pl-14 self-center md:self-start" alt="" />
+            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-0 mt-5">
+                <img src="/assets/use-case.png" className="self-center md:self-start" alt="" />
                 <div className="flex flex-col">
-                    <ul className="md:ml-5">
+                    <ul className="md:ml-5 mt-8">
                     {
                         useCases["Normal Users"].map((useCase, index) => {
                             return <li key={index} className="text-sm text-bg-50 list-disc list-outside">{useCase}</li>

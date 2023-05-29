@@ -10,7 +10,7 @@ function AboutUs() {
   return (
     <div className={`${inter.className}`}>
         
-        <HeroSection  />
+        <HeroSection />
 
         <Tribute />
 

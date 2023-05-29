@@ -15,14 +15,14 @@ function MissionVision() {
         <span className="mt-5 text-neutral-500 text-center">They say that ChatGpt is going to take away jobs. Well if that happens, the world will surely be a drab place! Every person is brings in unique perspectives.</span>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-14">
-            <div className="rounded-lg bg-bg-800 px-10 py-8 flex flex-col">
+            <div className="rounded-lg bg-bg-800 px-6 md:px-10 py-8 flex flex-col">
                 <div className="p-6 bg-secondary-500 rounded-[10px] w-fit">
                     <Image src="/assets/mission.svg" className="fill-white" alt="Mission Image" width={25} height={25} />
                 </div>
                 <span className="text-xl font-bold text-white pb-5 w-fit mt-5 border-b-2 border-b-secondary-500">OUR MISSION</span>
                 <span className="text-neutral-500 mt-5">{mission}</span>
             </div>
-            <div className="rounded-lg bg-bg-800 px-10 py-8 flex flex-col">
+            <div className="rounded-lg bg-bg-800 px-6 md:px-10 py-8 flex flex-col">
                 <div className="p-6 bg-secondary-500 rounded-[10px] w-fit">
                     <Image src="/assets/vision.svg" className="fill-white" alt="Mission Image" width={25} height={25} />
                 </div>

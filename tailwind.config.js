@@ -53,6 +53,8 @@ module.exports = {
         "neutral-800": "#A09A9A",
         "neutral-900": "#878282",
 
+        "warning-500": "#FF9500",
+
         "gray-1": "#ACACAC",
         "gray-2": "#D0D0D0",
         "gray-3": "#E9E9E9",

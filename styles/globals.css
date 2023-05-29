@@ -13,6 +13,27 @@
   --gradient-dull-blue: "#1A9EDA";
 }
 
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--foreground-rgb), 0.45);
+  border-radius: 0.5rem;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(var(--foreground-rgb), 0.65);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: rgba(var(--foreground-rgb), 0.85);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

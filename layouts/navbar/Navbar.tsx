@@ -67,7 +67,8 @@ function Navbar() {
             }
             <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block' width={30} height={30} priority />
           </Link>
-            <MenuOpenOutlined className="w-8 h-8 text-white md:hidden" onClick={openMobileNavbar} />
+          
+            <MenuOpenOutlined className="w-8 h-8 text-white md:!hidden" onClick={openMobileNavbar} />
         </div>
 
     </div>

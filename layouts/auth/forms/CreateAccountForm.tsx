@@ -7,10 +7,38 @@ import Link from 'next/link'
 import PrimaryButton from '@/components/PrimaryButton'
 import InputGroup from '@/components/InputGroup'
 import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 
+
 function CreateAccountForm(props: any) {
+
+    const auth = getAuth();
+    window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+        'size': 'invisible',
+        'callback': (response: any) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          onSignInSubmit();
+        }
+      }, auth);
+
+    const onSignInSubmit = () => {
+        const phoneNumber = '+918373958829';
+        const appVerifier = window.recaptchaVerifier;
+
+        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+            .then((confirmationResult) => {
+                const code = '123456';
+                // ...
+            }
+            ).catch((error) => {
+                console.log("OTP not sent due to ", error)
+                // Error; SMS not sent
+                // ...
+            }
+        );
+    }
 
     const [showPassword, setShowPassword] = React.useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
@@ -76,6 +104,8 @@ function CreateAccountForm(props: any) {
                     <input type="text" placeholder='Please specify' className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" />
             }
         </div>
+
+            <div id="recaptcha-container"></div>
 
         <InputGroup label='Password' placeholder='Your Password' type="password" passwordAccessory={<label htmlFor="password" className='text-sm text-neutral-900'>Password should contain atleast number, capital letter, small letter and symbol.</label>} />
 

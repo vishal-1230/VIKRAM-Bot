@@ -1,67 +1,48 @@
-import { BookmarkBorderOutlined, DarkModeOutlined, LaunchOutlined, LightModeOutlined, LogoutOutlined, PersonOutlineOutlined, UpdateOutlined } from "@mui/icons-material"
+import { BookmarkBorderOutlined, DarkModeOutlined, LaunchOutlined, LightModeOutlined, LogoutOutlined, Notifications, NotificationsOutlined, PersonOutlineOutlined, UpdateOutlined } from "@mui/icons-material"
+import { useState } from "react"
 
 function LeftPanel(props: {mode: string, setMode: any}) {
 
     const mode = props.mode
     const setMode = props.setMode
 
+    const [notifications, setNotifications] = useState<string[]>([])
+
   return (
-    <div className="flex-col absolute md:relative hidden md:flex justify-between z-10 py-5 bg-bg-900 px-6 pr-3 mt-20 max-w-[18rem]">
+    <div className="flex-col absolute md:relative hidden w-72 md:flex justify-between z-10 py-5 bg-bg-900 px-6 pr-3 mt-20 max-w-[16rem]">
         <div className="flex flex-col gap-8 overflow-y-scroll overflow-x-clip">
 
             <div className="flex flex-col gap-4">
                 
                 <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
+                    <NotificationsOutlined />
+                    Your Notifications
+                </span>
+                {
+                    notifications.length === 0 ? (
+                        <span className="text-sm text-gray-300 flex-wrap">No new notifications</span>
+                    ) : (
+                        notifications.map((notification, index) => {
+                            return (
+                                <span key={index} className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">{notification}</span>
+                            )
+                        })
+                    )
+                }
+                {/* <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">Lorem ipsum or sit amet cohabsckj Right man?</span> */}
+                {/* <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">Lorem ipsum or sit amet cohabsckj Right man?</span> */}
+            </div>
+
+            {/* <div className="flex flex-col gap-4">
+                <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
                     <UpdateOutlined />
-                    Your history
+                    Your History
                 </span>
 
-                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj</span>
-                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj</span>
-            </div>
+                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj </span>
+                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj </span>
 
-            <div className="flex flex-col gap-4">
-                <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
-                    <BookmarkBorderOutlined />
-                    Your saved searches
-                </span>
-
-                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj</span>
-                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj</span>
-
-            </div>
-
-            <div className="flex flex-col gap-4">
-                <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
-                    <PersonOutlineOutlined />
-                    Mode
-                </span>
-
-                <div className="flex flex-row gap-3 items-center">
-                    <input type="radio" name="mode" id="mode" className="min-h-8 max-h-8 min-w-8 max-w-8 bg-bg-900 fill-bg-900" />
-                    <div className="flex flex-col gap-1">
-                        <span className="text-white font-medium text-sm">
-                            Normal Mode
-                        </span>
-                        <span className="text-xs text-neutral-700">
-                            Lorem ipsum dolor sit amet consectetur. Lectus nisl se.
-                        </span>
-                    </div>
-                </div>
-
-                <div className="flex flex-row gap-3 items-center">
-                    <input type="radio" name="mode" id="mode" className="min-h-8 max-h-8 min-w-8 max-w-8" />
-                    <div className="flex flex-col gap-1">
-                        <span className="text-white font-medium text-sm">
-                            Professional Mode
-                        </span>
-                        <span className="text-xs text-neutral-700">
-                            Lorem ipsum dolor sit amet consectetur. Lectus nisl se.
-                        </span>
-                    </div>
-                </div>
-
-            </div>
+            </div> */}
         </div>
 
         <div className="flex flex-col gap-3 mt-8 pt-4 border-t-2 border-bg-500 pr-2">
@@ -82,7 +63,7 @@ function LeftPanel(props: {mode: string, setMode: any}) {
                 Updates & FAQ
             </span>
 
-            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5">
+            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); window.location.reload()}}>
                 <LogoutOutlined />
                 Logout
             </span>

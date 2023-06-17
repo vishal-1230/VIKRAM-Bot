@@ -5,7 +5,7 @@ import OutlineButton from '@/components/OutlineButton'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { CloseOutlined, MenuOpenOutlined } from '@mui/icons-material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +23,16 @@ function Navbar() {
   const closeMobileNavbar = () => {
     setNavbarOpen(false)
   }
+
+  const [userDetails, setUserDetails] = useState<any>(null)
+
+  useEffect(()=>{
+    if(localStorage.getItem("user")) {
+      const user = localStorage.getItem("user")
+      const parsed = JSON.parse(user ? user : "{}")
+      setUserDetails(parsed)
+    }
+  }, [])
   
 
   return (
@@ -63,7 +73,7 @@ function Navbar() {
           }
           <Link href="/auth/create-account" className='self-center flex gap-5 items-center'>
             {
-              router.pathname.startsWith("/chat-bot") && <span className="text-white hidden md:block">Full Name</span>
+              router.pathname.startsWith("/chat-bot") && <span className="text-white hidden md:block">{userDetails?.name}</span>
             }
             <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block' width={30} height={30} priority />
           </Link>

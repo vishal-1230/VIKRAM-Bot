@@ -1,11 +1,11 @@
 import CreateAccountForm from '@/layouts/auth/forms/CreateAccountForm'
 import LeftInfo from '@/layouts/auth/LeftInfo'
 import { Inter } from 'next/font/google'
-import { getAuth, RecaptchaVerifier } from 'firebase/auth'
+// import { getAuth, RecaptchaVerifier } from 'firebase/auth'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const auth = getAuth();
+// const auth = getAuth();
 
 function CreateAccount() {
   return (

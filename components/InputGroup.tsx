@@ -1,37 +1,60 @@
 import { RemoveRedEyeOutlined, VisibilityOffOutlined } from '@mui/icons-material'
 import { useState } from 'react'
 
-function InputGroup(props: { className?: string, label?: string, type?: string, placeholder?: string, value?: string, onChange?: any, passwordAccessory?:React.ReactNode, textareaRows?:number, textareaCols?:number }) {
+function InputGroup(props: InputGroupProps) {
 
     const [showPassword, setShowPassword] = useState(false)
 
     const [countrySelectedForNumber, setcountrySelectedForNumber] = useState(undefined)
 
     {
-        return (props.type != "password" ? props.type != "number" ? props.type != "description" ?
+        return (props.type != "password" ? props.type != "number" ? props.type != "description" ? props.type!="options" ? props.type != "username" ?
+            // Normal Text Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label}</span>
-                <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={props.onChange} />
+                <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
+                <span className="text-xs font-medium text-red-500">
+                  {props?.hintAccessory!=undefined && props?.hintAccessory()}
+                </span>
             </div>
             :
+            // Username Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label}</span>
-                <textarea placeholder={props.placeholder} rows={props.textareaRows} cols={props.textareaCols} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={props.onChange} />
+                <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>{if(!e.target.value.endsWith(" ")){console.log(e.target.value); props.onChange(e.target.value)}}} />
+                {props?.hintAccessory!=undefined && props?.hintAccessory()}
             </div>
             :
+            // Options/Radio Input
+            <div className="flex gap-2 cursor-pointer" onClick={props?.radioOptions?.onChange}>
+                  <input type="radio" checked={props.radioOptions?.checked} name={props.radioOptions?.name} id={props.radioOptions?.title} className='w-4 border-2 outline-2 border-black outline-black p-1 text-sm duration-300' />
+                  <div className="flex flex-col gap-1">
+                    <span className="text-neutral-900 font-medium text-sm">{props.radioOptions?.title}</span>
+                    <span className="text-xs text-neutral-700 font-medium flex-wrap max-w-[80vw] md:max-w-[30vw]">{props.radioOptions?.subtext}</span>
+                  </div>
+            </div>
+            :
+            // Textarea Input
+            <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
+                <span className="font-medium text-bg-50">{props.label}</span>
+                <textarea placeholder={props.placeholder} rows={props.textareaRows} cols={props.textareaCols} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
+            </div>
+            :
+            // Number Input with Country Code
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label}</span>
                 <div className="flex relative items-center border-[1px] border-[#DDD6D6] rounded-md">
                     <CustomDropdown2 />
-                    <input type={props.type} minLength={10} maxLength={12} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none" value={props.value} onChange={props.onChange} />
+                    <input type={props.type} minLength={10} maxLength={12} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
                 </div>
-                
+                {props?.hintAccessory!=undefined && props?.hintAccessory()}
             </div>
             :
+            // Password Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label}</span>
                 <div className="flex relative items-center">
-                    <input type={showPassword ? "text" : "password"} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md grow" value={props.value} onChange={props.onChange} />
+                    <input type={showPassword ? "text" : "password"} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md grow" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
                     {
                         showPassword ?
                         <RemoveRedEyeOutlined className='cursor-pointer w-5 text-bg-50 absolute right-3 z-10' onClick={() => setShowPassword(!showPassword)} />
@@ -39,7 +62,10 @@ function InputGroup(props: { className?: string, label?: string, type?: string, 
                         <VisibilityOffOutlined className='cursor-pointer w-5 text-bg-50 absolute right-3 z-10' onClick={() => setShowPassword(!showPassword)} />
                     }
                 </div>
-                {props.passwordAccessory}
+                {/* {props.passwordAccessory} */}
+                <span className="text-xs font-medium text-red-500">
+                  {props?.hintAccessory!=undefined && props?.hintAccessory()}
+                </span>
             </div>
         )
     }
@@ -107,6 +133,18 @@ const countryOptions = [
     );
   };
 
+  interface InputGroupProps {
+    className?: string,
+    label?: string, type?: "password" | "number" | "description" | "username" | "text" | "options",
+    placeholder?: string,
+    value?: string,
+    onChange?: any,
+    hintAccessory?:() => string | React.ReactNode | boolean,
+    passwordAccessory?:React.ReactNode,
+    textareaRows?:number,
+    textareaCols?:number,
+    radioOptions?:{name:string, title:string, subtext?:string, onClick?:any, onChange?:any, checked?:boolean},
+  }
   InputGroup.defaultProps = {
     className: '',
     type: 'text',
@@ -116,6 +154,7 @@ const countryOptions = [
     label: 'Input Label',
     textareaRows: 4,
     passwordAccessory: null,
+    hintAccessory: null,
   };
   
 

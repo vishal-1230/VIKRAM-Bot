@@ -6,10 +6,11 @@ function Button({
     Icon=({extras} : {extras : string})=>{
       return <Image src='/assets/button-arrow.svg' className={extras} alt='Arrow' width={15} height={15} priority />
     },
-    buttonStyle
-  } : {title: string, Icon?: any, buttonStyle?: string}) {
+    buttonStyle,
+    onClick
+  } : {title: string, Icon?: any, buttonStyle?: string, onClick?: any}) {
   return (
-    <button type="button" className={`flex flex-row text-center w-max px-6 py-2.5 bg-blue-500 text-white text-sm rounded-lg bg-gradient-button self-center cursor-pointer ${buttonStyle}`}>
+    <button onClick={onClick ? onClick : null} type="button" className={`flex flex-row text-center w-max px-6 py-2.5 bg-blue-500 text-white text-sm rounded-lg bg-gradient-button self-center cursor-pointer ${buttonStyle}`}>
         {title}
         <Icon extras="ml-1.5 mt-0.5" />
     </button>

@@ -5,8 +5,11 @@ function ChatList(props: ChatListProps) {
 
   const messagesEndRef = useRef(null)
 
+
   const scrollToBottom = () => {
-    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" })
+    // messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" })
+    // messagesEndRef?.current?.focus()
+    messagesEndRef.current && (messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight)
   }
 
   useEffect(() => {
@@ -14,11 +17,11 @@ function ChatList(props: ChatListProps) {
   }, [props.chats]);
 
   return (
-    <div className="overflow-y-scroll grow max-h-full w-full px-0 absolute pt-20 pb-48">
+    <div ref={messagesEndRef} className="overflow-y-scroll grow max-h-full w-full px-0 absolute pt-40 pb-48">
         {
             props.chats.map((chat, index) => {
                 return (
-                    <Message ref={messagesEndRef} mode={props.mode} sender={chat.sender} key={index}>{chat.message}</Message>
+                    <Message mode={props.mode} sender={chat.sender} key={index}>{chat.message}</Message>
                 )
             })
         }

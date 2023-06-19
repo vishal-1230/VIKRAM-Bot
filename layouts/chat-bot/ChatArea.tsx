@@ -255,7 +255,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
       console.log("DATA", data)
       // data.message format is [ {Bot: "Hello", User: "bot"}, {Bot: "Hi", sendeuser: "user"}] that has to be converted to [{message: "Hello", sender: "bot"}, {message: "Hi", sender: "user"}]
       let temp:{message: string, sender: string}[] = []
-      data.message.map((item: [{[Sender: string]: string}])=>{
+      data.message.map((item: { Bot: any; User: any })=>{
         temp.push({message: item.Bot, sender: "bot"})
         temp.push({message: item.User, sender: "user"})
       })

@@ -20,7 +20,7 @@ function CreateAccountForm(props: any) {
 
     const [othersSelected, setOthersSelected] = React.useState(false)
     const [name, setName] = React.useState(undefined)
-    const [username, setUsername] = React.useState(undefined)
+    const [username, setUsername] = React.useState<string | undefined>(undefined)
     const [email, setEmail] = React.useState(undefined)
     const [phoneNumber, setPhoneNumber] = React.useState(undefined)
     const [password, setPassword] = React.useState(undefined)

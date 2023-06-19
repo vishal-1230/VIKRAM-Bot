@@ -3,13 +3,14 @@ import { useEffect, useRef } from "react"
 
 function ChatList(props: ChatListProps) {
 
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef<null | HTMLDivElement>(null)
 
 
   const scrollToBottom = () => {
     // messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" })
     // messagesEndRef?.current?.focus()
     messagesEndRef.current && (messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight)
+    
   }
 
   useEffect(() => {

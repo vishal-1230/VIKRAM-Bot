@@ -4,6 +4,7 @@ import { MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-mater
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
+import { Popover } from "@mui/material"
 
 function ChatArea(props: {mode: string, setMode: any}) {
 
@@ -328,7 +329,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       <div className="w-fit md:w-full mt-2 py-2 flex flex-col md:flex-row justify-between z-50 backdrop-blur-sm">
         <Dropdown title="Select a bot" className="md:ml-5" list={[
-          {text: "My Personal Bot", onClick: () => {setChatCategory("personal")}},
+          {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
           {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
           {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
           {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},

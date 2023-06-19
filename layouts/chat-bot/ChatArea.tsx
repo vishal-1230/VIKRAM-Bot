@@ -272,7 +272,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
       const response = await fetch(`http://localhost:5000/gchats/${userDetails?.username_b}`)
       const data = await response.json()
       let temp:{message: string, sender: string}[] = []
-      data.message.map((item: [{[Sender: string]: string}])=>{
+      data.message.map((item: { Bot: any; User: any })=>{
         temp.push({message: item.Bot, sender: "bot"})
         temp.push({message: item.User, sender: "user"})
       })

@@ -72,32 +72,38 @@ function CreateAccountForm(props: any) {
                 business_username: b_username
             })
         })
-        const data = await response.json()
-        console.log(data)
-        if (data.message.startsWith("Account created successfully")) {
-            localStorage.setItem("user", JSON.stringify(
-                {
-                    name: name,
-                    username: username,
-                    email_id: email,
-                    phone: phoneNumber,
-                    username_b: b_username
-                }
-            ))
-            setAccountCreated(true)
-            setLoading(false)
-            setAccountCreated(true)
-        } else if (data.message.startsWith("HTTPSConnectionPool")) {
-            alert("Our servers are overloaded. You can retry now or after some time.")
-            setLoading(false)
-        } else if(data.startsWith("Create class")) {
-            alert("Username already exists")
-            setLoading(false)
+        try {
+            const data = await response.json()
             console.log(data)
-        } else {
-            alert(data)
+            if (data.message.startsWith("Account created successfully")) {
+                localStorage.setItem("user", JSON.stringify(
+                    {
+                        name: name,
+                        username: username,
+                        email_id: email,
+                        phone: phoneNumber,
+                        username_b: b_username
+                    }
+                ))
+                setAccountCreated(true)
+                setLoading(false)
+                setAccountCreated(true)
+            } else if (data.message.startsWith("HTTPSConnectionPool")) {
+                alert("Our servers are overloaded. You can retry now or after some time.")
+                setLoading(false)
+            } else if(data.startsWith("Create class")) {
+                alert("Username already exists")
+                setLoading(false)
+                console.log(data)
+            } else {
+                alert(data)
+                console.log(data)
+                setLoading(false)
+            }
+        } catch (e) {
+            console.log("err", e)
+            const data = await response.text()
             console.log(data)
-            setLoading(false)
         }
     }
 

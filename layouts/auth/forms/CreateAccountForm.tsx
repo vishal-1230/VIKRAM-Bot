@@ -137,7 +137,7 @@ function CreateAccountForm(props: any) {
 
     // AFTER AUTHORIZING, THE BOT ROLE & STEPS HE'S TO FOLLOW
     const [showPersonalBotDialog, setShowPersonalBotDialog] = React.useState(false)
-    const [showBusinessBotDialog, setShowBusinessBotDialog] = React.useState(true)
+    const [showBusinessBotDialog, setShowBusinessBotDialog] = React.useState(false)
 
     const [typeOfRules, setTypeOfRules] = React.useState<"text" | "file">("text")
     const [typeOfUserInfo, setTypeOfUserInfo] = React.useState<"text" | "file">("text")

@@ -90,8 +90,13 @@ function CreateAccountForm(props: any) {
         } else if (data.message.startsWith("HTTPSConnectionPool")) {
             alert("Our servers are overloaded. You can retry now or after some time.")
             setLoading(false)
+        } else if(data.startsWith("Create class")) {
+            alert("Username already exists")
+            setLoading(false)
+            console.log(data)
         } else {
             alert(data)
+            console.log(data)
             setLoading(false)
         }
     }
@@ -468,9 +473,9 @@ function CreateAccountForm(props: any) {
                   </div>
                   <div className="grid grid-cols-3 mt-auto justify-between">
                       <div></div>
-                        <Link href='/auth/login'>
+                        {/* <Link href='/auth/login'> */}
                             <Button title="Train my business bot!" buttonStyle='mx-auto font-semibold' onClick={trainBusinessBot} />
-                        </Link>
+                        {/* </Link> */}
                         <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
                           setBotRules([
                               "Do not use abusive language.",

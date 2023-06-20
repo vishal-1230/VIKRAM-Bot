@@ -16,7 +16,7 @@ function LoginForm() {
 
     async function login() {
         setLoading(true)
-        const response = await fetch('http://server.vikrambots.in/login', {
+        const response = await fetch('https://server.vikrambots.in/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

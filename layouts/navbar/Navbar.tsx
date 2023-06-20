@@ -47,7 +47,7 @@ function Navbar() {
             null
           ) : (
         <div className={`flex-col absolute top-0 left-0 bg-bg-900 gap-5 md:gap-0 py-6 md:py-0 w-full h-screen z-50 md:w-fit md:h-fit ${navbarOpen ? "flex"  : "hidden"} md:relative md:bg-transparent md:!block`} id="navbar">
-            <CloseOutlined className="w-7 h-7 text-white md:hidden ml-auto mr-5" onClick={closeMobileNavbar} />
+            <CloseOutlined className="w-7 h-7 text-white block md:!hidden ml-auto mr-5" onClick={closeMobileNavbar} />
             <NavLink closeNavbar={closeMobileNavbar} href="/" active ={router.pathname === "/"}>Home</NavLink>
             <NavLink closeNavbar={closeMobileNavbar} href="/about-us" active ={router.pathname === "/about-us"}>About</NavLink>
             <NavLink closeNavbar={closeMobileNavbar} href="/#features" active ={router.pathname === "/#features"}>Features</NavLink>

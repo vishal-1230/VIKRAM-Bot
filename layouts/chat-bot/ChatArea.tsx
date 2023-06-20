@@ -43,13 +43,13 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       let uri = ""
       if(chatCategory === "personal") {
-        uri = `http://server.vikrambots.in/general/${userDetails?.username}/${message}`
+        uri = `https://server.vikrambots.in/general/${userDetails?.username}/${message}`
       } else if(chatCategory === "business") {
-        uri = `http://server.vikrambots.in/training/${userDetails?.username_b}/${message}`
+        uri = `https://server.vikrambots.in/training/${userDetails?.username_b}/${message}`
       } else if(chatCategory === "initiator") {
-        uri = `http://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
+        uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
       } else if(chatCategory === "business_initiator") {
-        uri = `http://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username}/${message}`
+        uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username}/${message}`
       }
       console.log("URI=>", uri)
 
@@ -127,7 +127,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             }
           });
       } else if (plugin === "News") {
-        fetch(`http://server.vikrambots.in/news/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/news/${userDetails?.username}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -150,7 +150,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Weather") {
-        fetch(`http://server.vikrambots.in/weather/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/weather/${userDetails?.username}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -173,7 +173,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "IMDB") {
-        fetch(`http://server.vikrambots.in/imdb/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/imdb/${userDetails?.username}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -196,7 +196,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`http://server.vikrambots.in/google/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/google/${userDetails?.username}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -219,7 +219,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "YouTube") {
-        fetch(`http://server.vikrambots.in/yt/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/yt/${userDetails?.username}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -250,7 +250,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       setUserDetails(userDetails)
       console.log("Details", userDetails)
-      const response = await fetch(`http://server.vikrambots.in/gchats/${userDetails.username}`)
+      const response = await fetch(`https://server.vikrambots.in/gchats/${userDetails.username}`)
       const data = await response.json()
       console.log("DATA", data)
       // data.message format is [ {Bot: "Hello", User: "bot"}, {Bot: "Hi", sendeuser: "user"}] that has to be converted to [{message: "Hello", sender: "bot"}, {message: "Hi", sender: "user"}]
@@ -269,7 +269,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       setUserDetails(userDetails)
       console.log(userDetails.username_b)
-      const response = await fetch(`http://server.vikrambots.in/gchats/${userDetails?.username_b}`)
+      const response = await fetch(`https://server.vikrambots.in/gchats/${userDetails?.username_b}`)
       const data = await response.json()
       let temp:{message: string, sender: string}[] = []
       data.message.map((item: { Bot: any; User: any })=>{

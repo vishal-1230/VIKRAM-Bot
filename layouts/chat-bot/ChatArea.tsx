@@ -27,6 +27,8 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
     const [userDetails, setUserDetails] = useState<any>(null)
 
+    const [categories, setCategories] = useState<string[]>([])
+
     async function sendMessage() {
       const message = userMessage
       setUserMessage("")
@@ -328,12 +330,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
       <br /><br /><br />
 
       <div className="w-fit md:w-full mt-2 py-2 flex flex-col md:flex-row justify-between z-50 backdrop-blur-sm">
-        <Dropdown title="Select a bot" className="md:ml-5" list={[
-          {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
-          {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
-          {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
-          {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
-        ]} />
+        <Dropdown title="Select a bot" className="md:ml-5" list={categories} />
         {
           (chatCategory === "initiator" || chatCategory === "business_initiator") && 
         <div className="flex p-1.5 border-b border-b-gray-500 mr-auto ml-3 z-50 self-end">

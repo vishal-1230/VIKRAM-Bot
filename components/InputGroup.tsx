@@ -21,7 +21,7 @@ function InputGroup(props: InputGroupProps) {
             // Username Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label}</span>
-                <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>{if(!e.target.value.endsWith(" ")){console.log(e.target.value); props.onChange(e.target.value)}}} />
+                <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>{if(!e.target.value.endsWith(" ")){console.log(e.target.value); props.onChange(e.target.value.charAt(0).toUpperCase()+e.target.value.substring(1, e.target.value.length))}}} />
                 {props?.hintAccessory!=undefined && props?.hintAccessory()}
             </div>
             :

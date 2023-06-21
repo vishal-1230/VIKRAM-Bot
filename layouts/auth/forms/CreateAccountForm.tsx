@@ -31,6 +31,8 @@ function CreateAccountForm(props: any) {
     const [otpSent, setOtpSent] = React.useState(false)
     const [otpVerified, setOtpVerified] = React.useState(false)
 
+    const [checkboxChecked, setCheckboxChecked] = React.useState(false)
+
     const [accountCreated, setAccountCreated] = React.useState(false)
 
     const [loading, setLoading] = React.useState(false)
@@ -72,7 +74,6 @@ function CreateAccountForm(props: any) {
                 business_username: b_username
             })
         })
-        try {
             const data = await response.json()
             console.log(data)
             if (data.message.startsWith("Account created successfully")) {
@@ -91,20 +92,17 @@ function CreateAccountForm(props: any) {
             } else if (data.message.startsWith("HTTPSConnectionPool")) {
                 alert("Our servers are overloaded. You can retry now or after some time.")
                 setLoading(false)
-            } else if(data.startsWith("Create class")) {
+            } else if (data.message.startsWith("Create class")) {
                 alert("Username already exists")
                 setLoading(false)
-                console.log(data)
+            } else if (data.message.endsWith("already registered.")) {
+                alert("Username already exists")
+                setLoading(false)
             } else {
-                alert(data)
+                alert(data?.message)
                 console.log(data)
                 setLoading(false)
             }
-        } catch (e) {
-            console.log("err", e)
-            const data = await response.text()
-            console.log(data)
-        }
     }
 
     async function trainBotRules () {
@@ -287,7 +285,7 @@ function CreateAccountForm(props: any) {
             <DialogTitle className='text-2xl font-semibold text-center'>Account created successfully!</DialogTitle>
             <div className="p-6 pt-2 flex flex-col w-full">
             <img src="/assets/success1.svg" alt="" className='h-36 my-6 self-center' />
-            <PrimaryButton title={purpose === "personal" || purpose === "personalandbusiness" ? "Train your Bot some rules" : "Train your busines bot some rules"} buttonStyle='w-full' onClick={()=>{
+            <PrimaryButton title={purpose === "personal" || purpose === "personalandbusiness" ? "Train your with Bot some rules" : "Train your busines bot with some rules"} buttonStyle='w-full' onClick={()=>{
                 if (purpose === "personal" || purpose === "personalandbusiness") {
                     setAccountCreated(false)
                     setShowPersonalBotDialog(true)
@@ -360,11 +358,11 @@ function CreateAccountForm(props: any) {
 
             {/* Personal bot user_info & rules */}
         <div className={`flex flex-col items-center fixed top-0 left-0 z-50 h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showPersonalBotDialog === true ? "block" : "hidden"}`}>
-            <Card className='bg-bg-800 max-w-[75vw] p-8 h-[87vh] rounded-lg text-neutral-400 flex flex-col items-center]'>
+            <Card className='!bg-bg-800 max-w-[75vw] p-8 h-[87vh] rounded-lg text-neutral-400 flex flex-col items-center]'>
             <DialogTitle className='text-2xl font-semibold text-center'>Set Interaction Rules</DialogTitle>
             <span className="text-lg text-center">Set the rules which your bot needs to follow when others use it.</span>
-                <div className="grid grid-cols-2 overflow-y-auto gap-3 mt-3">
-                    <div className="flex flex-col h-full border-r border-r-gray-200 items-center gap-2 px-6 py-5">
+                <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
+                    <div className="flex flex-col h-full border-r border-r-gray-200 items-center gap-2 lg:px-6 py-5">
                         <span className="text-semibold">Tell the bot about yourself (optional)</span>
                         <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
                         <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
@@ -402,12 +400,12 @@ function CreateAccountForm(props: any) {
                         }} />
                     </div>
                 </div>
-                <div className="grid grid-cols-3 mt-auto justify-between">
-                    <OutlineButton title="Show sample rules" buttonStyle='text-sm w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
-                    <OutlineButton title="Train my bot!" buttonStyle='w-fit mx-auto' onClick={()=>{ 
+                <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
+                    <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
+                    <OutlineButton title="Train my bot!" buttonStyle='w-full font-semibold lg:w-fit mx-auto' onClick={()=>{ 
                         trainBotRules()
                     }} />
-                    <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={()=>{
+                    <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full lg:w-fit ml-auto' onClick={()=>{
                         setBotRules([
                             "Verify the identity of the person initiating contact. Confirm their name and organization",
                             "Ask the person to briefly state the purpose of the interaction or the problem they want to solve",
@@ -422,10 +420,10 @@ function CreateAccountForm(props: any) {
 
             {/* Business bot steps etc */}
           <div className={`flex flex-col items-center fixed top-0 left-0 z-50 h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showBusinessBotDialog === true ? "block" : "hidden"}`}>
-              <Card className='bg-bg-900 max-h-[90vh] p-8 px-5 max-w-[95vw] rounded-lg text-neutral-50 flex flex-col'>
+              <Card className='!bg-bg-900 max-h-[90vh] p-8 px-5 max-w-[95vw] rounded-lg text-neutral-50 flex flex-col'>
                   <DialogTitle className='text-2xl font-semibold text-center'>Set Business Interaction Rules</DialogTitle>
                   <span className="text-lg text-center -mt-2">Set the rules which your bot needs to follow when others use it.</span>
-                  <div className="grid overflow-y-auto grid-cols-3 gap-3 mt-3 mb-4">
+                  <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
                     <div className="flex flex-col h-full items-center gap-2 pxy-8 px-6">
                         <span className="text-semibold mb-4">Add information about your business or company (optional)</span>
                         <textarea placeholder='Enter role description' rows={4} cols={4} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" />
@@ -549,11 +547,11 @@ function CreateAccountForm(props: any) {
         />
 
         <div className="flex gap-3 mt-5">
-            <input type="checkbox" name="agree" id="agree" className='w-4' />
+            <input type="checkbox" name="agree" id="agree" onChange={()=>{setCheckboxChecked(!checkboxChecked)}} className='w-4' />
             <span className="text-sm font-medium text-neutral-900">I agree to the <Link href="/" className='text-primary-500'>terms of service</Link> and <Link href="/" className='text-primary-500'>privacy policy</Link>.</span>
         </div>
 
-        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined ? alert("All Fields are mandatory") : createAccount()} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
+        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? alert("All Fields are mandatory") : createAccount()} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
 
         <span className="text-sm font-medium text-neutral-900">Already have an account? <Link href="/auth/login" className='text-primary-500'>Login</Link></span>
         

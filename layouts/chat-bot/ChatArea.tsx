@@ -27,7 +27,12 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
     const [userDetails, setUserDetails] = useState<any>(null)
 
-    const [categories, setCategories] = useState<string[]>([])
+    const [categories, setCategories] = useState<{text: string, onClick: any}[]>([
+      {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+      {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+      {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+      {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+    ])
 
     async function sendMessage() {
       const message = userMessage
@@ -49,9 +54,25 @@ function ChatArea(props: {mode: string, setMode: any}) {
       } else if(chatCategory === "business") {
         uri = `https://server.vikrambots.in/training/${userDetails?.username_b}/${message}`
       } else if(chatCategory === "initiator") {
-        uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
+        if (toConnectWith === "") {
+          alert("Please enter a VBot ID to connect to.")
+        } else {
+          if (userDetails.username) {
+            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
+          } else {
+            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username_b}/${message}`
+          }
+        }
       } else if(chatCategory === "business_initiator") {
-        uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username}/${message}`
+        if (toConnectWith === "") {
+          alert("Please enter a VBot ID to connect to.")
+        } else {
+          if (userDetails.username) {
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username}/${message}`
+          } else {
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username_b}/${message}`
+          }
+        }
       }
       console.log("URI=>", uri)
 
@@ -129,7 +150,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             }
           });
       } else if (plugin === "News") {
-        fetch(`https://server.vikrambots.in/news/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/news/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -152,7 +173,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Weather") {
-        fetch(`https://server.vikrambots.in/weather/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/weather/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -175,7 +196,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "IMDB") {
-        fetch(`https://server.vikrambots.in/imdb/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/imdb/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -198,7 +219,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`https://server.vikrambots.in/google/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/google/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -221,7 +242,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "YouTube") {
-        fetch(`https://server.vikrambots.in/yt/${userDetails?.username}/${message}`)
+        fetch(`https://server.vikrambots.in/yt/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -293,17 +314,34 @@ function ChatArea(props: {mode: string, setMode: any}) {
       let userDetails = JSON.parse(userTemp ? userTemp : "{}")
 
       if (userDetails.username){
-        true
+        if (userDetails.username_b) {
+          setCategories([
+            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+            {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+          ])
+          localStorage.getItem("user") && fetchMessage()
+        } else {
+          setCategories([
+            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+          ])
+        }
       } else if (userDetails.username_b) {
-        userDetails.username = userDetails.username_b
+        setCategories([
+          {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+          {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+          {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+        ])
+        localStorage.getItem("user") && fetchTrainingMessage()
       } else {
         router.replace("/auth/login")
       }
 
       setUserDetails(userDetails)
 
-      localStorage.getItem("user") && fetchMessage()
-      localStorage.getItem("user") && fetchTrainingMessage()
     }, [])
 
     const mode = props.mode

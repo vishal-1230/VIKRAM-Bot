@@ -638,7 +638,7 @@ function CreateAccountForm(props: any) {
             <span className="text-sm font-medium text-neutral-900">I agree to the <Link href="/" className='text-primary-500'>terms of service</Link> and <Link href="/" className='text-primary-500'>privacy policy</Link>.</span>
         </div>
 
-        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? alert("All Fields are mandatory") : otpVerified ? createAccount() : alert("Verify your phone number first!")} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
+        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? alert("All Fields are mandatory") : createAccount()} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
 
         <span className="text-sm font-medium text-neutral-900">Already have an account? <Link href="/auth/login" className='text-primary-500'>Login</Link></span>
         

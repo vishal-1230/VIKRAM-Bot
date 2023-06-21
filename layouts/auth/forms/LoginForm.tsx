@@ -27,9 +27,9 @@ function LoginForm() {
             })
         })
 
-        const data = await response.text()
+        const data = await response.json()
         console.log(data)
-        if (data === "Login Successful") {
+        if (data.message === "Login Successful") {
             setLoading(false)
             setError(undefined)
             setSuccess(true)
@@ -37,7 +37,7 @@ function LoginForm() {
         } else {
             setLoading(false)
             setError(data)
-            alert(data)
+            alert(data.message)
             setSuccess(false)
         }
     }

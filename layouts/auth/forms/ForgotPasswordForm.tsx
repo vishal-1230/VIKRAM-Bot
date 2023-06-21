@@ -5,6 +5,9 @@ import Link from 'next/link'
 import React from 'react'
 
 function ForgotPasswordForm() {
+
+  
+
   return (
     <RightAuthContainer title="Forgot Password">
         

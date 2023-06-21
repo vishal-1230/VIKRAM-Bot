@@ -585,7 +585,7 @@ function CreateAccountForm(props: any) {
 
         <InputGroup value={email} onChange={setEmail} label='Email address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />
 
-        <InputGroup label='Phone number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span onClick={onSignInSubmit} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span> : <span className='text-green-400'>Phone Nubmer verified!</span>}} placeholder='Your Phone Number' type="number" />
+        <InputGroup label='Phone number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span className='text-green-400'>Phone Nubmer verified!</span> : <span onClick={onSignInSubmit} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
 
         <div id="sign-in-button"></div>
 

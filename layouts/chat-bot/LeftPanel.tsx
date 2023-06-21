@@ -63,7 +63,7 @@ function LeftPanel(props: {mode: string, setMode: any}) {
                 Updates & FAQ
             </span>
 
-            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.reload()}}>
+            <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.reload()}}>
                 <LogoutOutlined />
                 Logout
             </span>

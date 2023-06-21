@@ -454,7 +454,7 @@ function CreateAccountForm(props: any) {
                               botBusinessSteps.map((step, index) => {
                                   return <div className="flex flex-row gap-2 items-center">
                                       <span className="text-sm font-medium min-w-max">Step #{index + 1}.</span>
-                                      <input type="text" placeholder='Enter step' className="text-sm text-white p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={step} onChange={(e) => {
+                                      <input type="text" placeholder='Enter step' className="text-sm text-black p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={step} onChange={(e) => {
                                           let temp = [...botBusinessSteps]
                                           temp[index] = e.target.value
                                           setBotBusinessSteps(temp)
@@ -481,7 +481,7 @@ function CreateAccountForm(props: any) {
                             <Button title="Train my business bot!" buttonStyle='mx-auto font-semibold' onClick={trainBusinessBot} />
                         {/* </Link> */}
                         <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
-                          setBotRules([
+                          setBotBusinessSteps([
                               "Do not use abusive language.",
                               "Do not spam.",
                               "Do not use the bot for illegal purposes.",

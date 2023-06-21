@@ -10,7 +10,9 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
   const router = useRouter()
 
-  const [chatCategory, setChatCategory] = useState<"personal" | "business" | "business_initiator" | "initiator">("personal")
+  const [userDetails, setUserDetails] = useState<any>(null)
+
+  const [chatCategory, setChatCategory] = useState<"personal" | "business" | "business_initiator" | "initiator">(userDetails?.username ? "personal" : "business")
 
   const [plugin, setPlugin] = useState<"News" | "Weather" | "IMDB" | "Google" | "YouTube" | "none">("none")
     
@@ -25,7 +27,6 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
     const [userMessage, setUserMessage] = useState("")
 
-    const [userDetails, setUserDetails] = useState<any>(null)
 
     const [categories, setCategories] = useState<{text: string, onClick: any}[]>([
       {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},

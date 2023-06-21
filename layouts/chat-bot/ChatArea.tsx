@@ -51,17 +51,17 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       let uri = ""
       if(chatCategory === "personal") {
-        uri = `https://server.vikrambots.in/general/${userDetails?.username}/${message}`
+        uri = `http://localhost:5000/general/${userDetails?.username}/${message}`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training/${userDetails?.username_b}/${message}`
+        uri = `http://localhost:5000/training/${userDetails?.username_b}/${message}`
       } else if(chatCategory === "initiator") {
         if (toConnectWith === "") {
           alert("Please enter a VBot ID to connect to.")
         } else {
           if (userDetails.username) {
-            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
+            uri = `http://localhost:5000/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
           } else {
-            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username_b}/${message}`
+            uri = `http://localhost:5000/connect-personal/${toConnectWith}/${userDetails?.username_b}/${message}`
           }
         }
       } else if(chatCategory === "business_initiator") {
@@ -69,9 +69,9 @@ function ChatArea(props: {mode: string, setMode: any}) {
           alert("Please enter a VBot ID to connect to.")
         } else {
           if (userDetails.username) {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username}/${message}`
+            uri = `http://localhost:5000/connect-business/${toConnectWith}/${userDetails?.username}/${message}`
           } else {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username_b}/${message}`
+            uri = `http://localhost:5000/connect-business/${toConnectWith}/${userDetails?.username_b}/${message}`
           }
         }
       }
@@ -151,7 +151,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             }
           });
       } else if (plugin === "News") {
-        fetch(`https://server.vikrambots.in/news/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`http://localhost:5000/news/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -174,7 +174,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Weather") {
-        fetch(`https://server.vikrambots.in/weather/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`http://localhost:5000/weather/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -197,7 +197,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "IMDB") {
-        fetch(`https://server.vikrambots.in/imdb/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`http://localhost:5000/imdb/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -220,7 +220,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`https://server.vikrambots.in/google/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`http://localhost:5000/google/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -243,7 +243,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "YouTube") {
-        fetch(`https://server.vikrambots.in/yt/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`http://localhost:5000/yt/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -274,12 +274,12 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       setUserDetails(userDetails)
       console.log("Details", userDetails)
-      const response = await fetch(`https://server.vikrambots.in/gchats/${userDetails.username}`)
+      const response = await fetch(`http://localhost:5000/gchats/${userDetails.username}`)
       const data = await response.json()
       console.log("DATA", data)
       // data.message format is [ {Bot: "Hello", User: "bot"}, {Bot: "Hi", sendeuser: "user"}] that has to be converted to [{message: "Hello", sender: "bot"}, {message: "Hi", sender: "user"}]
       let temp:{message: string, sender: string}[] = []
-      data.message.map((item: { Bot: any; User: any })=>{
+      if (data.message!=false) data.message.map((item: { Bot: any; User: any })=>{
         temp.push({message: item.Bot, sender: "bot"})
         temp.push({message: item.User, sender: "user"})
       })
@@ -293,10 +293,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       setUserDetails(userDetails)
       console.log(userDetails.username_b)
-      const response = await fetch(`https://server.vikrambots.in/gchats/${userDetails?.username_b}`)
+      const response = await fetch(`http://localhost:5000/gchats/${userDetails?.username_b}`)
       const data = await response.json()
+      console.log(data)
       let temp:{message: string, sender: string}[] = []
-      data.message.map((item: { Bot: any; User: any })=>{
+      if (data.message!=false) data.message.map((item: { Bot: any; User: any })=>{
         temp.push({message: item.Bot, sender: "bot"})
         temp.push({message: item.User, sender: "user"})
       })

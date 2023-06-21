@@ -9,6 +9,9 @@ import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import OutlineButton from '@/components/OutlineButton'
 import Button from '@/components/SpecialButton'
 import { Router, useRouter } from 'next/router'
+import { auth } from '../../../config/firebase'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import OtpInput from 'react-otp-input';
 // import firebase from '../../../config/firebase'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
@@ -17,6 +20,57 @@ const orbitron = Orbitron({ subsets: ['latin'] })
 function CreateAccountForm(props: any) {
 
     const router = useRouter()
+
+    function onCaptchaVerify () {
+        if (!(window.recaptchaVerifier)) {
+            window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+                'size': 'invisible',
+                'callback': () => {
+                //   reCAPTCHA solved, allow signInWithPhoneNumber.
+                  onSignInSubmit();
+                }
+              }, auth);
+        }
+    }
+
+    function onSignInSubmit () {
+        onCaptchaVerify();
+
+        const appVerifier = window.recaptchaVerifier;
+
+        signInWithPhoneNumber(auth, "+91"+phoneNumber, appVerifier)
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+      window.confirmationResult = confirmationResult;
+      setOtpSent(true)
+      alert("OTP sent successfully!")
+      // ...
+    }).catch((error) => {
+        console.log(error)
+        alert("Error sending OTP")
+      // Error; SMS not sent
+      // ...
+    });
+    }
+
+    function onOTPVerify () {
+        window.confirmationResult.confirm(otp).then((result: { user: any }) => {
+            // User signed in successfully.
+            const firebaseUser = result.user;
+            console.log(firebaseUser)
+            alert("OTP verified successfully!")
+            setOtpVerified(true)
+            // window.recaptchaVerifier.clear()
+            // ...
+          }
+        ).catch((error: any) => {
+            console.log(error)
+            alert("Invalid OTP")
+          // User couldn't sign in (bad verification code?)
+          // ...
+        });
+    }
 
     const [othersSelected, setOthersSelected] = React.useState(false)
     const [name, setName] = React.useState(undefined)
@@ -29,6 +83,7 @@ function CreateAccountForm(props: any) {
     const [b_username, setB_username] = React.useState(undefined)
     const [checkboxInputs, setCheckboxInputs] = React.useState<string[]>([])
     const [otpSent, setOtpSent] = React.useState(false)
+    const [otp, setOtp] = React.useState<string>("")
     const [otpVerified, setOtpVerified] = React.useState(false)
 
     const [checkboxChecked, setCheckboxChecked] = React.useState(false)
@@ -45,7 +100,7 @@ function CreateAccountForm(props: any) {
         console.log(username)
 
         console.log(name, email, phoneNumber, password, confirmPassword, checkboxInputs)
-        const response = await fetch('https://server.vikrambots.in/register', {
+        const response = await fetch('http://localhost:5000/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -119,7 +174,7 @@ function CreateAccountForm(props: any) {
         // data.append("typeOfFile2", user_info!="" ? "text" : "file")
         data.append("user_info", user_info)
 
-        const response = await fetch("https://server.vikrambots.in/store-rules", {
+        const response = await fetch("http://localhost:5000/store-rules", {
             method: "POST",
             body: data
         })
@@ -187,7 +242,7 @@ function CreateAccountForm(props: any) {
             data.append("typeOfFile3", companyDetailsFile ? "file" : "text")
             data.append("company_info", companyDetails)
     
-            const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
+            const response = await fetch("http://localhost:5000/store-role-steps-info", {
                 method: "POST",
                 body: data
             })
@@ -294,6 +349,30 @@ function CreateAccountForm(props: any) {
                     setShowBusinessBotDialog(true)
                 }
             }} />
+            </div>
+        </Dialog>
+
+        <Dialog open={otpSent} onClose={()=>{setOtpSent(false)}} className='flex flex-col items-center justify-center gap-5'>
+            <DialogTitle className='text-2xl font-semibold text-center'>Enter the OTP sent to your phone</DialogTitle>
+            <div className="p-6 pt-2 flex flex-col w-full">
+                <OtpInput
+                    value={otp}
+                    onChange={setOtp}
+                    numInputs={6}
+                    renderSeparator={<span>-</span>}
+                    shouldAutoFocus
+                    renderInput={(props) => <input {...props} />}
+                    containerStyle="justify-center"
+                    inputStyle="text-2xl font-semibold text-center border-b-2 border-[#DDD6D6] w-12 h-12"
+                />
+                {/* resend otp */}
+                <span className="text-xs font-medium mt-4 mb-4">Didn't receive the OTP? <span className="text-blue-500 cursor-pointer" onClick={()=>{
+                    onSignInSubmit()
+                }}>Resend OTP</span></span>
+                <PrimaryButton title="Verify OTP" buttonStyle='w-full' onClick={()=>{
+                    console.log(otp)
+                    onOTPVerify()
+                }} />
             </div>
         </Dialog>
 
@@ -500,7 +579,9 @@ function CreateAccountForm(props: any) {
 
         <InputGroup value={email} onChange={setEmail} label='Email address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />
 
-        <InputGroup label='Phone number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return <span onClick={sendOtp} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
+        <InputGroup label='Phone number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span onClick={onSignInSubmit} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span> : <span className='text-green-400'>Phone Nubmer verified!</span>}} placeholder='Your Phone Number' type="number" />
+
+        <div id="sign-in-button"></div>
 
         <div className='flex flex-col mt-4 gap-3'>
             <span className="font-medium text-bg-50">Purpose of bot</span>
@@ -551,7 +632,7 @@ function CreateAccountForm(props: any) {
             <span className="text-sm font-medium text-neutral-900">I agree to the <Link href="/" className='text-primary-500'>terms of service</Link> and <Link href="/" className='text-primary-500'>privacy policy</Link>.</span>
         </div>
 
-        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? alert("All Fields are mandatory") : createAccount()} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
+        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? alert("All Fields are mandatory") : otpVerified ? createAccount() : alert("Verify your phone number first!")} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
 
         <span className="text-sm font-medium text-neutral-900">Already have an account? <Link href="/auth/login" className='text-primary-500'>Login</Link></span>
         

@@ -16,29 +16,35 @@ function LoginForm() {
 
     async function login() {
         setLoading(true)
-        const response = await fetch('https://server.vikrambots.in/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
             })
-        })
-
-        const data = await response.json()
-        console.log(data)
-        if (data.message === "Login Successful") {
+    
+            const data = await response.json()
+            console.log(data)
+            if (data.message === "Login Successful") {
+                setLoading(false)
+                setError(undefined)
+                setSuccess(true)
+                // window.location.href = "/chat-bot"
+            } else {
+                setLoading(false)
+                setError(data)
+                alert(data.message)
+                setSuccess(false)
+            }
+        } catch (error) {
             setLoading(false)
-            setError(undefined)
-            setSuccess(true)
-            // window.location.href = "/chat-bot"
-        } else {
-            setLoading(false)
-            setError(data)
-            alert(data.message)
             setSuccess(false)
+            alert("Check the username, if it's a business account, remember to add _b at the end.")
         }
     }
 

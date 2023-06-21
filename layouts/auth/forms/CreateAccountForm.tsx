@@ -106,7 +106,7 @@ function CreateAccountForm(props: any) {
         console.log(username)
 
         console.log(name, email, phoneNumber, password, confirmPassword, checkboxInputs)
-        const response = await fetch('http://localhost:5000/register', {
+        const response = await fetch('https://server.vikrambots.in/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -180,7 +180,7 @@ function CreateAccountForm(props: any) {
         // data.append("typeOfFile2", user_info!="" ? "text" : "file")
         data.append("user_info", user_info)
 
-        const response = await fetch("http://localhost:5000/store-rules", {
+        const response = await fetch("https://server.vikrambots.in/store-rules", {
             method: "POST",
             body: data
         })
@@ -248,7 +248,7 @@ function CreateAccountForm(props: any) {
             data.append("typeOfFile3", companyDetailsFile ? "file" : "text")
             data.append("company_info", companyDetails)
     
-            const response = await fetch("http://localhost:5000/store-role-steps-info", {
+            const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
                 method: "POST",
                 body: data
             })

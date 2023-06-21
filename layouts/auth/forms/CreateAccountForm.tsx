@@ -16,6 +16,12 @@ import OtpInput from 'react-otp-input';
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 
+declare global {
+    interface Window {
+      recaptchaVerifier?: any;
+    confirmationResult?: any;
+    }
+  }
 
 function CreateAccountForm(props: any) {
 

@@ -358,7 +358,7 @@ function CreateAccountForm(props: any) {
 
             {/* Personal bot user_info & rules */}
         <div className={`flex flex-col items-center fixed top-0 left-0 z-50 h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showPersonalBotDialog === true ? "block" : "hidden"}`}>
-            <Card className='!bg-bg-800 max-w-[75vw] p-8 h-[87vh] rounded-lg text-neutral-400 flex flex-col items-center]'>
+            <Card className='!bg-bg-800 max-w-[75vw] p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center]'>
             <DialogTitle className='text-2xl font-semibold text-center'>Set Interaction Rules</DialogTitle>
             <span className="text-lg text-center">Set the rules which your bot needs to follow when others use it.</span>
                 <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
@@ -420,7 +420,7 @@ function CreateAccountForm(props: any) {
 
             {/* Business bot steps etc */}
           <div className={`flex flex-col items-center fixed top-0 left-0 z-50 h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showBusinessBotDialog === true ? "block" : "hidden"}`}>
-              <Card className='!bg-bg-900 max-h-[90vh] p-8 px-5 max-w-[95vw] rounded-lg text-neutral-50 flex flex-col'>
+              <Card className='!bg-bg-900 max-h-[90vh] p-8 px-5 max-w-[95vw] rounded-lg !text-neutral-50 flex flex-col'>
                   <DialogTitle className='text-2xl font-semibold text-center'>Set Business Interaction Rules</DialogTitle>
                   <span className="text-lg text-center -mt-2">Set the rules which your bot needs to follow when others use it.</span>
                   <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">

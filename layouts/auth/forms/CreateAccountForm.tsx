@@ -9,9 +9,11 @@ import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import OutlineButton from '@/components/OutlineButton'
 import Button from '@/components/SpecialButton'
 import { Router, useRouter } from 'next/router'
-import { auth } from '../../../config/firebase'
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+// import { auth } from '../../../config/firebase'
+// import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import OtpInput from 'react-otp-input';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 // import firebase from '../../../config/firebase'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
@@ -27,56 +29,59 @@ function CreateAccountForm(props: any) {
 
     const router = useRouter()
 
-    function onCaptchaVerify () {
-        if (!(window.recaptchaVerifier)) {
-            window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-                'size': 'invisible',
-                'callback': () => {
-                //   reCAPTCHA solved, allow signInWithPhoneNumber.
-                  onSignInSubmit();
-                }
-              }, auth);
-        }
-    }
+    // FUNCTION USED BY FIREBASE TO SEND OTP
+    // function onCaptchaVerify () {
+    //     if (!(window.recaptchaVerifier)) {
+    //         window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+    //             'size': 'invisible',
+    //             'callback': () => {
+    //             //   reCAPTCHA solved, allow signInWithPhoneNumber.
+    //               onSignInSubmit();
+    //             }
+    //           }, auth);
+    //     }
+    // }
 
-    function onSignInSubmit () {
-        onCaptchaVerify();
+    // FIREBASE READY CODE FOR SENDING OTP
+    // function onSignInSubmit () {
+    //     onCaptchaVerify();
 
-        const appVerifier = window.recaptchaVerifier;
+    //     const appVerifier = window.recaptchaVerifier;
 
-        signInWithPhoneNumber(auth, "+91"+phoneNumber, appVerifier)
-    .then((confirmationResult) => {
-      // SMS sent. Prompt user to type the code from the message, then sign the
-      // user in with confirmationResult.confirm(code).
-      window.confirmationResult = confirmationResult;
-      setOtpSent(true)
-      alert("OTP sent successfully!")
-      // ...
-    }).catch((error) => {
-        console.log(error)
-        alert("Error sending OTP")
-      // Error; SMS not sent
-      // ...
-    });
-    }
+    //     signInWithPhoneNumber(auth, "+91"+phoneNumber, appVerifier)
+    // .then((confirmationResult) => {
+    //   // SMS sent. Prompt user to type the code from the message, then sign the
+    //   // user in with confirmationResult.confirm(code).
+    //   window.confirmationResult = confirmationResult;
+    //   setOtpSent(true)
+    //   toast("OTP sent successfully!")
+    //   // ...
+    // }).catch((error) => {
+    //     console.log(error)
+    //     toast("Error sending OTP")
+    //   // Error; SMS not sent
+    //   // ...
+    // });
+    // }
 
-    function onOTPVerify () {
-        window.confirmationResult.confirm(otp).then((result: { user: any }) => {
-            // User signed in successfully.
-            const firebaseUser = result.user;
-            console.log(firebaseUser)
-            alert("OTP verified successfully!")
-            setOtpVerified(true)
-            // window.recaptchaVerifier.clear()
-            // ...
-          }
-        ).catch((error: any) => {
-            console.log(error)
-            alert("Invalid OTP")
-          // User couldn't sign in (bad verification code?)
-          // ...
-        });
-    }
+    // FIREBASE READY CODE FOR VERIFY
+    // function onOTPVerify () {
+    //     window.confirmationResult.confirm(otp).then((result: { user: any }) => {
+    //         // User signed in successfully.
+    //         const firebaseUser = result.user;
+    //         console.log(firebaseUser)
+    //         toast("OTP verified successfully!")
+    //         setOtpVerified(true)
+    //         // window.recaptchaVerifier.clear()
+    //         // ...
+    //       }
+    //     ).catch((error: any) => {
+    //         console.log(error)
+    //         toast("Invalid OTP")
+    //       // User couldn't sign in (bad verification code?)
+    //       // ...
+    //     });
+    // }
 
     const [othersSelected, setOthersSelected] = React.useState(false)
     const [name, setName] = React.useState(undefined)
@@ -157,16 +162,16 @@ function CreateAccountForm(props: any) {
                 setLoading(false)
                 setAccountCreated(true)
             } else if (data.message.startsWith("HTTPSConnectionPool")) {
-                alert("Our servers are overloaded. You can retry now or after some time.")
+                toast.info("Our servers are overloaded. You can retry now or after some time.")
                 setLoading(false)
             } else if (data.message.startsWith("Create class")) {
-                alert("Username already exists")
+                toast.error("Username already exists")
                 setLoading(false)
             } else if (data.message.endsWith("already registered.")) {
-                alert("Username already exists")
+                toast.error("Username already exists")
                 setLoading(false)
             } else {
-                alert(data?.message)
+                toast(data?.message)
                 console.log(data)
                 setLoading(false)
             }
@@ -199,7 +204,7 @@ function CreateAccountForm(props: any) {
         setLoading(false)
 
         if (data2.message.startsWith("Saved successfully")) {
-            alert("Rules stored successfully")
+            toast.success("Rules stored successfully!")
             setShowPersonalBotDialog(false)
             if (purpose == "business" || purpose === "personalandbusiness") {
                 setAccountCreated(false)
@@ -211,7 +216,7 @@ function CreateAccountForm(props: any) {
             }
 
         } else {
-            alert("Error storing rules")
+            toast.error("Error storing rules")
         }
     }
 
@@ -270,11 +275,11 @@ function CreateAccountForm(props: any) {
                 setLoading(false)
         
                 if (data2.message.startsWith("Saved successfully")) {
-                    alert("Rules stored successfully")
+                    toast.success("Rules stored successfully")
                     setShowBusinessBotDialog(false)
                     router.replace("/chat-bot")
                 } else {
-                    alert("Error storing rules")
+                    toast.error("Error storing rules")
                 }
             } catch (error) {
                 console.log(error)
@@ -282,27 +287,72 @@ function CreateAccountForm(props: any) {
             }
     }
 
-    function sendOtp () {
+    async function sendOtp () {
         const phone = phoneNumber;
-    //     if (phone?.match(/^[0-9]{10}$/)) {
-    //         setOtpSent(true)
-    //         console.log(phone)
 
-    //         let recaptcha = new firebase.auth.RecaptchaVerifier('sign-in-button');
-    //         let number = phone;
-    //         firebase.auth().signInWithPhoneNumber(number, recaptcha).then(function (e: any) {
-    //             let code = prompt('Enter the otp', '');
-    //             if (code === null) return;
-    //             e.confirm(code).then(function (result: any) {
-    //                 console.log(result.user, 'user');
-    //                 alert('Successfully registered');
-    //             }).catch(function (error: any) {
-    //                 console.error(error);
-    //             });
-    //         })
-    //     } else {
-    //         alert("Invalid phone number.")
-    //     }
+        if (phone === undefined || phone === null || phone === "") {
+            // toast("Please enter a valid phone number")
+            toast.error('Please enter a valid phone number', {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+        }
+
+        const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
+        const data = await response.json()
+        console.log(data)
+
+        if (data.return === true) {
+            // toast("OTP sent successfully")
+            toast.success('OTP sent successfully', {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            setOtpSent(true)
+        } else {
+            // toast("Error sending OTP")
+            toast.error('Error sending OTP', {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            setOtpSent(false)
+        }
+    }
+
+    function verifyOtp () {
+        const phone = phoneNumber;;
+
+        fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.success === true) {
+                toast.success("OTP verified successfully")
+                setOtpVerified(true)
+                setOtpSent(false)
+            } else {
+                toast.error("Invalid OTP")
+                setOtpVerified(false)
+            }
+        })
     }
 
     function validate (field: string, value: any) {
@@ -351,6 +401,8 @@ function CreateAccountForm(props: any) {
   return (
     <RightAuthContainer title='Create Account'>
 
+        <ToastContainer position="top-right" autoClose={2500} />
+
         <Dialog open={loading}>
             <div className="flex flex-col gap-2 p-6 items-center justify-center">
                 <span className="font-medium text-lg">Creating your account...</span>
@@ -374,26 +426,26 @@ function CreateAccountForm(props: any) {
             </div>
         </Dialog>
 
-        <Dialog open={otpSent} onClose={()=>{setOtpSent(false)}} className='flex flex-col items-center justify-center gap-5'>
+        <Dialog open={otpSent} onClose={()=>{setOtpSent(false)}} className='flex flex-col !p-4 items-center justify-center gap-5'>
             <DialogTitle className='text-2xl font-semibold text-center'>Enter the OTP sent to your phone</DialogTitle>
-            <div className="p-6 pt-2 flex flex-col w-full">
+            <div className="p-6 pt-2 gap-2 flex flex-col w-full">
                 <OtpInput
                     value={otp}
                     onChange={setOtp}
-                    numInputs={6}
+                    numInputs={4}
                     renderSeparator={<span>-</span>}
                     shouldAutoFocus
-                    renderInput={(props) => <input {...props} />}
+                    renderInput={(props) => <input {...props} className='!w-12 !h-12 border-b-2 border-b-gray-400 mx-2 outline-none' />}
                     containerStyle="justify-center"
                     inputStyle="text-2xl font-semibold text-center border-b-2 border-[#DDD6D6] w-12 h-12"
                 />
                 {/* resend otp */}
                 <span className="text-xs font-medium mt-4 mb-4">Didn't receive the OTP? <span className="text-blue-500 cursor-pointer" onClick={()=>{
-                    onSignInSubmit()
+                    sendOtp()
                 }}>Resend OTP</span></span>
                 <PrimaryButton title="Verify OTP" buttonStyle='w-full' onClick={()=>{
                     console.log(otp)
-                    onOTPVerify()
+                    verifyOtp()
                 }} />
             </div>
         </Dialog>
@@ -601,7 +653,7 @@ function CreateAccountForm(props: any) {
 
         <InputGroup value={email} onChange={setEmail} label='Email address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />
 
-        <InputGroup label='Phone number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span className='text-green-400'>Phone Nubmer verified!</span> : <span onClick={onSignInSubmit} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
+        <InputGroup label='Phone number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span className='text-green-400 text-xs font-semibold'>Phone Nubmer verified!</span> : <span onClick={sendOtp} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
 
         <div id="sign-in-button"></div>
 
@@ -654,7 +706,7 @@ function CreateAccountForm(props: any) {
             <span className="text-sm font-medium text-neutral-900">I agree to the <Link href="/" className='text-primary-500'>terms of service</Link> and <Link href="/" className='text-primary-500'>privacy policy</Link>.</span>
         </div>
 
-        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? alert("All Fields are mandatory") : createAccount()} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
+        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? toast("All Fields are mandatory") : otpVerified ? createAccount() : toast.error("Verify your phone first")} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
 
         <span className="text-sm font-medium text-neutral-900">Already have an account? <Link href="/auth/login" className='text-primary-500'>Login</Link></span>
         

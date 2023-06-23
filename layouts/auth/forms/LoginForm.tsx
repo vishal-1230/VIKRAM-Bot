@@ -4,6 +4,7 @@ import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import { Dialog } from '@mui/material'
 import Link from 'next/link'
 import React from 'react'
+import { ToastContainer, toast } from 'react-toastify'
 
 function LoginForm() {
 
@@ -38,18 +39,20 @@ function LoginForm() {
             } else {
                 setLoading(false)
                 setError(data)
-                alert(data.message)
+                toast.error(data.message)
                 setSuccess(false)
             }
         } catch (error) {
             setLoading(false)
             setSuccess(false)
-            alert("Check the username, if it's a business account, remember to add _b at the end.")
+            toast.error("Check the username, if it's a business account, remember to add _b at the end.")
         }
     }
 
   return (
     <RightAuthContainer title="Welcome Back">
+        
+        <ToastContainer position="top-right" autoClose={2500} />
 
         <Dialog open={loading}>
             <div className="flex flex-col gap-2 p-6 items-center justify-center">

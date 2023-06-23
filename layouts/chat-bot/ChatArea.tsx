@@ -6,6 +6,7 @@ import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
 
 import { Popover } from "@mui/material"
+import { ToastContainer, toast } from "react-toastify"
 
 function ChatArea(props: {mode: string, setMode: any}) {
 
@@ -59,7 +60,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
         uri = `https://server.vikrambots.in/training/${userDetails?.username_b}/${message}`
       } else if(chatCategory === "initiator") {
         if (toConnectWith === "") {
-          alert("Please enter a VBot ID to connect to.")
+          toast.error("Please enter a VBot ID to connect to.")
         } else {
           if (userDetails.username) {
             uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
@@ -69,7 +70,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
         }
       } else if(chatCategory === "business_initiator") {
         if (toConnectWith === "") {
-          alert("Please enter a VBot ID to connect to.")
+          toast.error("Please enter a VBot ID to connect to.")
         } else {
           if (userDetails.username) {
             uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username}/${message}`
@@ -113,7 +114,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           })
           .catch((err) => {
             console.log(err);
-            alert("Our servers are overloaded. Please try again later.");
+            toast.info("Our servers are overloaded. Please try again later.");
             if (chatCategory === "personal") {
 
             setChats([
@@ -166,7 +167,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           })
           .catch((err) => {
             console.log(err);
-            alert("Our servers are overloaded. Please try again later.");
+            toast.info("Our servers are overloaded. Please try again later.");
             setChats([
               ...chats,
               { message: message, sender: "user" },
@@ -189,7 +190,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           })
           .catch((err) => {
             console.log(err);
-            alert("Our servers are overloaded. Please try again later.");
+            toast.info("Our servers are overloaded. Please try again later.");
             setChats([
               ...chats,
               { message: message, sender: "user" },
@@ -212,7 +213,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           })
           .catch((err) => {
             console.log(err);
-            alert("Our servers are overloaded. Please try again later.");
+            toast.info("Our servers are overloaded. Please try again later.");
             setChats([
               ...chats,
               { message: message, sender: "user" },
@@ -235,7 +236,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           })
           .catch((err) => {
             console.log(err);
-            alert("Our servers are overloaded. Please try again later.");
+            toast.info("Our servers are overloaded. Please try again later.");
             setChats([
               ...chats,
               { message: message, sender: "user" },
@@ -258,7 +259,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           })
           .catch((err) => {
             console.log(err);
-            alert("Our servers are overloaded. Please try again later.");
+            toast.info("Our servers are overloaded. Please try again later.");
             setChats([
               ...chats,
               { message: message, sender: "user" },
@@ -279,7 +280,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
       const message = "Hi"
       if(chatCategory === "initiator") {
         if (toConnectWith === "") {
-          alert("Please enter a VBot ID to connect to.")
+          toast.error("Please enter a VBot ID to connect to.")
         } else {
           if (userDetails.username) {
             uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
@@ -289,7 +290,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
         }
       } else if(chatCategory === "business_initiator") {
         if (toConnectWith === "") {
-          alert("Please enter a VBot ID to connect to.")
+          toast.error("Please enter a VBot ID to connect to.")
         } else {
           if (userDetails.username) {
             uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username}/${message}`
@@ -304,10 +305,10 @@ function ChatArea(props: {mode: string, setMode: any}) {
       console.log(data)
 
       if (data.success = false) {
-        alert("The VBot ID you entered does not exist. Please try again.")
+        toast.error("The VBot ID you entered does not exist. Please try again.")
         setConnecting(false)
       } else {
-        alert("Connected to "+toConnectWith+" successfully!")
+        toast.success("Connected to "+toConnectWith+" successfully!")
         setConnecting(false)
       }
     }
@@ -397,6 +398,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-white text-bg-500" : "bg-bg-700 text-white"}`}>
+        <ToastContainer position="top-right" autoClose={2500} />
       {
         (chatCategory==="personal" ? chats.length === 0 : trainingChats.length===0) &&
         <img src="/assets/chat-screen-top-left.svg" alt="" className="duration-200 absolute -left-72 -top-10" />

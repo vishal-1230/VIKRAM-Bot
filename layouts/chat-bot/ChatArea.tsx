@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import ChatList from "./ChatList"
-import { MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { Autorenew, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
+
 import { Popover } from "@mui/material"
 
 function ChatArea(props: {mode: string, setMode: any}) {
@@ -12,7 +13,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
   const [userDetails, setUserDetails] = useState<any>(null)
 
-  const [chatCategory, setChatCategory] = useState<"personal" | "business" | "business_initiator" | "initiator">(userDetails?.username ? "personal" : "business")
+  const [chatCategory, setChatCategory] = useState<"personal" | "business" | "business_initiator" | "initiator">("personal")
 
   const [plugin, setPlugin] = useState<"News" | "Weather" | "IMDB" | "Google" | "YouTube" | "none">("none")
     
@@ -24,6 +25,8 @@ function ChatArea(props: {mode: string, setMode: any}) {
     const [toConnectWith, setToConnectWith] = useState<string>("")
 
     const [loadingChat, setLoadingChat] = useState(false)
+
+    const [connecting, setConnecting] = useState(false)
 
     const [userMessage, setUserMessage] = useState("")
 
@@ -69,9 +72,9 @@ function ChatArea(props: {mode: string, setMode: any}) {
           alert("Please enter a VBot ID to connect to.")
         } else {
           if (userDetails.username) {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username}/${message}`
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username}/${message}`
           } else {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}/${userDetails?.username_b}/${message}`
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username_b}/${message}`
           }
         }
       }
@@ -268,6 +271,47 @@ function ChatArea(props: {mode: string, setMode: any}) {
       }
     }
 
+    async function checkBotExists () {
+
+      setConnecting(true)
+
+      let uri=""
+      const message = "Hi"
+      if(chatCategory === "initiator") {
+        if (toConnectWith === "") {
+          alert("Please enter a VBot ID to connect to.")
+        } else {
+          if (userDetails.username) {
+            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
+          } else {
+            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username_b}/${message}`
+          }
+        }
+      } else if(chatCategory === "business_initiator") {
+        if (toConnectWith === "") {
+          alert("Please enter a VBot ID to connect to.")
+        } else {
+          if (userDetails.username) {
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username}/${message}`
+          } else {
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username_b}/${message}`
+          }
+        }
+      }
+
+      const response = await fetch(uri)
+      const data = await response.json()
+      console.log(data)
+
+      if (data.success = false) {
+        alert("The VBot ID you entered does not exist. Please try again.")
+        setConnecting(false)
+      } else {
+        alert("Connected to "+toConnectWith+" successfully!")
+        setConnecting(false)
+      }
+    }
+
     async function fetchMessage () {
       const userTemp = localStorage.getItem("user")
       const userDetails = JSON.parse(userTemp ? userTemp : "{}")
@@ -316,6 +360,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
       let userDetails = JSON.parse(userTemp ? userTemp : "{}")
 
       if (userDetails.username){
+        setChatCategory("personal")
         if (userDetails.username_b) {
           setCategories([
             {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
@@ -332,6 +377,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           ])
         }
       } else if (userDetails.username_b) {
+        setChatCategory("business")
         setCategories([
           {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
           {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
@@ -375,7 +421,9 @@ function ChatArea(props: {mode: string, setMode: any}) {
           (chatCategory === "initiator" || chatCategory === "business_initiator") && 
         <div className="flex p-1.5 border-b border-b-gray-500 mr-auto ml-3 z-50 self-end">
           <input type="text" className="bg-transparent z-50 outline-none text-sm text-neutral-400 w-fit" placeholder="Enter any VBot ID" value={toConnectWith} onChange={(e)=>{setToConnectWith(e.target.value)}} />
-          <PrimaryButton buttonStyle="ml-5 text-xs" title="Connect" onClick={()=>{alert("Connected to "+toConnectWith+" successfully!")}} />
+          <PrimaryButton buttonStyle="ml-5 text-xs" title={connecting ? "Connecting" : "Connect"} onClick={checkBotExists} showIcon Icon={
+            ()=>{return <Autorenew className={`w-4 h-4 fill-white ${connecting && "animate-spin"}`} />}
+          } />
         </div>
         }
         <Dropdown title="Plugin" className="mr-5" list={[
@@ -424,7 +472,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           <div className={`flex flex-row justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
             <input
               type="text"
-              className="bg-transparent grow max-w-fit text-sm border-none outline-none text-neutral-500"
+              className="bg-transparent grow  text-sm border-none outline-none text-neutral-500"
               placeholder="Text area"
               value={userMessage}
               onKeyUp={(e) => {

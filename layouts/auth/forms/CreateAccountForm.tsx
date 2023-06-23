@@ -86,7 +86,7 @@ function CreateAccountForm(props: any) {
     const [password, setPassword] = React.useState(undefined)
     const [confirmPassword, setConfirmPassword] = React.useState(undefined)
     const [purpose, setPurpose] = React.useState<"personal" | "business" | "personalandbusiness">("personal")
-    const [b_username, setB_username] = React.useState(undefined)
+    const [b_username, setB_username] = React.useState<string | undefined>(undefined)
     const [checkboxInputs, setCheckboxInputs] = React.useState<string[]>([])
     const [otpSent, setOtpSent] = React.useState(false)
     const [otp, setOtp] = React.useState<string>("")
@@ -106,6 +106,12 @@ function CreateAccountForm(props: any) {
         console.log(username)
 
         console.log(name, email, phoneNumber, password, confirmPassword, checkboxInputs)
+        if (b_username!=undefined) {
+            if (!(b_username.endsWith("_b"))) {
+                setB_username(b_username+"_b")
+            }
+            console.log(b_username)
+        }
         const response = await fetch('https://server.vikrambots.in/register', {
             method: 'POST',
             headers: {
@@ -175,15 +181,19 @@ function CreateAccountForm(props: any) {
         data.append("typeOfFile", botRulesFile ? "file" : "text")
         // data.append("typeOfFile", "text")
         data.append("rules", botRules.join(", \n"))
+        data.append("rules_file", botRulesFile)
         // data.append()
         data.append("typeOfFile2", user_info_file ? "file" : "text")
         // data.append("typeOfFile2", user_info!="" ? "text" : "file")
         data.append("user_info", user_info)
+        data.append("info_file", user_info_file)
+
 
         const response = await fetch("https://server.vikrambots.in/store-rules", {
             method: "POST",
             body: data
         })
+
         const data2 = await response.json()
         console.log(data2)
         setLoading(false)
@@ -212,10 +222,10 @@ function CreateAccountForm(props: any) {
     const [typeOfRules, setTypeOfRules] = React.useState<"text" | "file">("text")
     const [typeOfUserInfo, setTypeOfUserInfo] = React.useState<"text" | "file">("text")
     const [user_info, setUser_info] = React.useState<string>("")
-    const [user_info_file, setUser_info_file] = React.useState<File>()
+    const [user_info_file, setUser_info_file] = React.useState<File | string>("")
     
     const [botRules, setBotRules] = React.useState<string[]>([""])
-    const [botRulesFile, setBotRulesFile] = React.useState<File>()
+    const [botRulesFile, setBotRulesFile] = React.useState<File | string>("")
 
     const [showSampleRules, setShowSampleRules] = React.useState(false)
     
@@ -226,9 +236,9 @@ function CreateAccountForm(props: any) {
     const [botBusinessSteps, setBotBusinessSteps] = React.useState<string[]>([""])
     const [roleDesciption, setRoleDescription] = React.useState<string>("")
 
-    const [companyDetailsFile, setCompanyDetailsFile] = React.useState<File>()
-    const [botBusinessStepsFile, setBotBusinessStepsFile] = React.useState<File>()
-    const [roleDesciptionFile, setRoleDescriptionFile] = React.useState<File>()
+    const [companyDetailsFile, setCompanyDetailsFile] = React.useState<File | string>("")
+    const [botBusinessStepsFile, setBotBusinessStepsFile] = React.useState<File | string>("")
+    const [roleDesciptionFile, setRoleDescriptionFile] = React.useState<File | string>("")
 
     const [showSampleRoleDescription, setShowSampleRoleDescription] = React.useState(false)
     const [showSampleBusinessSteps, setShowSampleBusinessSteps] = React.useState(false)
@@ -241,30 +251,36 @@ function CreateAccountForm(props: any) {
             b_username && data.append("username_b", b_username)
             data.append("typeOfFile", roleDesciptionFile ? "file" : "text")
             data.append("botrole", roleDesciption)
-            roleDesciptionFile && data.append("botrole_file", roleDesciptionFile)
+            data.append("botrole_file", roleDesciptionFile)
             data.append("typeOfFile2", botBusinessStepsFile ? "file" : "text")
             data.append("steps", botBusinessSteps.join(", \n"))
-            botBusinessStepsFile && data.append("steps_file", botBusinessStepsFile)
+            data.append("steps_file", botBusinessStepsFile)
             data.append("typeOfFile3", companyDetailsFile ? "file" : "text")
             data.append("company_info", companyDetails)
+            data.append("company_file", companyDetailsFile)
     
-            const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
-                method: "POST",
-                body: data
-            })
-            const data2 = await response.json()
-            console.log(data2)
-            setLoading(false)
+            try {
+                const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
+                    method: "POST",
+                    body: data
+                })
     
-            if (data2.message.startsWith("Saved successfully")) {
-                alert("Rules stored successfully")
-                setShowBusinessBotDialog(false)
-                router.replace("/chat-bot")
-            } else {
-                alert("Error storing rules")
+                const data2 = await response.json()
+                console.log(data2)
+                setLoading(false)
+        
+                if (data2.message.startsWith("Saved successfully")) {
+                    alert("Rules stored successfully")
+                    setShowBusinessBotDialog(false)
+                    router.replace("/chat-bot")
+                } else {
+                    alert("Error storing rules")
+                }
+            } catch (error) {
+                console.log(error)
+                setLoading(false)
             }
     }
-
 
     function sendOtp () {
         const phone = phoneNumber;
@@ -406,7 +422,7 @@ function CreateAccountForm(props: any) {
 
             <Dialog open={showSampleBusinessSteps} onClose={()=>{setShowSampleBusinessSteps(false)}} className='flex flex-col items-center justify-center gap-5'>
                 <DialogTitle className='text-2xl font-semibold text-center border-b'>
-                    Sample Business Bot Steps
+                    Sample Agent Bot Steps
                     {/* cancel button */}
                     <CancelRounded className='cursor-pointer w-6 h-6 absolute top-5 right-6 hover:text-red-500 text-red-400' onClick={()=>{setShowSampleBusinessSteps(false)}} />
                 </DialogTitle>
@@ -506,7 +522,7 @@ function CreateAccountForm(props: any) {
             {/* Business bot steps etc */}
           <div className={`flex flex-col items-center fixed top-0 left-0 z-50 h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showBusinessBotDialog === true ? "block" : "hidden"}`}>
               <Card className='!bg-bg-900 max-h-[90vh] p-8 px-5 max-w-[95vw] rounded-lg !text-neutral-50 flex flex-col'>
-                  <DialogTitle className='text-2xl font-semibold text-center'>Set Business Interaction Rules</DialogTitle>
+                  <DialogTitle className='text-2xl font-semibold text-center'>Set Agent Interaction Rules</DialogTitle>
                   <span className="text-lg text-center -mt-2">Set the rules which your bot needs to follow when others use it.</span>
                   <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
                     <div className="flex flex-col h-full items-center gap-2 pxy-8 px-6">
@@ -602,11 +618,11 @@ function CreateAccountForm(props: any) {
                 </div>
             </div> */}
             <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal", subtext: "Your bot will interact with others your behalf. it will talk about you and present your case to prospective recruiters and customers. Conversely, It will help you in shortlisting vendors, candidates and other parties who seek to meet or interact with you. Ideal for students, professionals as well as CXOS, VPs and other leaders.",  checked: (purpose === "personal"), onChange:()=>{setPurpose("personal"); console.log(`purpose changed to ${purpose}`)}}} />
-            <InputGroup type="options" radioOptions={{name: "purpose", title: "Business", subtext: "You will teach your bot certain skills and it will render its services on your behalf. You may consider monetizing this bot in the future ideal for freelancers, consultants and businesses",  checked: (purpose === "business"), onChange:()=>{setPurpose("business"); console.log(`purpose changed to ${purpose}`)}}} />
-            <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal & Business", subtext: "You will get 2 separate ids. One for personal and another for agent.",  checked: (purpose === "personalandbusiness"), onChange:()=>{setPurpose("personalandbusiness"); console.log(`purpose changed to ${purpose}`)}}} />
+            <InputGroup type="options" radioOptions={{name: "purpose", title: "Agent", subtext: "You will teach your bot certain skills and it will render its services on your behalf. You may consider monetizing this bot in the future ideal for freelancers, consultants and businesses",  checked: (purpose === "business"), onChange:()=>{setPurpose("business"); console.log(`purpose changed to ${purpose}`)}}} />
+            <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal & Agent", subtext: "You will get 2 separate ids. One for personal and another for agent.",  checked: (purpose === "personalandbusiness"), onChange:()=>{setPurpose("personalandbusiness"); console.log(`purpose changed to ${purpose}`)}}} />
             
             <InputGroup label='Personal VBot ID' value={username} onChange={setUsername} placeholder="username" type="username" className={`${purpose === "personal" || purpose === "personalandbusiness" ? "block" : "hidden"}`} />
-            <InputGroup label='Business Bot ID' value={b_username} onChange={setB_username} placeholder="username_b that people will see as your business ID" type="username" className={`${purpose === "business" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className="text-xs text-gray-600">{b_username && `Your username will look like ${b_username}_b`}</span>}} />
+            <InputGroup label='Agent Bot ID' value={b_username} onChange={setB_username} placeholder="username_b that people will see as your business ID" type="username" className={`${purpose === "business" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className="text-xs text-gray-600">{b_username && `Your username will look like ${b_username}_b`}</span>}} />
         </div>
 
         <div id="recaptcha"></div>

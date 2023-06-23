@@ -35,7 +35,14 @@ function LoginForm() {
                 setLoading(false)
                 setError(undefined)
                 setSuccess(true)
-                // window.location.href = "/chat-bot"
+                localStorage.setItem("user", JSON.stringify(
+                    {
+                        // name: name,
+                        username: username,
+                        username_b: username
+                    }
+                ))
+                window.location.href = "/chat-bot"
             } else {
                 setLoading(false)
                 setError(data)

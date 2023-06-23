@@ -532,7 +532,7 @@ function CreateAccountForm(props: any) {
                                 return <div className="flex flex-row gap-2 items-center">
                                     <span className="text-sm font-medium min-w-max">Rule #{index+1}.</span>
                                     <input type="text" placeholder='Enter rule' className="text-sm text-black p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={rule} onChange={(e)=>{
-                                        let temp = botRules
+                                        let temp = [...botRules]
                                         temp[index] = e.target.value
                                         setBotRules(temp)
                                     }} />

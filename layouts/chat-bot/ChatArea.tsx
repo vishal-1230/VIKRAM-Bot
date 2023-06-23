@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 
 import { Popover } from "@mui/material"
 import { ToastContainer, toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 function ChatArea(props: {mode: string, setMode: any}) {
 

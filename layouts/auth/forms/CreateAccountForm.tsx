@@ -414,7 +414,7 @@ function CreateAccountForm(props: any) {
             <DialogTitle className='text-2xl font-semibold text-center'>Account created successfully!</DialogTitle>
             <div className="p-6 pt-2 flex flex-col w-full">
             <img src="/assets/success1.svg" alt="" className='h-36 my-6 self-center' />
-            <PrimaryButton title={purpose === "personal" || purpose === "personalandbusiness" ? "Train your with Bot some rules" : "Train your busines bot with some rules"} buttonStyle='w-full' onClick={()=>{
+            <PrimaryButton title={purpose === "personal" || purpose === "personalandbusiness" ? "Train your bot with some rules" : "Train your business bot with some rules"} buttonStyle='w-full' onClick={()=>{
                 if (purpose === "personal" || purpose === "personalandbusiness") {
                     setAccountCreated(false)
                     setShowPersonalBotDialog(true)
@@ -520,10 +520,29 @@ function CreateAccountForm(props: any) {
                         <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
                         <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
 
-                        <span className="text-semibold mb-2 mt-6 justify-self-end">or smiply upload your Resume PDF</span>
-                        <input type="file" name="" id="" className='self-center text-center text-sm text-bg-800 p-3 outline-none border-2 border-[#DDD6D6] rounded-md' onChange={(e)=>{
+                        <span className="text-semibold mb-2 mt-6 justify-self-end">or Simply upload your Resume PDF</span>
+                        {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 pb-5 outline-none rounded-md' onChange={(e)=>{
+                            e?.target?.files && setUser_info_file(e?.target?.files[0])
+                        }} /> */}
+                        <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setUser_info_file(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                        {/* <input type="file" id="images" accept="image/*" required> */}
+                        <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md'
+                        // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
+                        onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
                         }} />
+                        </label>
                     </div>
                     <div className="flex flex-col h-full items-center  gap-2 px-6 py-8">
                         <span className='mb-2 text-semibold'>Add rules manually</span>
@@ -548,14 +567,24 @@ function CreateAccountForm(props: any) {
                             })
                         }
                         <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
-                        <input type="file" name="" id="" className='self-center text-center text-sm text-bg-800 p-3 outline-none border-2 border-[#DDD6D6] rounded-md' onChange={(e)=>{
+                        {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
+                            e?.target?.files && setBotRulesFile(e?.target?.files[0])
+                        }} /> */}
+                        <label htmlFor="images" className="drop-container" onDragOver={(e)=>{ e.preventDefault() }} onDrop={(e)=>{ e.preventDefault(); setBotRulesFile(e?.dataTransfer?.files[0]) }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                        {/* <input type="file" id="images" accept="image/*" required> */}
+                        <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
                         }} />
+                        </label>
                     </div>
                 </div>
                 <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
                     <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
-                    <OutlineButton title="Train my bot!" buttonStyle='w-full font-semibold lg:w-fit mx-auto' onClick={()=>{ 
+                    <OutlineButton title="Submit" buttonStyle='w-full font-semibold lg:w-fit mx-auto' onClick={()=>{ 
                         trainBotRules()
                     }} />
                     <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full lg:w-fit ml-auto' onClick={()=>{
@@ -582,7 +611,22 @@ function CreateAccountForm(props: any) {
                         <textarea placeholder='Enter role description' rows={4} cols={4} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" />
                         {/* <div className="flex gap-3 items-center"> */}
                             <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span>
-                            <input type="file" name="" id="" className='self-start text-center text-sm text-neutral-50 p-3 outline-none border-2 w-full border-[#DDD6D6] min-h-max rounded-md' onChange={(e)=>{e?.target?.files && setCompanyDetailsFile(e?.target?.files[0]) }} />
+                            
+                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setCompanyDetailsFile(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                        <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md w-full' onChange={(e)=>{ e?.target?.files && setCompanyDetailsFile(e?.target?.files[0]) }} />
+
+                        </label>
                         {/* </div> */}
                         {/* <div className="flex gap-3 items-center"> */}
                             <span className="text-neutral-50 mt-4">Or give the link to your business LinkedIn Page (optional)</span>
@@ -596,7 +640,21 @@ function CreateAccountForm(props: any) {
                           <textarea placeholder='Enter role description' rows={5} onChange={(e)=>{setRoleDescription(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" />
                           {/* <div className="flex"> */}
                             <span className="text-neutral-50 mt-4">Or upload Resume to get a bot role description</span>
-                            <input type="file" name="" id="" className='self-center text-center text-sm text-white p-3 min-h-fit outline-none border-2 border-[#DDD6D6] rounded-md' onChange={(e)=>{e?.target?.files && setRoleDescriptionFile(e?.target?.files[0])}} />
+                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setRoleDescriptionFile(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                            <input type="file" name="" id="" className='self-center text-center text-sm text-white p-1 min-h-fit outline-none rounded-md' onChange={(e)=>{e?.target?.files && setRoleDescriptionFile(e?.target?.files[0])}} />
+
+                        </label>
                           {/* </div> */}
                       </div>
                       <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-0 py-8">
@@ -624,14 +682,27 @@ function CreateAccountForm(props: any) {
                               })
                           }
                             <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span>
-                            <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none border-2 border-[#DDD6D6] rounded-md' onChange={(e)=>{e?.target?.files && setBotBusinessStepsFile(e?.target?.files[0])}} />
+                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setBotBusinessStepsFile(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                            <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md' onChange={(e)=>{e?.target?.files && setBotBusinessStepsFile(e?.target?.files[0])}} />
+                        </label>
                           {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
                       </div>
                   </div>
                   <div className="grid grid-cols-3 mt-auto justify-between">
                       <div></div>
                         {/* <Link href='/auth/login'> */}
-                            <Button title="Train my business bot!" buttonStyle='mx-auto font-semibold' onClick={trainBusinessBot} />
+                            <Button title="Submit" buttonStyle='mx-auto font-semibold' onClick={trainBusinessBot} />
                         {/* </Link> */}
                         <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
                           setBotBusinessSteps([

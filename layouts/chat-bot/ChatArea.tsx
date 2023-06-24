@@ -32,6 +32,8 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
     const [userMessage, setUserMessage] = useState("")
 
+    const [token, setToken] = useState<string>("")
+
 
     const [categories, setCategories] = useState<{text: string, onClick: any}[]>([
       {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
@@ -56,9 +58,9 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       let uri = ""
       if(chatCategory === "personal") {
-        uri = `https://server.vikrambots.in/general/${userDetails?.username}/${message}`
+        uri = `https://server.vikrambots.in/general/${message}`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training/${userDetails?.username_b}/${message}`
+        uri = `https://server.vikrambots.in/training/${message}`
       } else if(chatCategory === "initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
@@ -83,7 +85,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
       console.log("URI=>", uri)
 
       if (plugin === "none") {
-        fetch(uri)
+        fetch(uri, {
+          headers: {
+            "x-access-token": token,
+          }
+        })
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -301,7 +307,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
         }
       }
 
-      const response = await fetch(uri)
+      const response = await fetch(uri, {
+        headers: {
+          "x-access-token": token,
+        }
+      })
       const data = await response.json()
       console.log(data)
 
@@ -320,7 +330,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       setUserDetails(userDetails)
       console.log("Details", userDetails)
-      const response = await fetch(`https://server.vikrambots.in/gchats/${userDetails.username}`)
+      const response = await fetch(`https://server.vikrambots.in/gchats`, {
+        headers: {
+          "x-access-token": token,
+        }
+      })
       const data = await response.json()
       console.log("DATA", data)
       // data.message format is [ {Bot: "Hello", User: "bot"}, {Bot: "Hi", sendeuser: "user"}] that has to be converted to [{message: "Hello", sender: "bot"}, {message: "Hi", sender: "user"}]
@@ -339,7 +353,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       setUserDetails(userDetails)
       console.log(userDetails.username_b)
-      const response = await fetch(`https://server.vikrambots.in/gchats/${userDetails?.username_b}`)
+      const response = await fetch(`https://server.vikrambots.in/gchats`, {
+        headers: {
+          "x-access-token": token,
+        }
+      })
       const data = await response.json()
       console.log(data)
       let temp:{message: string, sender: string}[] = []
@@ -360,6 +378,15 @@ function ChatArea(props: {mode: string, setMode: any}) {
     useEffect(()=>{
       const userTemp = localStorage.getItem("user")
       let userDetails = JSON.parse(userTemp ? userTemp : "{}")
+
+      if (localStorage.getItem("token")) {
+        setToken(localStorage.getItem("token") as string)
+      } else {
+        toast.error("You are not logged in. Please login to continue.", {
+          autoClose: 1000
+        })
+        router.replace("/auth/login")
+      }
 
       if (userDetails.username){
         setChatCategory("personal")
@@ -386,9 +413,10 @@ function ChatArea(props: {mode: string, setMode: any}) {
           {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
         ])
         localStorage.getItem("user") && fetchTrainingMessage()
-      } else {
-        router.replace("/auth/login")
       }
+      // else {
+      //   router.replace("/auth/login")
+      // }
 
       setUserDetails(userDetails)
 

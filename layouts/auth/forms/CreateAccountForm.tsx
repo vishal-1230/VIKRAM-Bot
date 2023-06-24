@@ -149,6 +149,9 @@ function CreateAccountForm(props: any) {
             const data = await response.json()
             console.log(data)
             if (data.message.startsWith("Account created successfully")) {
+
+                localStorage.setItem("token", data.token)
+
                 localStorage.setItem("user", JSON.stringify(
                     {
                         name: name,

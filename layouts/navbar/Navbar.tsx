@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { CloseOutlined, MenuOpenOutlined } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
+import PrimaryButton from '@/components/PrimaryButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,6 +14,10 @@ function Navbar() {
 
   const router = useRouter()
   console.log(router.pathname)
+
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+
+  const [userDetail, setUserDetail] = useState<any>(null)
 
   const [navbarOpen, setNavbarOpen] = useState(false)
 
@@ -24,9 +29,16 @@ function Navbar() {
     setNavbarOpen(false)
   }
 
+  const [showInfoBox, setShowInfoBox] = useState<boolean>(false)
+
   const [userDetails, setUserDetails] = useState<any>(null)
 
   useEffect(()=>{
+    if (localStorage.getItem("token")) {
+      setLoggedIn(true)
+    } else {
+      setLoggedIn(false)
+    }
     if(localStorage.getItem("user")) {
       const user = localStorage.getItem("user")
       const parsed = JSON.parse(user ? user : "{}")
@@ -71,12 +83,41 @@ function Navbar() {
               </Link>
             )
           }
-          <Link href="/auth/create-account" className='self-center flex gap-5 items-center'>
+          {/* <Link href="/auth/create-account" className='self-center flex gap-5 items-center'> */}
             {
               router.pathname.startsWith("/chat-bot") && <span className="text-white hidden md:block">{userDetails?.name}</span>
             }
-            <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block' width={30} height={30} priority />
-          </Link>
+            <div className="relative">
+              <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block' width={30} height={30} priority onClick={()=>{
+                if (loggedIn) {
+                  setShowInfoBox(!showInfoBox)
+                } else {
+                  router.push("/auth/login")
+                }
+              }} />
+              {
+              showInfoBox && <div className="bg-white absolute top-[35px] pb-6 rounded-lg right-0 flex flex-col">
+                <div className="flex flex-col gap-1 p-6 items-end justify-center">
+                  {/* <span className="font-medium text-sm">Logged in as</span> */}
+                  <span className="font-medium text-sm">{userDetails?.name}</span>
+                  <span className="font-medium text-sm">{userDetails?.email_id}</span>
+                  <span className="font-medium text-sm">{userDetails?.phone}</span>
+                  <span className="font-medium text-sm">{userDetails?.business_b}</span>
+                  {/* settings */}
+                  {/* <div className="flex flex-col gap-2 mt-4"> */}
+                    {/* <span className="font-medium text-sm">Settings</span> */}
+                    {/* <span className="font-medium text-sm">Change Password</span>
+                    <span className="font-medium text-sm">Change Email</span>
+                    <span className="font-medium text-sm">Change Phone</span>
+                    <span className="font-medium text-sm">Change Rules & other info</span> */}
+                  {/* </div> */}
+                </div>
+                  <OutlineButton buttonStyle='text-sm p-2 self-end mr-5' title="Settings" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}} />
+                  <PrimaryButton buttonStyle='text-sm p-3 self-end mr-5 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}} />
+              </div>
+              }
+            </div>
+          {/* </Link> */}
           
             <MenuOpenOutlined className="w-8 h-8 text-white md:!hidden" onClick={openMobileNavbar} />
         </div>

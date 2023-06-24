@@ -32,17 +32,21 @@ function LoginForm() {
     
             const data = await response.json()
             console.log(data)
-            if (data.message === "Login Successful") {
+            if (data.success === true) {
                 setLoading(false)
                 setError(undefined)
                 setSuccess(true)
+                console.log(data)
                 localStorage.setItem("user", JSON.stringify(
                     {
-                        // name: name,
-                        username: username,
-                        username_b: username
+                        user: {
+                            username: data?.username,
+                            username_b: data?.username_b,
+                        }
                     }
                 ))
+
+                localStorage.setItem("token", data.token)
                 window.location.href = "/chat-bot"
             } else {
                 setLoading(false)

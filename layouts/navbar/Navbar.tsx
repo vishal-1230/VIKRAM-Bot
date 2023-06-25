@@ -100,7 +100,7 @@ function Navbar() {
                 <div className="flex flex-col gap-1 p-6 items-end justify-center">
                   {/* <span className="font-medium text-sm">Logged in as</span> */}
                   <span className="font-medium text-sm">{userDetails?.name}</span>
-                  <span className="font-medium text-sm">{userDetails?.email_id}</span>
+                  <span className="font-medium text-sm">{userDetails?.email_id || userDetails?.email}</span>
                   <span className="font-medium text-sm">{userDetails?.phone}</span>
                   <span className="font-medium text-sm">{userDetails?.business_b}</span>
                   {/* settings */}

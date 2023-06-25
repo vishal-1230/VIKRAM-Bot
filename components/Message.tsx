@@ -15,7 +15,7 @@ function Message({ children, mode, sender } : {children: string, mode:string, se
 
   return (
     <div className={`flex flex-col md:flex-row duration-200 gap-8 items-start md:items-center w-full h-fit px-7 md:px-28 py-8 ${sender === "user" ? mode === "night" ? "bg-bg-800" : "bg-white" : mode === "night" ? "bg-bg-700" : "bg-gray-3"}`}>
-      <ToastContainer autoClose={1000} position="bottom-right" />
+      {/* <ToastContainer autoClose={1000} position="bottom-right" /> */}
         {
             sender === "user" || sender === "User" ? (
                 <AccountCircleOutlined className={`w-8 h-8 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />

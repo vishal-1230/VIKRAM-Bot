@@ -111,12 +111,6 @@ function CreateAccountForm(props: any) {
         console.log(username)
 
         console.log(name, email, phoneNumber, password, confirmPassword, checkboxInputs)
-        if (b_username!=undefined) {
-            if (!(b_username.endsWith("_b"))) {
-                setB_username(b_username+"_b")
-            }
-            console.log(b_username)
-        }
         const response = await fetch('https://server.vikrambots.in/register', {
             method: 'POST',
             headers: {
@@ -136,14 +130,14 @@ function CreateAccountForm(props: any) {
                 phone: phoneNumber,
                 password: password,
                 confirmPassword: confirmPassword,
-                business_username: b_username
+                business_username: b_username+"_b"
             }) : JSON.stringify({
                 name: name,
                 email_id: email,
                 phone: phoneNumber,
                 password: password,
                 confirmPassword: confirmPassword,
-                business_username: b_username
+                business_username: b_username+"_b"
             })
         })
             const data = await response.json()
@@ -199,7 +193,10 @@ function CreateAccountForm(props: any) {
 
         const response = await fetch("https://server.vikrambots.in/store-rules", {
             method: "POST",
-            body: data
+            body: data,
+            headers: {
+                "x-access-token": localStorage.getItem("token")!
+            }
         })
 
         const data2 = await response.json()
@@ -270,7 +267,10 @@ function CreateAccountForm(props: any) {
             try {
                 const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
                     method: "POST",
-                    body: data
+                    body: data,
+                    headers: {
+                        "x-access-token": localStorage.getItem("token")!
+                    }
                 })
     
                 const data2 = await response.json()

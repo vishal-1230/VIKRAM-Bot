@@ -1,7 +1,10 @@
 import { BookmarkBorderOutlined, DarkModeOutlined, LaunchOutlined, LightModeOutlined, LogoutOutlined, Notifications, NotificationsOutlined, PersonOutlineOutlined, UpdateOutlined } from "@mui/icons-material"
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 function LeftPanel(props: {mode: string, setMode: any}) {
+
+    const router = useRouter()
 
     const mode = props.mode
     const setMode = props.setMode
@@ -63,7 +66,7 @@ function LeftPanel(props: {mode: string, setMode: any}) {
                 Updates & FAQ
             </span>
 
-            <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.reload()}}>
+            <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); router.replace("/")}}>
                 <LogoutOutlined />
                 Logout
             </span>

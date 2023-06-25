@@ -42,6 +42,24 @@ function ChatArea(props: {mode: string, setMode: any}) {
       {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
     ])
 
+    async function getInfo() {
+      const res = await fetch("https://server.vikrambots.in/ginfo", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")!
+        }
+      })
+      const data = await res.json()
+      console.log(data)
+
+      if (data.success === false) {
+        toast.error("You are not logged in. Please login to continue.", {
+          autoClose: 1000
+        })
+        router.replace("/auth/login")
+      }
+        localStorage.setItem("user", JSON.stringify(data))
+    }
+
     async function sendMessage() {
       const message = userMessage
       setUserMessage("")
@@ -65,21 +83,13 @@ function ChatArea(props: {mode: string, setMode: any}) {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          if (userDetails.username) {
-            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
-          } else {
-            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username_b}/${message}`
-          }
+          uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${message}`
         }
       } else if(chatCategory === "business_initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          if (userDetails.username) {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username}/${message}`
-          } else {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username_b}/${message}`
-          }
+          uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${message}`
         }
       }
       console.log("URI=>", uri)
@@ -87,7 +97,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
       if (plugin === "none") {
         fetch(uri, {
           headers: {
-            "x-access-token": token,
+            "x-access-token": localStorage.getItem("token")!,
           }
         })
           .then((response) => response.json())
@@ -162,7 +172,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
             }
           });
       } else if (plugin === "News") {
-        fetch(`https://server.vikrambots.in/news/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`https://server.vikrambots.in/news/${message}`, {
+            headers: {
+                "x-access-token": localStorage.getItem("token")!
+            }
+        })
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -185,7 +199,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Weather") {
-        fetch(`https://server.vikrambots.in/weather/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`https://server.vikrambots.in/weather/${message}`, {
+          headers: {
+              "x-access-token": localStorage.getItem("token")!
+          }
+      })
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -208,7 +226,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "IMDB") {
-        fetch(`https://server.vikrambots.in/imdb/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`https://server.vikrambots.in/imdb/${message}`, {
+          headers: {
+              "x-access-token": localStorage.getItem("token")!
+          }
+      })
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -231,7 +253,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`https://server.vikrambots.in/google/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`https://server.vikrambots.in/google/${message}`, {
+          headers: {
+              "x-access-token": localStorage.getItem("token")!
+          }
+      })
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -254,7 +280,11 @@ function ChatArea(props: {mode: string, setMode: any}) {
             ]);
           });
       } else if (plugin === "YouTube") {
-        fetch(`https://server.vikrambots.in/yt/${userDetails.username ? userDetails?.username : userDetails?.username_b}/${message}`)
+        fetch(`https://server.vikrambots.in/yt/${message}`, {
+          headers: {
+              "x-access-token": localStorage.getItem("token")!
+          }
+      })
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -289,27 +319,19 @@ function ChatArea(props: {mode: string, setMode: any}) {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          if (userDetails.username) {
-            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username}/${message}`
-          } else {
-            uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${userDetails?.username_b}/${message}`
-          }
+          uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${message}`
         }
       } else if(chatCategory === "business_initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          if (userDetails.username) {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username}/${message}`
-          } else {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${userDetails?.username_b}/${message}`
-          }
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${message}`
         }
       }
 
       const response = await fetch(uri, {
         headers: {
-          "x-access-token": token,
+          "x-access-token": localStorage.getItem("token")!,
         }
       })
       const data = await response.json()
@@ -332,7 +354,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
       console.log("Details", userDetails)
       const response = await fetch(`https://server.vikrambots.in/gchats`, {
         headers: {
-          "x-access-token": token,
+          "x-access-token": localStorage.getItem("token")!,
         }
       })
       const data = await response.json()
@@ -352,10 +374,9 @@ function ChatArea(props: {mode: string, setMode: any}) {
       const userDetails = JSON.parse(userTemp ? userTemp : "{}")
 
       setUserDetails(userDetails)
-      console.log(userDetails.username_b)
       const response = await fetch(`https://server.vikrambots.in/gchats`, {
         headers: {
-          "x-access-token": token,
+          "x-access-token": localStorage.getItem("token")!,
         }
       })
       const data = await response.json()
@@ -381,6 +402,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token") as string)
+        getInfo()
       } else {
         toast.error("You are not logged in. Please login to continue.", {
           autoClose: 1000
@@ -397,7 +419,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
             {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
             {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
           ])
-          localStorage.getItem("user") && fetchMessage()
+          localStorage.getItem("token") && fetchMessage()
         } else {
           setCategories([
             {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
@@ -412,7 +434,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
           {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
         ])
-        localStorage.getItem("user") && fetchTrainingMessage()
+        localStorage.getItem("token") && fetchTrainingMessage()
       }
       // else {
       //   router.replace("/auth/login")

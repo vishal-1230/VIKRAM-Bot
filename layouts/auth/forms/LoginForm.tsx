@@ -3,11 +3,14 @@ import PrimaryButton from '@/components/PrimaryButton'
 import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import { Dialog } from '@mui/material'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 function LoginForm() {
+
+    const router = useRouter()
 
     const [username, setusername] = React.useState(undefined)
     const [password, setPassword] = React.useState(undefined)
@@ -33,21 +36,23 @@ function LoginForm() {
             const data = await response.json()
             console.log(data)
             if (data.success === true) {
-                setLoading(false)
                 setError(undefined)
                 setSuccess(true)
                 console.log(data)
-                localStorage.setItem("user", JSON.stringify(
-                    {
-                        user: {
-                            username: data?.username,
-                            username_b: data?.username_b,
-                        }
-                    }
-                ))
-
                 localStorage.setItem("token", data.token)
-                window.location.href = "/chat-bot"
+                if (data.username != null) {
+                    if (data.business_username != null) {
+                        localStorage.setItem("username", JSON.stringify({username: data.username, username_b: data.business_username}))
+                    }
+                    else {
+                        localStorage.setItem("username", JSON.stringify({username: data.username}))
+                    }
+                } else if (data.business_username != null) {
+                    localStorage.setItem("username", JSON.stringify({username_b: data.business_username}))
+                }
+                
+                setLoading(false)
+                router.replace("/chat-bot")
             } else {
                 setLoading(false)
                 setError(data)

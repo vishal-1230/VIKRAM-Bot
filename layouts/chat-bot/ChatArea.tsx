@@ -414,7 +414,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
         toast.error("You are not logged in. Please login to continue.", {
           autoClose: 1000
         })
-        // router.replace("/auth/login")
+        router.replace("/auth/login")
       }
 
       if (userDetails.username){

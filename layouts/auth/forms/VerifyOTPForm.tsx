@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 function VerifyOTPForm() {
 
+    
   const phoneNumber = localStorage.getItem("phoneForForgotPassword");
 
   const router = useRouter()

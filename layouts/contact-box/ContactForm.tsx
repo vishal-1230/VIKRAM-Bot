@@ -4,12 +4,49 @@ import SpecialText from "@/components/SpecialText"
 import { Mail, MailOutline } from "@mui/icons-material"
 import { Orbitron } from "next/font/google"
 import Link from "next/link"
+import { useState } from "react"
+import { ToastContainer, toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 const orbitron = Orbitron({subsets: ["latin"]})
 
 function ContactForm(props: {className?: string, showTitle: boolean, showDescription?: boolean, showMail?: boolean}) {
+
+  const [name, setName] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+  const [description, setDescription] = useState<string>("")
+
+  async function submitForm() {
+    const response = await fetch("https://vikram-69758-default-rtdb.asia-southeast1.firebasedatabase.app/queries.json", {
+      method: "POST",
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        description: description
+      })
+    })
+    const data = await response.json()
+
+    console.log(data)
+    if (data.name) {
+      alert("Form submitted successfully")
+      toast.success('Form submitted successfully', {
+        autoClose: 2000,
+      });
+      setName("")
+      setEmail("")
+      setDescription("")
+    } else {
+      alert("Error submitting form")
+      toast.error('Error submitting form', {
+        autoClose: 2000,
+      });
+    }
+  }
+
   return (
     <div className={`flex flex-row md:px-24 py-8 md:py-20 bg-white w-screen relative ${props.className}`}>
+      <ToastContainer position="top-right" autoClose={2000} />
         <div className="flex flex-col grow justify-center px-3 md:px-0 z-10">
             
             {props.showTitle && <span className={`font-bold text-5xl text-bg-900 ${orbitron.className}`}>Get in <SpecialText extra="text-5xl font-bold">Touch</SpecialText></span>}
@@ -18,11 +55,13 @@ function ContactForm(props: {className?: string, showTitle: boolean, showDescrip
 
             {props.showMail && <Link href="mailto:mail@vikram.ai" className='text-xl font-medium text-neutral-500 mt-5'><MailOutline className='fill-neutral-500 w-8 h-6' />Email us at: <span className='text-primary-500'>contact@vikram.com</span></Link>}
 
-            <InputGroup label="Name" type="text" placeholder="Enter your name" className="mt-5" />
+            <InputGroup label="Name" type="text" placeholder="Enter your name" className="mt-5" value={name} onChange={setName} />
 
-            <InputGroup label="Description" textareaRows={6} type="description" placeholder="Ask us your Query in Brief" className="mt-4" />
+            <InputGroup label="Email" type="text" placeholder="Enter your email" className="mt-4" value={email} onChange={setEmail} />
 
-            <PrimaryButton title="Submit" buttonStyle="mt-5 w-full z-10" />
+            <InputGroup label="Query Description" textareaRows={6} type="description" placeholder="Ask us your Query in Brief" className="mt-4" value={description} onChange={setDescription} />
+
+            <PrimaryButton title="Submit" buttonStyle="mt-5 w-full z-10" onClick={submitForm} />
 
         </div>
 

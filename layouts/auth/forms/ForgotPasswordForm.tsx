@@ -30,7 +30,7 @@ function ForgotPasswordForm() {
     }
 
     console.log(phone)
-
+    console.log("CALLING", `https://server.vikrambots.in/get-otp/${phone}`)
     const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
     const data = await response.json()
     console.log(data)

@@ -86,7 +86,7 @@ function VerifyOTPForm() {
 
         <div className="flex gap-2 mt-10 self-center md:self-start">
             {/* 6 digit inputs */}
-            <OTPInput value={otp?.toString()} shouldAutoFocus onChange={setOtp} numInputs={6} renderSeparator={<span></span>} inputStyle="!w-10 md:!w-20 !mx-1 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md w-10 md:w-20" renderInput={props => <input pattern='\d*' {...props} />} />
+            <OTPInput value={otp?.toString()} shouldAutoFocus onChange={setOtp} numInputs={4} renderSeparator={<span></span>} inputStyle="!w-10 md:!w-28 !mx-1 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md w-10 md:w-20" renderInput={props => <input pattern='\d*' {...props} />} />
 
         </div>
 

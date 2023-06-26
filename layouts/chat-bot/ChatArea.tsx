@@ -51,12 +51,12 @@ function ChatArea(props: {mode: string, setMode: any}) {
       const data = await res.json()
       console.log(data)
 
-      if (data.success === false) {
-        toast.error("You are not logged in. Please login to continue.", {
-          autoClose: 1000
-        })
-        router.replace("/auth/login")
-      }
+      // if (data.success === false) {
+      //   toast.error("You are not logged in. Please login to continue.", {
+      //     autoClose: 1000
+      //   })
+      //   // router.replace("/auth/login")
+      // }
         localStorage.setItem("user", JSON.stringify(data))
     }
 
@@ -414,7 +414,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
         toast.error("You are not logged in. Please login to continue.", {
           autoClose: 1000
         })
-        router.replace("/auth/login")
+        // router.replace("/auth/login")
       }
 
       if (userDetails.username){

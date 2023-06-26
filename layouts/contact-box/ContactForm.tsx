@@ -29,7 +29,6 @@ function ContactForm(props: {className?: string, showTitle: boolean, showDescrip
 
     console.log(data)
     if (data.name) {
-      alert("Form submitted successfully")
       toast.success('Form submitted successfully', {
         autoClose: 2000,
       });
@@ -37,7 +36,6 @@ function ContactForm(props: {className?: string, showTitle: boolean, showDescrip
       setEmail("")
       setDescription("")
     } else {
-      alert("Error submitting form")
       toast.error('Error submitting form', {
         autoClose: 2000,
       });

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import ChatList from "./ChatList"
-import { Autorenew, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { Autorenew, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
 
-import { Popover } from "@mui/material"
+import { Popover, Tooltip, selectClasses } from "@mui/material"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -389,6 +389,13 @@ function ChatArea(props: {mode: string, setMode: any}) {
       setTrainingChats(temp.reverse())
     }
 
+    const descriprions = {
+      "personal": "Use this window like a regular ChatGPT interface for the same output. Your intelligence in getting the best response won't be available to ChatGPT. You don't want to make ChatGPT smarter at your expense!",
+      "business": "You are using your own agent. Use the below window to simulate how your bot is using the Role Description & Steps you have set to answer others. Go Back to the role description and steps and edit if you don't like what you see.",
+      "initiator": "You are connecting to someone's personal bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see.",
+      "business_initiator": "You are connecting to some business's bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see."
+    }
+
     useEffect(()=>{
       console.log("chat", chats)
       console.log("training", trainingChats)
@@ -449,7 +456,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
 
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-white text-bg-500" : "bg-bg-700 text-white"}`}>
-        <ToastContainer position="top-right" autoClose={2500} />
+        <ToastContainer position="bottom-right" autoClose={2500} />
       {
         (chatCategory==="personal" ? chats.length === 0 : trainingChats.length===0) &&
         <img src="/assets/chat-screen-top-left.svg" alt="" className="duration-200 absolute -left-72 -top-10" />
@@ -469,7 +476,10 @@ function ChatArea(props: {mode: string, setMode: any}) {
       <br /><br /><br />
 
       <div className="w-fit md:w-full mt-2 py-2 flex flex-col md:flex-row justify-between z-50 backdrop-blur-sm">
-        <Dropdown title="Select a bot" className="md:ml-5" list={categories} />
+        <Dropdown title="Select a bot" className="md:ml-5 min-w-max" list={categories} />
+        <Tooltip title={descriprions[chatCategory]} placement="right">
+          <InfoRounded className="w-5 h-5 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 mr-auto self-center mt-2 ml-1" />
+        </Tooltip>
         {
           (chatCategory === "initiator" || chatCategory === "business_initiator") && 
         <div className="flex p-1.5 border-b border-b-gray-500 mr-auto ml-3 z-50 self-end">
@@ -479,6 +489,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
           } />
         </div>
         }
+
         <Dropdown title="Plugin" className="mr-5" list={[
           {
             text: "None",
@@ -506,7 +517,6 @@ function ChatArea(props: {mode: string, setMode: any}) {
           }          
         ]} />
       </div>
-        
         <ChatList
           chats={ chatCategory != "personal" ? chatCategory != "business" ? chatCategory != "initiator" ? thirdBusinessChats : thirdChats : trainingChats : chats }
           mode={mode}

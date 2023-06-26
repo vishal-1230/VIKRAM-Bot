@@ -363,14 +363,21 @@ function CreateAccountForm(props: any) {
             case "name":
                 return true;
             case "username":
-                if (value?.charAt(0).match(/[A-Z]/)) {
+                if (value === undefined || value === null || value === "") {
+                    return true;
+                }
+                // username must not contain special characters, and must start with capital letter
+                else if (value?.match(/^[A-Z][a-zA-Z0-9]*$/)) {
                     return true;
                 } else {
                     setDisableSubmit(true)
-                    return "Username should start with a capital letter."
+                    return "Must start with a capital letter and must not contain special characters."
                 }
             case "email":
-                if (value?.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
+                if (value === undefined || value === null || value === "") {
+                    return true;
+                }
+                else if (value?.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
                     return true;
                 } else {
                     setDisableSubmit(true)
@@ -384,7 +391,10 @@ function CreateAccountForm(props: any) {
                     return "Invalid phone number."
                 }
             case "password":
-                if (value?.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/)) {
+                if (value === undefined || value === null || value === "") {
+                    return true;
+                }
+                else if (value?.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/)) {
                     return true;
                 } else {
                     setDisableSubmit(true)
@@ -561,7 +571,7 @@ function CreateAccountForm(props: any) {
                                     <AddCircleRounded className='cursor-pointer w-5 text-green-400' onClick={()=>{
                                         setBotRules([...botRules, ""])
                                     }} />
-                                    <CancelRounded className='cursor-pointer w-5 text-red-400' onClick={()=>{
+                                    <CancelRounded className={`cursor-pointer w-5 text-red-400 ${botRules.length===1 && "hidden"}`} onClick={()=>{
                                         let temp = botRules
                                         temp = temp.filter((item, i) => i !== index)
                                         setBotRules(temp)
@@ -587,7 +597,7 @@ function CreateAccountForm(props: any) {
                 </div>
                 <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
                     <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
-                    <OutlineButton title="Submit" buttonStyle='w-full font-semibold lg:w-fit mx-auto' onClick={()=>{ 
+                    <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         trainBotRules()
                     }} />
                     <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full lg:w-fit ml-auto' onClick={()=>{
@@ -721,18 +731,18 @@ function CreateAccountForm(props: any) {
           </div>
 
 
-        <InputGroup value={name} onChange={setName} hintAccessory={()=>{return validate("name", name)}} label='Full name' placeholder='Your Full Name' type="text" className='!mt-10' />
+        <InputGroup value={name} onChange={setName} hintAccessory={()=>{return validate("name", name)}} label='Full Name' placeholder='Your Full Name' type="text" className='!mt-10' />
         
         {/* <InputGroup value={username} onChange={setUsername} hintAccessory={()=>{validate("username", username)}} label='Username' placeholder='Your Username to be used for loggin in' type="username" /> */}
 
-        <InputGroup value={email} onChange={setEmail} label='Email address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />
+        <InputGroup value={email} onChange={setEmail} label='Email Address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />
 
-        <InputGroup label='Phone number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span className='text-green-400 text-xs font-semibold'>Phone Nubmer verified!</span> : <span onClick={sendOtp} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
+        <InputGroup label='Phone Number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span className='text-green-400 text-xs font-semibold'>Phone Nubmer verified!</span> : <span onClick={sendOtp} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
 
         <div id="sign-in-button"></div>
 
         <div className='flex flex-col mt-4 gap-3'>
-            <span className="font-medium text-bg-50">Purpose of bot</span>
+            <span className="font-medium text-bg-50">Purpose Of Bot</span>
             {/* <div className="flex gap-5">
                 <div className="flex">
                     <input type="radio" checked={purpose === "personal"} onChange={()=>{setPurpose("personal")}} name="purpose" id="purpose1" className='w-4 border-2 outline-2 border-black outline-black p-1 text-sm duration-300' />
@@ -747,8 +757,8 @@ function CreateAccountForm(props: any) {
             <InputGroup type="options" radioOptions={{name: "purpose", title: "Agent", subtext: "You will teach your bot certain skills and it will render its services on your behalf. You may consider monetizing this bot in the future ideal for freelancers, consultants and businesses",  checked: (purpose === "business"), onChange:()=>{setPurpose("business"); console.log(`purpose changed to ${purpose}`)}}} />
             <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal & Agent", subtext: "You will get 2 separate ids. One for personal and another for agent.",  checked: (purpose === "personalandbusiness"), onChange:()=>{setPurpose("personalandbusiness"); console.log(`purpose changed to ${purpose}`)}}} />
             
-            <InputGroup label='Personal VBot ID' value={username} onChange={setUsername} placeholder="username" type="username" className={`${purpose === "personal" || purpose === "personalandbusiness" ? "block" : "hidden"}`} />
-            <InputGroup label='Agent Bot ID' value={b_username} onChange={setB_username} placeholder="username_b that people will see as your business ID" type="username" className={`${purpose === "business" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className="text-xs text-gray-600">{b_username && `Your username will look like ${b_username}_b`}</span>}} />
+            <InputGroup label='Personal VBot ID' value={username} onChange={setUsername} placeholder="MyAccount101" type="username" className={`${purpose === "personal" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className='text-xs font-medium text-red-500'>{validate("username", username)}</span>}} />
+            <InputGroup label='Agent Bot ID' value={b_username} onChange={setB_username} placeholder="Username_b that people will see as your business ID" type="username" className={`${purpose === "business" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className={`text-xs ${validate("username", b_username)===true ? "text-gray-600" : "text-red-500"}`}>{b_username && validate("username", b_username)===true ? `Your username will look like ${b_username}_b` : validate("username", b_username)}</span>}} />
         </div>
 
         <div id="recaptcha"></div>
@@ -780,7 +790,7 @@ function CreateAccountForm(props: any) {
             <span className="text-sm font-medium text-neutral-900">I agree to the <Link href="/" className='text-primary-500'>terms of service</Link> and <Link href="/" className='text-primary-500'>privacy policy</Link>.</span>
         </div>
 
-        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? toast("All Fields are mandatory") : otpVerified ? createAccount() : toast.error("Verify your phone first")} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
+        <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? toast.error("All Fields are mandatory") : otpVerified ? createAccount() : toast.error("Verify your phone first")} title="Create account" buttonStyle="mt-5 mb-5 w-full" />
 
         <span className="text-sm font-medium text-neutral-900">Already have an account? <Link href="/auth/login" className='text-primary-500'>Login</Link></span>
         

@@ -1,27 +1,100 @@
 import PrimaryButton from '@/components/PrimaryButton'
 import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import React from 'react'
+import { toast } from 'react-toastify';
+import OTPInput from 'react-otp-input';
+import { useRouter } from 'next/router';
 
 function VerifyOTPForm() {
+
+  const phoneNumber = localStorage.getItem("phoneForForgotPassword");
+
+  const router = useRouter()
+
+  const [otp, setOtp] = React.useState<string | number | undefined>(undefined)
+
+  async function sendOtp () {
+    const phone = phoneNumber;
+
+    if (phone === undefined || phone === null || phone === "") {
+        // toast("Please enter a valid phone number")
+        toast.error('Please enter a valid phone number', {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+    }
+
+    const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
+    const data = await response.json()
+    console.log(data)
+
+    if (data.return === true) {
+        // toast("OTP sent successfully")
+        toast.success('OTP sent successfully', {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    } else {
+        // toast("Error sending OTP")
+        toast.error('Error sending OTP', {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+}
+
+  function verifyOtp () {
+    const phone = localStorage.getItem("phoneForForgotPassword");
+
+    fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data.success === true) {
+            toast.success("OTP verified successfully")
+            router.push("/auth/forgot-password/reset-password", undefined)
+        } else {
+            toast.error("Invalid OTP")
+        }
+    })
+}
+
+
   return (
     <RightAuthContainer title="Verify OTP">
 
-        <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 82******01</span>
+        <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 {phoneNumber}</span>
+
 
         <div className="flex gap-2 mt-10 self-center md:self-start">
-            <input autoFocus type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
-            <input type="number" maxLength={1} pattern='\d*' className='w-10 md:w-20 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md' />
+            {/* 6 digit inputs */}
+            <OTPInput value={otp?.toString()} shouldAutoFocus onChange={setOtp} numInputs={6} renderSeparator={<span></span>} inputStyle="!w-10 md:!w-20 !mx-1 h-10 text-sm outline-none font-medium text-center border border-neutral-400 rounded-md w-10 md:w-20" renderInput={props => <input pattern='\d*' {...props} />} />
+
         </div>
 
         <span className="text-sm text-neutral-900 mt-5 self-center">Didn't recieve an OTP?</span>
 
-        <span className="font-medium text-bg-900 mt-1 self-center underline underline-offset-2">Resend OTP</span>
+        <span className="font-medium text-bg-900 mt-1 self-center underline underline-offset-2" onClick={sendOtp}>Resend OTP</span>
 
-        <PrimaryButton title='Verify' buttonStyle='w-full mt-5 mb-5' />
+        <PrimaryButton title='Verify' buttonStyle='w-full mt-5 mb-5' onClick={verifyOtp} />
 
     </RightAuthContainer>
   )

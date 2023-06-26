@@ -12,10 +12,10 @@ function LeftPanel(props: {mode: string, setMode: any}) {
     const [notifications, setNotifications] = useState<string[]>([])
 
   return (
-    <div className="flex-col absolute md:relative hidden w-72 md:flex justify-between z-10 py-5 bg-bg-900 px-6 pr-3 mt-20 max-w-[16rem]">
+    <div className="flex-col absolute md:relative hidden w-64 md:flex justify-between z-10 py-5 bg-bg-900 px-6 pr-3 mt-20 max-w-[16rem]">
         <div className="flex flex-col gap-8 overflow-y-scroll overflow-x-clip">
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 min-w-max">
                 
                 <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
                     <NotificationsOutlined />

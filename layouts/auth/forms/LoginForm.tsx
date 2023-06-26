@@ -102,9 +102,12 @@ function LoginForm() {
             </div>
         } />
 
+        {/* forgot password */}
+        <span className="text-xs font-medium text-neutral-900 ">Forgot Password? <Link href="/auth/forgot-password" className='text-primary-500 text-xs'>Reset Password</Link></span>
+
         <PrimaryButton title='Log In' buttonStyle='w-full mt-5 mb-5' onClick={login} />
 
-        <span className="text-sm font-medium text-neutral-900">Don't have an account? <Link href="/auth/create-account" className='text-primary-500 text-sm'>Create an account</Link></span>
+        <span className="text-sm font-medium text-neutral-900">Don't have an account? <Link href="/auth/create-account" className='text-primary-500 text-sm'>Create an Account</Link></span>
 
     </RightAuthContainer>
   )

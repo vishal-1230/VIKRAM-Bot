@@ -50,7 +50,7 @@ function Message({ children, mode, sender } : {children: string, mode:string, se
                   <ThumbDownAltOutlined className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} onClick={()=>{setDisliked(true); setLiked(false)}} />
                 )
               }
-                <ContentCopyRounded className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} onClick={() => {navigator.clipboard.writeText(children); toast.success("Copied to Clipboard!")}} />
+                <ContentCopyRounded className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} onClick={() => {navigator.clipboard.writeText(children); toast.success("Copied to Clipboard!", {autoClose: 1000, position: "bottom-right"})}} />
               </div>
             )
           }

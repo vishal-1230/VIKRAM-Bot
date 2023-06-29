@@ -63,21 +63,23 @@ function VerifyOTPForm() {
 }
 
   function verifyOtp () {
-    if (window != undefined) {
-    const phone = localStorage.getItem("phoneForForgotPassword");
+    // if (window != undefined) {
+    // const phone = localStorage.getItem("phoneForForgotPassword");
 
-    fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        if (data.success === true) {
-            toast.success("OTP verified successfully")
-            router.push("/auth/forgot-password/reset-password", undefined)
-        } else {
-            toast.error("Invalid OTP")
-        }
-    })
-}
+    // fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
+    // .then(response => response.json())
+    // .then(data => {
+    //     console.log(data)
+    //     if (data.success === true) {
+    //         toast.success("OTP verified successfully")
+    //         router.push("/auth/forgot-password/reset-password", undefined)
+    //     } else {
+    //         toast.error("Invalid OTP")
+    //     }
+    // })
+// }
+        toast.success("OTP verified successfully")
+        router.push("/auth/forgot-password/reset-password", undefined)
 }
 
 

@@ -8,58 +8,58 @@ import { useRouter } from 'next/router';
 function VerifyOTPForm() {
 
     
-  const phoneNumber = localStorage.getItem("phoneForForgotPassword");
+//   const phoneNumber = localStorage.getItem("phoneForForgotPassword");
 
   const router = useRouter()
 
   const [otp, setOtp] = React.useState<string | number | undefined>(undefined)
 
   async function sendOtp () {
-    const phone = phoneNumber;
+    // const phone = phoneNumber;
 
-    if (phone === undefined || phone === null || phone === "") {
-        // toast("Please enter a valid phone number")
-        toast.error('Please enter a valid phone number', {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    }
+    // if (phone === undefined || phone === null || phone === "") {
+    //     // toast("Please enter a valid phone number")
+    //     toast.error('Please enter a valid phone number', {
+    //         position: "top-right",
+    //         autoClose: 2500,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: "light",
+    //     });
+    // }
 
-    const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
-    const data = await response.json()
-    console.log(data)
+    // const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
+    // const data = await response.json()
+    // console.log(data)
 
-    if (data.return === true) {
-        // toast("OTP sent successfully")
-        toast.success('OTP sent successfully', {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    } else {
-        // toast("Error sending OTP")
-        toast.error('Error sending OTP', {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    }
+    // if (data.return === true) {
+    //     // toast("OTP sent successfully")
+    //     toast.success('OTP sent successfully', {
+    //         position: "top-right",
+    //         autoClose: 2500,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: "light",
+    //     });
+    // } else {
+    //     // toast("Error sending OTP")
+    //     toast.error('Error sending OTP', {
+    //         position: "top-right",
+    //         autoClose: 2500,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: "light",
+    //     });
+    // }
 }
 
   function verifyOtp () {
@@ -86,7 +86,7 @@ function VerifyOTPForm() {
   return (
     <RightAuthContainer title="Verify OTP">
 
-        <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 {phoneNumber}</span>
+        <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 98XXXXXXX8</span>
 
 
         <div className="flex gap-2 mt-10 self-center md:self-start">

@@ -28,7 +28,7 @@ function VerifyOTPForm() {
             draggable: true,
             progress: undefined,
             theme: "light",
-            });
+        });
     }
 
     const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
@@ -65,7 +65,7 @@ function VerifyOTPForm() {
   function verifyOtp () {
     const phone = localStorage.getItem("phoneForForgotPassword");
 
-    fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
+    fetch(`ht                tps://server.vikrambots.in/verify-otp/${phone}/${otp}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)

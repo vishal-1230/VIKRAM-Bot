@@ -41,14 +41,14 @@ function LoginForm() {
                 console.log(data)
                 localStorage.setItem("token", data.token)
                 if (data.username != null) {
-                    if (data.business_username != null) {
-                        localStorage.setItem("username", JSON.stringify({username: data.username, username_b: data.business_username}))
+                    if (data.business_username != null || data.business_username != "None") {
+                        localStorage.setItem("user", JSON.stringify({username: data.username, username_b: data.business_username}))
                     }
                     else {
-                        localStorage.setItem("username", JSON.stringify({username: data.username}))
+                        localStorage.setItem("user", JSON.stringify({username: data.username}))
                     }
-                } else if (data.business_username != null) {
-                    localStorage.setItem("username", JSON.stringify({username_b: data.business_username}))
+                } else if (data.business_username != null || data.business_username != "None") {
+                    localStorage.setItem("user", JSON.stringify({username_b: data.business_username}))
                 }
                 
                 setLoading(false)

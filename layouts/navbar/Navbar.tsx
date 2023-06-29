@@ -10,7 +10,7 @@ import PrimaryButton from '@/components/PrimaryButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
-function Navbar() {
+function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBox, setShowBusinessEditBox}: {showPersonalEditBox: boolean, setShowPersonalEditBox: any, showBusinessEditBox: boolean, setShowBusinessEditBox: any}) {
 
   const router = useRouter()
   console.log(router.pathname)
@@ -33,9 +33,22 @@ function Navbar() {
 
   const [userDetails, setUserDetails] = useState<any>(null)
 
+  async function getInfo() {
+    const res = await fetch("https://server.vikrambots.in/ginfo", {
+      headers: {
+        "x-access-token": localStorage.getItem("token")!
+      }
+    })
+    const data = await res.json()
+    console.log(data)
+
+    setUserDetails(data)
+  }
+
   useEffect(()=>{
     if (localStorage.getItem("token")) {
       setLoggedIn(true)
+      getInfo()
     } else {
       setLoggedIn(false)
     }
@@ -96,7 +109,7 @@ function Navbar() {
                 }
               }} />
               {
-              showInfoBox && <div className="bg-white absolute top-[35px] pb-6 rounded-lg right-0 flex flex-col">
+              showInfoBox && <div className="bg-white absolute top-[35px] min-w-[14rem] pb-6 rounded-lg right-0 flex flex-col">
                 <div className="flex flex-col gap-1 p-6 items-end justify-center">
                   {/* <span className="font-medium text-sm">Logged in as</span> */}
                   <span className="font-medium text-sm">{userDetails?.name}</span>
@@ -112,8 +125,16 @@ function Navbar() {
                     <span className="font-medium text-sm">Change Rules & other info</span> */}
                   {/* </div> */}
                 </div>
-                  <OutlineButton buttonStyle='text-sm p-2 self-end mr-5' title="Settings" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}} />
-                  <PrimaryButton buttonStyle='text-sm p-3 self-end mr-5 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}} />
+
+                    {/* {
+                      userDetails?.username && <OutlineButton buttonStyle='text-sm p-1 self-end mr-5 min-w-max mb-1.5 ml-8' title="Personal Settings" onClick={() => {setShowPersonalEditBox(!setShowPersonalEditBox)}} />
+                    }
+
+                    {
+                      userDetails?.username_b && <OutlineButton buttonStyle='text-sm p-1 self-end mr-5' title="Agent Settings" onClick={() => {setShowBusinessEditBox(!showBusinessEditBox)}} />
+                    } */}
+                  
+                  <PrimaryButton buttonStyle='text-sm p-3 self-end mr-5 bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}} />
               </div>
               }
             </div>

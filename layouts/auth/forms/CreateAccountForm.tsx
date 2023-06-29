@@ -146,10 +146,27 @@ function CreateAccountForm(props: any) {
 
                 localStorage.setItem("token", data.token)
 
+                username!=b_username ? b_username != "None" ?
                 localStorage.setItem("user", JSON.stringify(
                     {
                         name: name,
                         username: username,
+                        email_id: email,
+                        phone: phoneNumber,
+                        username_b: b_username
+                    }
+                )) : 
+                localStorage.setItem("user", JSON.stringify(
+                    {
+                        name: name,
+                        username: username,
+                        email_id: email,
+                        phone: phoneNumber,
+                    }
+                )) :
+                localStorage.setItem("user", JSON.stringify(
+                    {
+                        name: name,
                         email_id: email,
                         phone: phoneNumber,
                         username_b: b_username
@@ -182,7 +199,7 @@ function CreateAccountForm(props: any) {
         username && data.append("username", username)
         data.append("typeOfFile", botRulesFile ? "file" : "text")
         // data.append("typeOfFile", "text")
-        data.append("rules", botRules.join(", \n"))
+        data.append("rules", botRules2)
         data.append("rules_file", botRulesFile)
         // data.append()
         data.append("typeOfFile2", user_info_file ? "file" : "text")
@@ -230,6 +247,7 @@ function CreateAccountForm(props: any) {
     const [user_info_file, setUser_info_file] = React.useState<File | string>("")
     
     const [botRules, setBotRules] = React.useState<string[]>([""])
+    const [botRules2, setBotRules2] = React.useState<string>("")
     const [botRulesFile, setBotRulesFile] = React.useState<File | string>("")
 
     const [showSampleRules, setShowSampleRules] = React.useState(false)
@@ -239,6 +257,7 @@ function CreateAccountForm(props: any) {
     // AFTER PERSONAL MOVING TO BUSINESS DIALOG
     const [companyDetails, setCompanyDetails] = React.useState<string>("")
     const [botBusinessSteps, setBotBusinessSteps] = React.useState<string[]>([""])
+    const [botBusinessSteps2, setBotBusinessSteps2] = React.useState<string>("")
     const [roleDesciption, setRoleDescription] = React.useState<string>("")
 
     const [companyDetailsFile, setCompanyDetailsFile] = React.useState<File | string>("")
@@ -258,7 +277,7 @@ function CreateAccountForm(props: any) {
             data.append("botrole", roleDesciption)
             data.append("botrole_file", roleDesciptionFile)
             data.append("typeOfFile2", botBusinessStepsFile ? "file" : "text")
-            data.append("steps", botBusinessSteps.join(", \n"))
+            data.append("steps", botBusinessSteps2)
             data.append("steps_file", botBusinessStepsFile)
             data.append("typeOfFile3", companyDetailsFile ? "file" : "text")
             data.append("company_info", companyDetails)
@@ -559,6 +578,7 @@ function CreateAccountForm(props: any) {
                     </div>
                     <div className="flex flex-col h-full items-center  gap-2 px-6 py-8">
                         <span className='mb-2 text-semibold'>Add rules manually</span>
+                        {/* 
                         {
                             botRules.map((rule, index) => {
                                 return <div className="flex flex-row gap-2 items-center">
@@ -579,6 +599,8 @@ function CreateAccountForm(props: any) {
                                 </div>
                             })
                         }
+                        */}
+                        <textarea placeholder='Type the rules that your bot will follow while interacting' rows={6} cols={4} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
@@ -601,13 +623,7 @@ function CreateAccountForm(props: any) {
                         trainBotRules()
                     }} />
                     <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full lg:w-fit ml-auto' onClick={()=>{
-                        setBotRules([
-                            "Verify the identity of the person initiating contact. Confirm their name and organization",
-                            "Ask the person to briefly state the purpose of the interaction or the problem they want to solve",
-                            "Try responding to the problem to the best of your ability",
-                            "Politely decline the interaction appears negative, abusive or harmful",
-                            "After every interaction, ask for feedback",
-                        ])
+                        setBotRules2("Verify the identity of the person initiating contact. Confirm their name and organization. Ask the person to briefly state the purpose of the interaction or the problem they want t. Try responding to the problem to the best of your ability. Politely decline the interaction appears negative, abusive or harmful. After every interaction, ask for feedback")
                     }} />
                 </div>
             </Card>
@@ -621,7 +637,7 @@ function CreateAccountForm(props: any) {
                   <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
                     <div className="flex flex-col h-full items-center gap-2 pxy-8 px-6">
                         <span className="text-semibold mb-4">Add information about your business or company (optional)</span>
-                        <textarea placeholder='Enter role description' rows={4} cols={4} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" />
+                        <textarea placeholder='Enter role description' rows={5} cols={4} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" />
                         {/* <div className="flex gap-3 items-center"> */}
                             <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span>
                             
@@ -642,8 +658,8 @@ function CreateAccountForm(props: any) {
                         </label>
                         {/* </div> */}
                         {/* <div className="flex gap-3 items-center"> */}
-                            <span className="text-neutral-50 mt-4">Or give the link to your business LinkedIn Page (optional)</span>
-                            <input type="text" name="" id="" placeholder='https://www.linkedin.com/company/arthlex-limited/' onChange={(e)=>{setCompanyDetails(e.target.value)}} className='self-start text-center text-sm w-full text-white p-3 min-h-fit outline-none border-2 border-[#DDD6D6] rounded-md' />
+                            {/* <span className="text-neutral-50 mt-4">Or give the link to your business LinkedIn Page (optional)</span>
+                            <input type="text" name="" id="" placeholder='https://www.linkedin.com/company/arthlex-limited/' onChange={(e)=>{setCompanyDetails(e.target.value)}} className='self-start text-center text-sm w-full text-white p-3 min-h-fit outline-none border-2 border-[#DDD6D6] rounded-md' /> */}
                         {/* </div> */}
                     </div>
                       <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-6 py-8">
@@ -652,7 +668,7 @@ function CreateAccountForm(props: any) {
                           </span>
                           <textarea placeholder='Enter role description' rows={5} onChange={(e)=>{setRoleDescription(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" />
                           {/* <div className="flex"> */}
-                            <span className="text-neutral-50 mt-4">Or upload Resume to get a bot role description</span>
+                            <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span>
                             <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
                         }} onDrop={(e)=>{
@@ -670,11 +686,11 @@ function CreateAccountForm(props: any) {
                         </label>
                           {/* </div> */}
                       </div>
-                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-0 py-8">
+                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-8 py-8">
                           <span className="!text-semibold mb-0">Add Steps
                           <OutlineButton title='Check sample Steps' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleBusinessSteps(true)}} />
                           </span>
-                          {
+                          {/* {
                               botBusinessSteps.map((step, index) => {
                                   return <div className="flex flex-row gap-2 items-center">
                                       <span className="text-sm font-medium min-w-max">Step #{index + 1}.</span>
@@ -693,7 +709,8 @@ function CreateAccountForm(props: any) {
                                       }} />
                                   </div>
                               })
-                          }
+                          } */}
+                            <textarea placeholder='Type the steps that your bot will follow while interacting' rows={5} cols={1} onChange={(e)=>{setBotBusinessSteps2(e.target.value)}} className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full h-full" />
                             <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span>
                             <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
@@ -718,13 +735,8 @@ function CreateAccountForm(props: any) {
                             <Button title="Submit" buttonStyle='mx-auto font-semibold' onClick={trainBusinessBot} />
                         {/* </Link> */}
                         <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
-                          setBotBusinessSteps([
-                              "Do not use abusive language.",
-                              "Do not spam.",
-                              "Do not use the bot for illegal purposes.",
-                              "Do not use the bot for spreading fake news.",
-                              "Do not use the bot for spreading hate speech.",
-                          ])
+                          setBotBusinessSteps2(
+                              "Do not use abusive language. Do not spam. Do not use the bot for illegal purposes. Do not use the bot for spreading fake news. Do not use the bot for spreading hate speech.")
                       }} />
                   </div>
               </Card>

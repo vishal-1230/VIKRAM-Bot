@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import ChatList from "./ChatList"
-import { Autorenew, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { Autorenew, CancelOutlined, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
 
-import { Popover, Tooltip, selectClasses } from "@mui/material"
+import { Card, DialogTitle, Popover, Tooltip, selectClasses } from "@mui/material"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import OutlineButton from "@/components/OutlineButton"
+import Button from "@/components/SpecialButton"
 
-function ChatArea(props: {mode: string, setMode: any}) {
+function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any}) {
 
   const router = useRouter()
 
@@ -57,7 +59,13 @@ function ChatArea(props: {mode: string, setMode: any}) {
       //   })
       //   // router.replace("/auth/login")
       // }
+      if (data.username === data.username_b) {
+        localStorage.setItem("user", JSON.stringify({username_b: data.username, name: data.name, phone: data.phone, email: data.email}))
+      } else if (data.username_b === "None") {
+        localStorage.setItem("user", JSON.stringify({username: data.username, name: data.name, phone: data.phone, email: data.email}))
+      } else {
         localStorage.setItem("user", JSON.stringify(data))
+      }
     }
 
     async function sendMessage() {
@@ -417,6 +425,7 @@ function ChatArea(props: {mode: string, setMode: any}) {
         router.replace("/auth/login")
       }
 
+      console.log("User Details", userDetails)
       if (userDetails.username){
         setChatCategory("personal")
         if (userDetails.username_b) {
@@ -438,21 +447,145 @@ function ChatArea(props: {mode: string, setMode: any}) {
         setChatCategory("business")
         setCategories([
           {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
-          {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
-          {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+          // {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+          // {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
         ])
         localStorage.getItem("token") && fetchTrainingMessage()
       }
-      // else {
-      //   router.replace("/auth/login")
-      // }
 
       setUserDetails(userDetails)
+      userDetails.username ? getAllPersonalInfo() : getAllBusinessInfo()
 
     }, [])
 
     const mode = props.mode
     const setMode = props.setMode
+
+    // 
+    //  PERSONAL BUSINESS STEPS EDIT BOXES AND VARS
+    // 
+    const [typeOfRules, setTypeOfRules] = useState<"text" | "file">("text")
+    const [typeOfUserInfo, setTypeOfUserInfo] = useState<"text" | "file">("text")
+    const [user_info, setUser_info] = useState<string>("")
+    const [user_info_file, setUser_info_file] = useState<File | string>("")
+    
+    const [botRules, setBotRules] = useState<string[]>([""])
+    const [botRules2, setBotRules2] = useState<string>("")
+    const [botRulesFile, setBotRulesFile] = useState<File | string>("")
+
+    const [showSampleRules, setShowSampleRules] = useState(false)
+    
+    const [disableSubmit, setDisableSubmit] = useState(true)
+    
+    // AFTER PERSONAL MOVING TO BUSINESS DIALOG
+    const [companyDetails, setCompanyDetails] = useState<string>("")
+    const [botBusinessSteps, setBotBusinessSteps] = useState<string[]>([""])
+    const [botBusinessSteps2, setBotBusinessSteps2] = useState<string>("")
+    const [roleDesciption, setRoleDescription] = useState<string>("")
+
+    const [companyDetailsFile, setCompanyDetailsFile] = useState<File | string>("")
+    const [botBusinessStepsFile, setBotBusinessStepsFile] = useState<File | string>("")
+    const [roleDesciptionFile, setRoleDescriptionFile] = useState<File | string>("")
+
+    const [showSampleRoleDescription, setShowSampleRoleDescription] = useState(false)
+    const [showSampleBusinessSteps, setShowSampleBusinessSteps] = useState(false)
+
+    const [showPersonalBotDialog, setShowPersonalBotDialog] = [props.showPersonalBotDialog, props.setShowPersonalBotDialog]
+    const [showBusinessBotDialog, setShowBusinessBotDialog] = [props.showBusinessBotDialog, props.setShowBusinessBotDialog]
+ 
+    
+    const [userInfoLoading, setUserInfoLoading] = useState(false)
+    const [botRulesLoading, setBotRulesLoading] = useState(false)
+    const [companyDetailsLoading, setCompanyDetailsLoading] = useState(false)
+    const [roleDescriptionLoading, setRoleDescriptionLoading] = useState(false)
+    const [botBusinessStepsLoading, setBotBusinessStepsLoading] = useState(false)
+
+
+    async function getAllPersonalInfo () {
+      // 2 functions, user info, rules
+      setUserInfoLoading(true)
+      setBotRulesLoading(true)
+      const response1 = await fetch("https://server.vikrambots.in/load_user_info", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")!
+        }
+      })
+      const data1 = await response1.json()
+
+      const reponse2 = await fetch("https://server.vikrambots.in/load_rules", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")!
+        }
+      })
+      const data2 = await reponse2.json()
+
+      setUserInfoLoading(false)
+      setBotRulesLoading(false)
+
+      console.log(data1, data2)
+      if (data1.success === true){
+        setUser_info(data1.message)
+      } else {
+        setUser_info("")
+      }
+
+      if (data2.success === true){
+        setBotRules2(data2.message)
+      } else {
+        setBotRules2("")
+      }
+    }
+
+    async function getAllBusinessInfo () {
+      // 3 functions, company details, role description, steps
+      setCompanyDetailsLoading(true)
+      setRoleDescriptionLoading(true)
+      setBotBusinessStepsLoading(true)
+      console.log("Getting all business info")
+      const response3 = await fetch("https://server.vikrambots.in/cinfo", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")!
+        }
+      })
+      const data3 = await response3.json()
+
+      const response4 = await fetch("https://server.vikrambots.in/load_botrole", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")!
+        }
+      })
+      const data4 = await response4.json()
+
+      const response5 = await fetch("https://server.vikrambots.in/load_steps", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")!
+        }
+      })
+      const data5 = await response5.json()
+
+      setCompanyDetailsLoading(false)
+      setRoleDescriptionLoading(false)
+      setBotBusinessStepsLoading(false)
+
+      console.log(data3, data4, data5)
+      if (data3.success === true){
+        setCompanyDetails(data3.message)
+      } else {
+        setCompanyDetails("")
+      }
+
+      if (data4.success === true){
+        setRoleDescription(data4.message)
+      } else {
+        setRoleDescription("")
+      }
+
+      if (data5.success === true) {
+        setBotBusinessSteps2(data5.message)
+      } else {
+        setBotBusinessSteps2("")
+      }
+    }
 
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-white text-bg-500" : "bg-bg-700 text-white"}`}>
@@ -474,6 +607,241 @@ function ChatArea(props: {mode: string, setMode: any}) {
         <img src="/assets/chat-screen-bottom-left.png" alt="" className="duration-200 absolute bottom-0 -left-24" />
       }
       <br /><br /><br />
+        {/* Personal bot user_info & rules */}
+        <div className={`flex flex-col items-center mt-8 fixed top-0 left-0 z-[1000] h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showPersonalBotDialog === true ? "block" : "hidden"}`}>
+            <Card className='!bg-bg-800 max-w-[75vw] p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center relative'>
+            <DialogTitle className='text-2xl font-semibold text-center'>Update Interaction Rules
+              <span className="absolute h-fit cursor-pointer top-10 right-10" onClick={()=>{ setShowPersonalBotDialog(false) }}>
+                <CancelOutlined />
+              </span>
+            </DialogTitle>
+            <span className="text-lg text-center">Update the rules which your bot needs to follow when others use it.</span>
+                <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
+                    <div className="flex flex-col h-full border-r border-r-gray-200 items-center gap-2 lg:px-6 py-5">
+                        <span className="text-semibold">Tell the bot about yourself (optional)</span>
+                        <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
+                        {
+                            userInfoLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                        }
+
+                        <span className="text-semibold mb-2 mt-8 justify-self-end">or Simply upload your Resume PDF</span>
+                        {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 pb-5 outline-none rounded-md' onChange={(e)=>{
+                            e?.target?.files && setUser_info_file(e?.target?.files[0])
+                        }} /> */}
+                        <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setUser_info_file(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                        {/* <input type="file" id="images" accept="image/*" required> */}
+                        <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md'
+                        // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
+                        onChange={(e)=>{
+                            e?.target?.files && setUser_info_file(e?.target?.files[0])
+                        }} />
+                        </label>
+                        <Button title="Update my Info" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
+                        // trainBotRules()
+                    }} />
+                    </div>
+                    <div className="flex flex-col h-full items-center  gap-2 px-6 py-5">
+                        <span className='text-semibold'>Edit rules manually</span>
+                        <span className="text-xs font-light mb-4">Your bot will follow these rules when interacting with others. You can add upto 10 rules.</span>
+                        {/* 
+                        {
+                            botRules.map((rule, index) => {
+                                return <div className="flex flex-row gap-2 items-center">
+                                    <span className="text-sm font-medium min-w-max">Rule #{index+1}.</span>
+                                    <input type="text" placeholder='Enter rule' className="text-sm text-black p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={rule} onChange={(e)=>{
+                                        let temp = [...botRules]
+                                        temp[index] = e.target.value
+                                        setBotRules(temp)
+                                    }} />
+                                    <AddCircleRounded className='cursor-pointer w-5 text-green-400' onClick={()=>{
+                                        setBotRules([...botRules, ""])
+                                    }} />
+                                    <CancelRounded className={`cursor-pointer w-5 text-red-400 ${botRules.length===1 && "hidden"}`} onClick={()=>{
+                                        let temp = botRules
+                                        temp = temp.filter((item, i) => i !== index)
+                                        setBotRules(temp)
+                                    }} />
+                                </div>
+                            })
+                        }
+                        */}
+                        {
+                            botRulesLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Type the rules that your bot will follow while interacting' rows={6} cols={4} value={botRules2} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                        }
+                        {/* <textarea placeholder='Type the rules that your bot will follow while interacting' rows={6} cols={4} value={botRules2} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" /> */}
+                        <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
+                        {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
+                            e?.target?.files && setBotRulesFile(e?.target?.files[0])
+                        }} /> */}
+                        <label htmlFor="images" className="drop-container" onDragOver={(e)=>{ e.preventDefault() }} onDrop={(e)=>{ e.preventDefault(); setBotRulesFile(e?.dataTransfer?.files[0]) }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                        {/* <input type="file" id="images" accept="image/*" required> */}
+                        <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
+                            e?.target?.files && setBotRulesFile(e?.target?.files[0])
+                        }} />
+                        </label>
+                        <Button title="Update bot rules" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
+                        // trainBotRules()
+                    }} />
+                    </div>
+                </div>
+                <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
+                    <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
+                    {/* <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
+                        // trainBotRules()
+                    }} /> */}
+                    <div></div>
+                    <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full lg:w-fit ml-auto' onClick={()=>{
+                        setBotRules2("Verify the identity of the person initiating contact. Confirm their name and organization Ask the person to briefly state the purpose of the interaction or the problem they want to solve Try responding to the problem to the best of your ability Politely decline the interaction appears negative, abusive or harmful After every interaction, ask for feedback")
+                    }} />
+                </div>
+            </Card>
+        </div>
+
+            {/* Business bot steps etc */}
+          <div className={`flex flex-col items-center mt-8 fixed top-0 left-0 z-[1000] h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showBusinessBotDialog === true ? "block" : "hidden"}`}>
+              <Card className='!bg-bg-900 max-h-[90vh] p-8 px-5 max-w-[95vw] rounded-lg !text-neutral-50 flex flex-col relative'>
+                  <DialogTitle className='text-2xl font-semibold text-center'>Update Agent Interaction Rules
+                    <span className="absolute h-fit cursor-pointer top-10 right-10" onClick={()=>{ setShowBusinessBotDialog(false) }}>
+                      <CancelOutlined />
+                    </span>
+                  </DialogTitle>
+                  <span className="text-lg text-center -mt-2">Update the rules which your bot needs to follow when others use it.</span>
+                  <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
+                    <div className="flex flex-col h-full items-center gap-2 pxy-8 px-6">
+                        <span className="text-semibold mb-4">Edit information about your business or company (optional)</span>
+                        {
+                            companyDetailsLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Enter role description' rows={5} cols={4} value={companyDetails} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                        }
+                        {/* <textarea placeholder='Enter role description' rows={5} cols={4} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" /> */}
+                        {/* <div className="flex gap-3 items-center"> */}
+                            <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span>
+                            
+                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setCompanyDetailsFile(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                        <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md w-full' onChange={(e)=>{ e?.target?.files && setCompanyDetailsFile(e?.target?.files[0]) }} />
+
+                        </label>
+                        <Button title="Update company info" buttonStyle='mx-auto font-semibold mt-8' onClick={console.log} />
+
+                        {/* </div> */}
+                        {/* <div className="flex gap-3 items-center"> */}
+                            {/* <span className="text-neutral-50 mt-4">Or give the link to your business LinkedIn Page (optional)</span>
+                            <input type="text" name="" id="" placeholder='https://www.linkedin.com/company/arthlex-limited/' onChange={(e)=>{setCompanyDetails(e.target.value)}} className='self-start text-center text-sm w-full text-white p-3 min-h-fit outline-none border-2 border-[#DDD6D6] rounded-md' /> */}
+                        {/* </div> */}
+                    </div>
+                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-6 py-8">
+                          <span className='text-semibold -mb-1'>Edit Role Description
+                          <OutlineButton title='Check sample description' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleRoleDescription(true)}} />
+                          </span>
+                          {
+                              roleDescriptionLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Enter role description' rows={5} cols={4} value={roleDesciption} onChange={(e)=>{setRoleDescription(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                          }
+                          {/* <textarea placeholder='Enter role description' rows={5} onChange={(e)=>{setRoleDescription(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" /> */}
+                          {/* <div className="flex"> */}
+                            <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span>
+                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setRoleDescriptionFile(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                            <input type="file" name="" id="" className='self-center text-center text-sm text-white p-1 min-h-fit outline-none rounded-md' onChange={(e)=>{e?.target?.files && setRoleDescriptionFile(e?.target?.files[0])}} />
+
+                        </label>
+                            <Button title="Update Bot Role" buttonStyle='mx-auto font-semibold mt-8' onClick={console.log} />
+                          {/* </div> */}
+                      </div>
+                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-8 py-8">
+                          <span className="!text-semibold mb-0">Edit Steps
+                          <OutlineButton title='Check sample Steps' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleBusinessSteps(true)}} />
+                          </span>
+                          {/* {
+                              botBusinessSteps.map((step, index) => {
+                                  return <div className="flex flex-row gap-2 items-center">
+                                      <span className="text-sm font-medium min-w-max">Step #{index + 1}.</span>
+                                      <input type="text" placeholder='Enter step' className="text-sm text-black p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={step} onChange={(e) => {
+                                          let temp = [...botBusinessSteps]
+                                          temp[index] = e.target.value
+                                          setBotBusinessSteps(temp)
+                                      }} />
+                                      <AddCircleRounded className='cursor-pointer w-5 text-green-400' onClick={() => {
+                                          setBotBusinessSteps([...botBusinessSteps, ""])
+                                      }} />
+                                      <CancelRounded className='cursor-pointer w-5 text-red-400' onClick={() => {
+                                          let temp = botBusinessSteps
+                                          temp = temp.filter((item, i) => i !== index)
+                                          setBotBusinessSteps(temp)
+                                      }} />
+                                  </div>
+                              })
+                          } */}
+                          {
+                              botBusinessStepsLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Type the steps that your bot will follow while interacting' rows={5} cols={1} value={botBusinessSteps2} onChange={(e)=>{setBotBusinessSteps2(e.target.value)}} className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full h-full" />
+                          }
+                            {/* <textarea placeholder='Type the steps that your bot will follow while interacting' rows={5} cols={1} onChange={(e)=>{setBotBusinessSteps2(e.target.value)}} className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full h-full" /> */}
+                            <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span>
+                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            e.preventDefault()
+                        }} onDrop={(e)=>{
+                            e.preventDefault()
+                            setBotBusinessStepsFile(e?.dataTransfer?.files[0])
+                            console.log(e?.dataTransfer?.files[0])
+                            console.log(typeof e?.dataTransfer?.files[0])
+                        }}>
+                        <span className="drop-title">Drop files here</span>
+                        <span className='-mb-2'>
+                            or
+                        </span>
+                            <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md' onChange={(e)=>{e?.target?.files && setBotBusinessStepsFile(e?.target?.files[0])}} />
+                        </label>
+                            <Button title="Update Steps" buttonStyle='mx-auto font-semibold mt-8' onClick={console.log} />
+                          {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
+                      </div>
+                  </div>
+                  <div className="grid grid-cols-3 mt-auto justify-between">
+                      <div></div>
+                        {/* <Link href='/auth/login'> */}
+                            {/* <Button title="Submit" buttonStyle='mx-auto font-semibold' onClick={console.log} /> */}
+                        {/* </Link> */}
+                        <div></div>
+                        <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
+                          setBotBusinessSteps2("Do not use abusive language. Do not spam. Do not use the bot for illegal purposes. Do not use the bot for spreading fake news. Do not use the bot for spreading hate speech.")
+                      }} />
+                  </div>
+              </Card>
+          </div>
+
 
       <div className="w-fit md:w-full mt-2 py-2 flex flex-col md:flex-row justify-between z-50 backdrop-blur-sm">
         <Dropdown title="Select a bot" className="md:ml-5 min-w-max" list={categories} />

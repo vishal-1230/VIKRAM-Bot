@@ -1,8 +1,9 @@
-import { BookmarkBorderOutlined, DarkModeOutlined, LaunchOutlined, LightModeOutlined, LogoutOutlined, Notifications, NotificationsOutlined, PersonOutlineOutlined, UpdateOutlined } from "@mui/icons-material"
+import { BookmarkBorderOutlined, DarkModeOutlined, LaunchOutlined, LightModeOutlined, LogoutOutlined, Notifications, NotificationsOutlined, PersonOutlineOutlined, Settings, SettingsApplications, SettingsOutlined, SettingsRounded, SettingsSuggest, UpdateOutlined } from "@mui/icons-material"
+import { Tooltip } from "@mui/material"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-function LeftPanel(props: {mode: string, setMode: any}) {
+function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any}) {
 
     const router = useRouter()
 
@@ -10,6 +11,30 @@ function LeftPanel(props: {mode: string, setMode: any}) {
     const setMode = props.setMode
 
     const [notifications, setNotifications] = useState<string[]>([])
+
+    const [userDetails, setUserDetails] = useState<any>({})
+
+    const [showHistory, setShowHistory] = useState<boolean>(false)
+
+    const [personal, setPersonal] = useState<boolean>(false)
+    const [business, setBusiness] = useState<boolean>(false)
+
+    useEffect(()=>{
+        const userTemp = localStorage.getItem("user")
+        let userDetails = JSON.parse(userTemp ? userTemp : "{}")
+  
+        console.log("User Details", userDetails)
+        if (userDetails.username){
+          setShowHistory(true)
+          setPersonal(true)
+        }
+        if (userDetails.username_b) {
+          setBusiness(true)
+        }
+  
+        setUserDetails(userDetails)
+  
+      }, [])
 
   return (
     <div className="flex-col absolute md:relative hidden w-64 md:flex justify-between z-10 py-5 bg-bg-900 px-6 pr-3 mt-20 max-w-[16rem]">
@@ -36,19 +61,43 @@ function LeftPanel(props: {mode: string, setMode: any}) {
                 {/* <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">Lorem ipsum or sit amet cohabsckj Right man?</span> */}
             </div>
 
-            {/* <div className="flex flex-col gap-4">
+        {
+            showHistory &&
+            <div className="flex flex-col gap-4">
                 <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
                     <UpdateOutlined />
-                    Your History
+                    Your Chats History
                 </span>
+                
+                <Tooltip title="VIKRAM Bot" placement="right">
+                    <span className="text-sm text-transparent cursor-default bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Can you prepare a writeup for my presentation</span>
+                </Tooltip>
+                <Tooltip title="Trial Bot" placement="right">
+                    <span className="text-sm text-transparent cursor-default bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Suggest some stress relieving videos</span>
+                </Tooltip>
 
-                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj </span>
-                <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Lorem ipsum or sit amet cohabsckj </span>
-
-            </div> */}
+            </div>
+        }
         </div>
 
         <div className="flex flex-col gap-3 mt-8 pt-4 border-t-2 border-bg-500 pr-2">
+
+    {
+        personal &&
+            <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{props.setShowPersonalBotDialog(true)}}>
+                <SettingsSuggest />
+                Personal Bot Settings
+            </span>
+    }
+
+    {
+        business &&
+            <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{props.setShowBusinessBotDialog(true)}}>
+                <SettingsOutlined />
+                Business Bot Settings
+            </span>
+    }
+
             
             <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{setMode(mode === "day" ? "night" : "day")}}>
                 {

@@ -10,6 +10,9 @@ function ChatBot() {
 
   const [mode, setMode] = useState<"day" | "night">("night")
 
+  const [showPersonalBotDialog, setShowPersonalBotDialog] = useState(false)
+  const [showBusinessBotDialog, setShowBusinessBotDialog] = useState(false)
+
   const router = useRouter()
 
   useEffect(()=>{
@@ -26,9 +29,9 @@ function ChatBot() {
 
         <div className="absolute top-20 left-0 w-6 h-6 bg-white block md:hidden"></div>
         
-        <LeftPanel mode={mode} setMode={setMode} />
+        <LeftPanel mode={mode} setMode={setMode} showPersonalBotDialog={showPersonalBotDialog} setShowPersonalBotDialog={setShowPersonalBotDialog} showBusinessBotDialog={showBusinessBotDialog} setShowBusinessBotDialog={setShowBusinessBotDialog} />
 
-        <ChatArea mode={mode} setMode={setMode} />
+        <ChatArea mode={mode} setMode={setMode} showPersonalBotDialog={showPersonalBotDialog} setShowPersonalBotDialog={setShowPersonalBotDialog} showBusinessBotDialog={showBusinessBotDialog} setShowBusinessBotDialog={setShowBusinessBotDialog} />
 
     </div>
   )

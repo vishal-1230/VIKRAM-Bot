@@ -27,7 +27,13 @@ export default function Home() {
       })
       const data = await res.json()
       console.log(data)
-      localStorage.setItem("user", JSON.stringify(data))
+      if (data.username === data.username_b) {
+        localStorage.setItem("user", JSON.stringify({username_b: data.username, name: data.name, phone: data.phone, email: data.email}))
+      } else if (data.username_b === "None") {
+        localStorage.setItem("user", JSON.stringify({username: data.username, name: data.name, phone: data.phone, email: data.email}))
+      } else {
+        localStorage.setItem("user", JSON.stringify(data))
+      }
     }
   }
 

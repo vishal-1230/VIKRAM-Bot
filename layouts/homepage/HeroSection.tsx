@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Orbitron } from 'next/font/google'
 import Button from '@/components/SpecialButton'
 import Image from 'next/image'
@@ -9,6 +9,16 @@ import Link from 'next/link'
 const orbitron = Orbitron({subsets: ['latin'], weight: ["400", "500", "600", "700"]})
 
 function HeroSection() {
+
+  const [loggedIn, setLoggedIn] = React.useState<boolean>(false)
+
+  useEffect(()=>{
+    if (localStorage.getItem("token")) {
+      setLoggedIn(true)
+    } else {
+      setLoggedIn(false)
+    }
+  }, [])
 
   return (
     <div className='flex flex-col'>
@@ -21,7 +31,7 @@ function HeroSection() {
         {/* <Button title="Start Asking" buttonStyle='mt-10' Icon={({extras} : {extras : string})=>{
             return <Image src='/assets/button-arrow.svg' className={extras} alt='Arrow' width={15} height={15} priority />
         }} /> */}
-        <Link href="/chat-bot" className='self-center z-20'>
+        <Link href={loggedIn ? "/chat-bot" : "/auth/login"} className='self-center z-20'>
           <PrimaryButton title="Start Asking" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer' showIcon />
         </Link>
         <div className='flex flex-row justify-between relative md:-mt-24'>

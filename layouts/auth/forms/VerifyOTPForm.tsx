@@ -63,9 +63,10 @@ function VerifyOTPForm() {
 }
 
   function verifyOtp () {
+    if (window != undefined) {
     const phone = localStorage.getItem("phoneForForgotPassword");
 
-    fetch(`ht                tps://server.vikrambots.in/verify-otp/${phone}/${otp}`)
+    fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)
@@ -76,6 +77,7 @@ function VerifyOTPForm() {
             toast.error("Invalid OTP")
         }
     })
+}
 }
 
 

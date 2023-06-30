@@ -261,7 +261,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`https://server.vikrambots.in/google/${message}`, {
+        fetch(`http://localhost:5000/google/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }

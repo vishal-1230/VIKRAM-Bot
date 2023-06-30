@@ -22,14 +22,21 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     useEffect(()=>{
         const userTemp = localStorage.getItem("user")
         let userDetails = JSON.parse(userTemp ? userTemp : "{}")
+
+        console.log("User Details", userDetails)    
   
         console.log("User Details", userDetails)
         if (userDetails.username){
           setShowHistory(true)
           setPersonal(true)
+        } else {
+            setShowHistory(false)
+            setPersonal(false)
         }
         if (userDetails.username_b) {
           setBusiness(true)
+        } else {
+            setBusiness(false)
         }
   
         setUserDetails(userDetails)

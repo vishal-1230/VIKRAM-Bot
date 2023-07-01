@@ -92,7 +92,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
             router.pathname.startsWith("/chat-bot") ? (
               <div className="flex gap-10">
                 {/* <span className="text-warning-500 font-medium flex gap-3 self-end">Upgrade Plan <img src="/assets/thunder-gold.svg" alt="" className="w-3.5 self-start mt-1" /></span> */}
-                <span className="text-white hidden md:block">Help</span>
+                <span className="text-white hidden md:block" onClick={()=>{router.push("/contact-us")}}>Help</span>
               </div>
             ) : (
               <Link href="/contact-us" className='hidden md:block'>

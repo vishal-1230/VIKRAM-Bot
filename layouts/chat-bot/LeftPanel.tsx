@@ -117,9 +117,9 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                 {/* Dark Mode */}
             </span>
 
-            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5">
+            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5" onClick={()=>{router.push("/")}}>
                 <LaunchOutlined />
-                Updates & FAQ
+                FAQs
             </span>
 
             <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); router.replace("/")}}>

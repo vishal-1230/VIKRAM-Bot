@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react"
 import ChatList from "./ChatList"
-import { Autorenew, CancelOutlined, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { Autorenew, CancelOutlined, CheckCircle, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
@@ -17,11 +17,12 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
   const [userDetails, setUserDetails] = useState<any>(null)
 
-  const [chatCategory, setChatCategory] = useState<"personal" | "business" | "business_initiator" | "initiator">("personal")
+  const [chatCategory, setChatCategory] = useState<"personal" | "personaltraining" | "business" | "business_initiator" | "initiator">("personal")
 
   const [plugin, setPlugin] = useState<"News" | "Weather" | "IMDB" | "Google" | "YouTube" | "none">("none")
     
     const [chats, setChats] = useState<{message: string, sender: string}[]>([])
+    const [personalTrainingChats, setPersonalTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [trainingChats, setTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [thirdChats, setThirdChats] = useState<{message: string, sender: string}[]>([])
     const [thirdBusinessChats, setThirdBusinessChats] = useState<{message: string, sender: string}[]>([])
@@ -35,6 +36,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     const [userMessage, setUserMessage] = useState("")
 
     const [token, setToken] = useState<string>("")
+
+    const [connectedBot, setConnectedBot] = useState<string | null>(null)
 
 
     const [categories, setCategories] = useState<{text: string, onClick: any}[]>([
@@ -74,6 +77,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       console.log(message)
       if (chatCategory === "personal") {
         setChats([...chats, {message: message, sender: "user"}, {message: "Loading...", sender: "bot"}])
+      } else if (chatCategory === "personaltraining") {
+        setPersonalTrainingChats([...personalTrainingChats, {message: message, sender: "user"}, {message: "Loading...", sender: "bot"}])
       } else if (chatCategory === "business") {
         setTrainingChats([...trainingChats, {message: message, sender: "user"}, {message: "Loading...", sender: "bot"}])
       } else if (chatCategory === "initiator") {
@@ -85,6 +90,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       let uri = ""
       if(chatCategory === "personal") {
         uri = `https://server.vikrambots.in/general/${message}`
+      } else if (chatCategory === "personaltraining") {
+        uri = ""
       } else if(chatCategory === "business") {
         uri = `https://server.vikrambots.in/training/${message}`
       } else if(chatCategory === "initiator") {
@@ -228,7 +235,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
               ...chats,
               { message: message, sender: "user" },
               {
-                message: "Apologies, people are using my servers too much",
+                message: "Apologies, people are using our servers too much",
                 sender: "bot",
               },
             ]);
@@ -261,7 +268,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`http://localhost:5000/google/${message}`, {
+        fetch(`https://server.vikrambots.in/google/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -350,6 +357,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         setConnecting(false)
       } else {
         toast.success("Connected to "+toConnectWith+" successfully!")
+        setConnectedBot(toConnectWith)
         setConnecting(false)
       }
     }
@@ -377,6 +385,16 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       setChats(temp.reverse())
     }
 
+    async function fetchPersonalTrainingMessage () {
+      const response = await fetch("")
+      const data = await response.json()
+    }
+
+    async function fetchBothsMessages () {
+      const response = await fetch ("")
+      const data = await response.json()
+    }
+
     async function fetchTrainingMessage () {
       const userTemp = localStorage.getItem("user")
       const userDetails = JSON.parse(userTemp ? userTemp : "{}")
@@ -399,10 +417,13 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     const descriprions = {
       "personal": "Use this window like a regular ChatGPT interface for the same output. Your intelligence in getting the best response won't be available to ChatGPT. You don't want to make ChatGPT smarter at your expense!",
+      "personaltraining": "",
       "business": "You are using your own agent. Use the below window to simulate how your bot is using the Role Description & Steps you have set to answer others. Go Back to the role description and steps and edit if you don't like what you see.",
       "initiator": "You are connecting to someone's personal bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see.",
       "business_initiator": "You are connecting to some business's bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see."
     }
+    const [showPersonalBotDialog, setShowPersonalBotDialog] = [props.showPersonalBotDialog, props.setShowPersonalBotDialog]
+    const [showBusinessBotDialog, setShowBusinessBotDialog] = [props.showBusinessBotDialog, props.setShowBusinessBotDialog]
 
     useEffect(()=>{
       console.log("chat", chats)
@@ -431,6 +452,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         if (userDetails.username_b) {
           setCategories([
             {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+            {text: "Personal Bot Testing", onClick: ()=> {setChatCategory("personaltraining")}},
             {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
             {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
             {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
@@ -439,6 +461,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         } else {
           setCategories([
             {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+            {text: "Personal Bot Testing", onClick: ()=> {setChatCategory("personaltraining")}},
             {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
             {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
           ])
@@ -452,11 +475,14 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         ])
         localStorage.getItem("token") && fetchTrainingMessage()
       }
-
+      
       setUserDetails(userDetails)
-      userDetails.username ? getAllPersonalInfo() : getAllBusinessInfo()
-
+      
     }, [])
+    
+    useEffect(()=>{
+      userDetails?.username ? getAllPersonalInfo() : getAllBusinessInfo()
+    }, [showPersonalBotDialog, showBusinessBotDialog])
 
     const mode = props.mode
     const setMode = props.setMode
@@ -489,10 +515,6 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     const [showSampleRoleDescription, setShowSampleRoleDescription] = useState(false)
     const [showSampleBusinessSteps, setShowSampleBusinessSteps] = useState(false)
-
-    const [showPersonalBotDialog, setShowPersonalBotDialog] = [props.showPersonalBotDialog, props.setShowPersonalBotDialog]
-    const [showBusinessBotDialog, setShowBusinessBotDialog] = [props.showBusinessBotDialog, props.setShowBusinessBotDialog]
- 
     
     const [userInfoLoading, setUserInfoLoading] = useState(false)
     const [botRulesLoading, setBotRulesLoading] = useState(false)
@@ -587,6 +609,65 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       }
     }
 
+    const [updatingUserInfo, setUpdatingUserInfo] = useState<boolean>(false)
+    const [updatingRules, setUpdatingRules] = useState<boolean>(false)
+    const [updatingCompanyDetails, setUpdatingCompanyDetails] = useState<boolean>(false)
+    const [updatingRoleDescription, setUpdatingRoleDescription] = useState<boolean>(false)
+    const [updatingSteps, setUpdatingSteps] = useState<boolean>(false)
+    
+
+    async function updateInfo (type: string) {
+      let title: string = ""
+      let uri: string = ""
+      let body: {[property: string]: string} = {}
+
+      switch (type) {
+        case "user_info":
+          title = "User Info"
+          uri = "https://server.vikrambots.in/edit_user_info"
+          body = {info: user_info}
+          break;
+        case "rules":
+          title = "Rules"
+          uri = "https://server.vikrambots.in/edit_rules"
+          body = {rules: botRules2}
+          break;
+        case "company_details":
+          title = "Company Details"
+          uri = "https://server.vikrambots.in/edit_company_info"
+          body = {company_details: companyDetails}
+          break;
+        case "role_description":
+          title = "Role Description"
+          uri = "https://server.vikrambots.in/edit_role_description"
+          body = {role_description: roleDesciption}
+          break;
+        case "steps":
+          title = "Steps"
+          uri = "https://server.vikrambots.in/edit_steps"
+          body = {steps: botBusinessSteps2}
+          break;
+        default:
+          break;
+      }
+
+      const reponse = await fetch(uri, {
+        method: "POST",
+        headers: {
+          "x-access-token": localStorage.getItem("token")!,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      })
+      const data = await reponse.json()
+      console.log(data)
+
+      toast.success(`${title} updated successfully!`, {
+        autoClose: 1000
+      })
+
+    }
+
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-white text-bg-500" : "bg-bg-700 text-white"}`}>
         <ToastContainer position="bottom-right" autoClose={2500} />
@@ -649,6 +730,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         </label>
                         <Button title="Update my Info" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         // trainBotRules()
+                        updateInfo("user_info")
                     }} />
                     </div>
                     <div className="flex flex-col h-full items-center  gap-2 px-6 py-5">
@@ -696,6 +778,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         </label>
                         <Button title="Update bot rules" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         // trainBotRules()
+                        updateInfo("rules")
                     }} />
                     </div>
                 </div>
@@ -746,7 +829,10 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md w-full' onChange={(e)=>{ e?.target?.files && setCompanyDetailsFile(e?.target?.files[0]) }} />
 
                         </label>
-                        <Button title="Update company info" buttonStyle='mx-auto font-semibold mt-8' onClick={console.log} />
+                        <Button title="Update company info" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
+                            // trainBotSteps()
+                            updateInfo("company_details")
+                        }} />
 
                         {/* </div> */}
                         {/* <div className="flex gap-3 items-center"> */}
@@ -779,7 +865,10 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                             <input type="file" name="" id="" className='self-center text-center text-sm text-white p-1 min-h-fit outline-none rounded-md' onChange={(e)=>{e?.target?.files && setRoleDescriptionFile(e?.target?.files[0])}} />
 
                         </label>
-                            <Button title="Update Bot Role" buttonStyle='mx-auto font-semibold mt-8' onClick={console.log} />
+                            <Button title="Update Bot Role" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
+                                // trainBotSteps()
+                                updateInfo("role_description")
+                            }} />
                           {/* </div> */}
                       </div>
                       <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-8 py-8">
@@ -825,7 +914,10 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         </span>
                             <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md' onChange={(e)=>{e?.target?.files && setBotBusinessStepsFile(e?.target?.files[0])}} />
                         </label>
-                            <Button title="Update Steps" buttonStyle='mx-auto font-semibold mt-8' onClick={console.log} />
+                            <Button title="Update Steps" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
+                                // trainBotSteps()
+                                updateInfo("steps")
+                            }} />
                           {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
                       </div>
                   </div>
@@ -852,8 +944,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           (chatCategory === "initiator" || chatCategory === "business_initiator") && 
         <div className="flex p-1.5 border-b border-b-gray-500 mr-auto ml-3 z-50 self-end">
           <input type="text" className="bg-transparent z-50 outline-none text-sm text-neutral-400 w-fit" placeholder="Enter any VBot ID" value={toConnectWith} onChange={(e)=>{setToConnectWith(e.target.value)}} />
-          <PrimaryButton buttonStyle="ml-5 text-xs" title={connecting ? "Connecting" : "Connect"} onClick={checkBotExists} showIcon Icon={
-            ()=>{return <Autorenew className={`w-4 h-4 fill-white ${connecting && "animate-spin"}`} />}
+          <PrimaryButton buttonStyle="ml-5 text-xs" title={connecting ? "Connecting" : connectedBot===toConnectWith ? "Connected" : "Connect"} onClick={connectedBot===toConnectWith ? console.log : checkBotExists} showIcon Icon={
+            ()=>{return connectedBot===toConnectWith ? <CheckCircle className="w-4 h-4 fill-green-500" /> : <Autorenew className={`w-4 h-4 fill-white ${connecting && "animate-spin"}`} />}
           } />
         </div>
         }
@@ -903,7 +995,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           <div className={`flex flex-row justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
             <input
               type="text"
-              className="bg-transparent grow  text-sm border-none outline-none text-neutral-500"
+              className="bg-transparent grow text-sm border-none outline-none text-neutral-500"
               placeholder="Text area"
               value={userMessage}
               onKeyUp={(e) => {
@@ -917,7 +1009,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
             />
             <div className="icons flex gap-5">
               {/* <MicNoneOutlined className="w-5 h-5 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" /> */}
-              <SendOutlined onClick={sendMessage} className="w-5 h-5 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" />
+              <SendOutlined onClick={()=> {console.log(chats); (chats.length>0 && chats[chats?.length-1]?.message==="Loading...") ? console.log('l') : sendMessage()}} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
             </div>
           </div>
 

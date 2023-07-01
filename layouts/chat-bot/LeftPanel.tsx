@@ -22,14 +22,21 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     useEffect(()=>{
         const userTemp = localStorage.getItem("user")
         let userDetails = JSON.parse(userTemp ? userTemp : "{}")
+
+        console.log("User Details", userDetails)    
   
         console.log("User Details", userDetails)
         if (userDetails.username){
           setShowHistory(true)
           setPersonal(true)
+        } else {
+            setShowHistory(false)
+            setPersonal(false)
         }
         if (userDetails.username_b) {
           setBusiness(true)
+        } else {
+            setBusiness(false)
         }
   
         setUserDetails(userDetails)
@@ -110,9 +117,9 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                 {/* Dark Mode */}
             </span>
 
-            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5">
+            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5" onClick={()=>{router.push("/")}}>
                 <LaunchOutlined />
-                Updates & FAQ
+                FAQs
             </span>
 
             <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); router.replace("/")}}>

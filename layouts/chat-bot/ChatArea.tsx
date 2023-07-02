@@ -416,7 +416,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     async function fetchBothsMessages () {
       setLoadingThirdMessages(true)
-      const response = await fetch (`http://localhost:5000/chats/${toConnectWith}/${userDetails.username}`)
+      const response = await fetch (`https://server.vikrambots.in/chats/${toConnectWith}/${userDetails.username}`)
       const data = await response.json()
       setLoadingThirdMessages(false)
 
@@ -432,7 +432,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     async function fetchBothsBusinessMessage () {
       setLoadingThirdBusinessMessages(true)
-      const response = await fetch(`http://localhost:5000/chats/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${userDetails.username}`)
+      const response = await fetch(`https://server.vikrambots.in/chats/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${userDetails.username}`)
       const data = await response.json()
       setLoadingThirdBusinessMessages(false)
 

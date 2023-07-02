@@ -15,19 +15,23 @@ function Features() {
         <FeaturesList features={[
           {
             image: '/assets/feature-image1.svg',
-            description: 'Built-in learning for specific use cases like shopping, food delivery, ticket booking, and job search. So you get way better answers than chatgpt.'
-          },
-          {
-            image: '/assets/feature-image2.svg',
-            description: 'Conversations on WhatsApp that feel more human-like and less like AI.'
+            title: "Get your own bot and Train it",
+            description: 'Get a bot for yourself and tell it about yourself and train with your skills. Easy to learn training framework. Train your bot with 0 coding.'
           },
           {
             image: '/assets/feature-image3.svg',
-            description: "A long-term memory to store interactions, making it a perfect note-taking companion."
+            title: "Knowledge Base",
+            description: "Have your bot learn from your own custom documents."
+          },
+          {
+            image: '/assets/feature-image2.svg',
+            title: "Use ChatGPT without giving it your expertise",
+            description: "Vikram bots use ChatGPT's power, but your interactions train your own bot, not ChatGPT."
           },
           {
             image: "/assets/feature-image4.svg",
-            description: "The power to browse the internet and fetch relevant data through web-scraping, like news, weather, and Wikipedia info."
+            title: "Plugins",
+            description: "Inbuilt APIs to Browse the Web, YouTube and much more…"
           }
         ]} />
       </div>

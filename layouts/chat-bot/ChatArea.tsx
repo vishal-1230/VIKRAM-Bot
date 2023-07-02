@@ -91,7 +91,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       if(chatCategory === "personal") {
         uri = `https://server.vikrambots.in/general/${message}`
       } else if (chatCategory === "personaltraining") {
-        uri = ""
+        uri = `https://server.vikrambots.in/test_personal/${message}`
       } else if(chatCategory === "business") {
         uri = `https://server.vikrambots.in/training/${message}`
       } else if(chatCategory === "initiator") {
@@ -104,7 +104,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${message}`
+          uri = `https://server.vikrambots.in/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
         }
       }
       console.log("URI=>", uri)
@@ -121,6 +121,12 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
             if (chatCategory === "personal") {
               setChats([
                 ...chats,
+                { message: message, sender: "user" },
+                { message: data.message, sender: "bot" },
+              ]);
+            } else if (chatCategory === "personaltraining") {
+              setPersonalTrainingChats([
+                ...personalTrainingChats,
                 { message: message, sender: "user" },
                 { message: data.message, sender: "bot" },
               ]);
@@ -340,24 +346,30 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith}_b/${message}`
+            uri = `https://server.vikrambots.in/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
         }
       }
 
-      const response = await fetch(uri, {
-        headers: {
-          "x-access-token": localStorage.getItem("token")!,
+      try{
+        const response = await fetch(uri, {
+          headers: {
+            "x-access-token": localStorage.getItem("token")!,
+          }
+        })
+        const data = await response.json()
+        console.log(data)
+  
+        if (data.success == true) {
+          toast.success("Connected to "+toConnectWith+" successfully!")
+          setConnectedBot(toConnectWith)
+          setConnecting(false)
+        } else {
+          toast.error("The VBot ID you entered does not exist. Please try again.")
+          setConnecting(false)
         }
-      })
-      const data = await response.json()
-      console.log(data)
-
-      if (data.success = false) {
-        toast.error("The VBot ID you entered does not exist. Please try again.")
-        setConnecting(false)
-      } else {
-        toast.success("Connected to "+toConnectWith+" successfully!")
-        setConnectedBot(toConnectWith)
+      } catch (err) {
+        console.log(err)
+        toast.error("Couldn't connect to " + toConnectWith + ". Please try again.")
         setConnecting(false)
       }
     }
@@ -388,6 +400,16 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     async function fetchPersonalTrainingMessage () {
       const response = await fetch("")
       const data = await response.json()
+    }
+
+    async function pastConnections () {
+      const response = await fetch("https://server.vikrambots.in/get-connections", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")!,
+        }
+      })
+      const data = await response.json()
+      console.log("CONNxns", data)
     }
 
     async function fetchBothsMessages () {
@@ -422,6 +444,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       "initiator": "You are connecting to someone's personal bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see.",
       "business_initiator": "You are connecting to some business's bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see."
     }
+
     const [showPersonalBotDialog, setShowPersonalBotDialog] = [props.showPersonalBotDialog, props.setShowPersonalBotDialog]
     const [showBusinessBotDialog, setShowBusinessBotDialog] = [props.showBusinessBotDialog, props.setShowBusinessBotDialog]
 
@@ -433,6 +456,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     }, [chatCategory])
 
     useEffect(()=>{
+      // delete this calling
+      pastConnections()
       const userTemp = localStorage.getItem("user")
       let userDetails = JSON.parse(userTemp ? userTemp : "{}")
 
@@ -452,7 +477,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         if (userDetails.username_b) {
           setCategories([
             {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
-            {text: "Personal Bot Testing", onClick: ()=> {setChatCategory("personaltraining")}},
+            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
             {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
             {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
             {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
@@ -461,7 +486,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         } else {
           setCategories([
             {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
-            {text: "Personal Bot Testing", onClick: ()=> {setChatCategory("personaltraining")}},
+            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
             {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
             {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
           ])
@@ -626,26 +651,31 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           title = "User Info"
           uri = "https://server.vikrambots.in/edit_user_info"
           body = {info: user_info}
+          setUpdatingUserInfo(true)
           break;
         case "rules":
           title = "Rules"
           uri = "https://server.vikrambots.in/edit_rules"
           body = {rules: botRules2}
+          setUpdatingRules(true)
           break;
         case "company_details":
           title = "Company Details"
           uri = "https://server.vikrambots.in/edit_company_info"
           body = {company_details: companyDetails}
+          setUpdatingCompanyDetails(true)
           break;
         case "role_description":
           title = "Role Description"
-          uri = "https://server.vikrambots.in/edit_role_description"
+          uri = "https://server.vikrambots.in/edit_botrole"
           body = {role_description: roleDesciption}
+          setUpdatingRoleDescription(true)
           break;
         case "steps":
           title = "Steps"
           uri = "https://server.vikrambots.in/edit_steps"
-          body = {steps: botBusinessSteps2}
+          body = {new_steps: botBusinessSteps2}
+          setUpdatingSteps(true)
           break;
         default:
           break;
@@ -661,10 +691,17 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       })
       const data = await reponse.json()
       console.log(data)
+      setUpdatingUserInfo(false)
+      setUpdatingRules(false)
+      setUpdatingCompanyDetails(false)
+      setUpdatingRoleDescription(false)
+      setUpdatingSteps(false)
 
-      toast.success(`${title} updated successfully!`, {
-        autoClose: 1000
-      })
+      if (data.success === true) {
+        toast.success(title + " updated successfully!")
+      } else {
+        toast.error("Something went wrong. Please try again.")
+      }
 
     }
 
@@ -702,7 +739,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         <span className="text-semibold">Tell the bot about yourself (optional)</span>
                         <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
                         {
-                            userInfoLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                            userInfoLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} value={user_info} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         }
 
                         <span className="text-semibold mb-2 mt-8 justify-self-end">or Simply upload your Resume PDF</span>
@@ -731,7 +768,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         <Button title="Update my Info" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         // trainBotRules()
                         updateInfo("user_info")
-                    }} />
+                          }}
+                          Icon={()=> {return updatingUserInfo === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <></>}}
+                        />
                     </div>
                     <div className="flex flex-col h-full items-center  gap-2 px-6 py-5">
                         <span className='text-semibold'>Edit rules manually</span>
@@ -778,8 +817,10 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         </label>
                         <Button title="Update bot rules" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         // trainBotRules()
-                        updateInfo("rules")
-                    }} />
+                            updateInfo("rules")
+                          }}
+                          Icon={()=> {return updatingRules === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
+                        />
                     </div>
                 </div>
                 <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
@@ -832,7 +873,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         <Button title="Update company info" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
                             // trainBotSteps()
                             updateInfo("company_details")
-                        }} />
+                        }}
+                        Icon={()=> {return updatingCompanyDetails === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <></>}}
+                        />
 
                         {/* </div> */}
                         {/* <div className="flex gap-3 items-center"> */}
@@ -868,7 +911,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                             <Button title="Update Bot Role" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
                                 // trainBotSteps()
                                 updateInfo("role_description")
-                            }} />
+                            }}
+                            Icon={()=> {return updatingRoleDescription === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <></>}}
+                            />
                           {/* </div> */}
                       </div>
                       <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-8 py-8">
@@ -917,7 +962,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                             <Button title="Update Steps" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
                                 // trainBotSteps()
                                 updateInfo("steps")
-                            }} />
+                            }}
+                            Icon={()=> {return updatingSteps === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <></>}}
+                            />
                           {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
                       </div>
                   </div>
@@ -978,7 +1025,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         ]} />
       </div>
         <ChatList
-          chats={ chatCategory != "personal" ? chatCategory != "business" ? chatCategory != "initiator" ? thirdBusinessChats : thirdChats : trainingChats : chats }
+          chats={ chatCategory != "personal" ? chatCategory != "personaltraining" ? chatCategory != "business" ? chatCategory != "initiator" ? thirdBusinessChats : thirdChats : trainingChats : personalTrainingChats : chats }
           mode={mode}
           setMode={setMode}
         />

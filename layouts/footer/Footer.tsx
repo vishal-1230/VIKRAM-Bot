@@ -32,7 +32,7 @@ function Footer(props: {invertColor?: boolean}) {
       </div>
 
       {/* Common Links */}
-      <div className={`flex flex-col ${inter.className} self-start md:self-center text-sm`}>
+      <div className={`flex flex-col ${inter.className} self-start text-sm`}>
         <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Common Links</span>
         <Link href="/" className='my-1'>Home</Link>
         <Link href="/about-us" className='my-1'>About Us</Link>
@@ -51,13 +51,13 @@ function Footer(props: {invertColor?: boolean}) {
       </div>
         
       {/* Newsletter */}
-      <div className={`flex flex-col ${inter.className} text-sm`}>
+      {/* <div className={`flex flex-col ${inter.className} text-sm`}>
         <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Subscribe to Newsletter</span>
         <div className='flex flex-col md:flex-row gap-3'>
           <input type="email" className='py-2 px-3 bg-[#fff] text-white border-[1px] border-neutral-500 rounded outline-none font-medium' placeholder='Email Id' />
           <PrimaryButton title='Subscribe' />
         </div>
-      </div>
+      </div> */}
       </div>
 
     </div>

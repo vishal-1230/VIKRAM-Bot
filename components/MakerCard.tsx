@@ -10,7 +10,7 @@ function MakerCard(props: MakerCardProps) {
             <span className="text-lg font-normal text-bg-50 mt-1">{props.description}</span>
         </div>
         <div className="flex flex-row gap-4 mt-4 px-4 pb-4">
-            <a href={props.linkedin} target="_blank" rel="noreferrer" className="bg-bg-900 w-9 h-9 rounded-full p-3 flex justify-center items-center">
+            <a href={props.linkedin} target="_blank" rel="noreferrer" className="bg-bg-900 text-white w-9 h-9 rounded-full p-3 flex justify-center items-center">
                 <LinkedIn className="fill-white w-5 h-5" />
             </a>
             <a href={props.instagram} target="_blank" rel="noreferrer" className="bg-bg-900 w-9 h-9 rounded-full p-2 flex justify-center items-center">

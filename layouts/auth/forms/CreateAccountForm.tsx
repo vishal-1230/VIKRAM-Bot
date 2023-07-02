@@ -111,7 +111,7 @@ function CreateAccountForm(props: any) {
         console.log(username)
 
         console.log(name, email, phoneNumber, password, confirmPassword, checkboxInputs)
-        const response = await fetch('https://server.vikrambots.in/register', {
+        const response = await fetch('http://localhost:5000/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -208,7 +208,7 @@ function CreateAccountForm(props: any) {
         data.append("info_file", user_info_file)
 
 
-        const response = await fetch("https://server.vikrambots.in/store-rules", {
+        const response = await fetch("http://localhost:5000/store-rules", {
             method: "POST",
             body: data,
             headers: {
@@ -284,7 +284,7 @@ function CreateAccountForm(props: any) {
             data.append("company_file", companyDetailsFile)
     
             try {
-                const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
+                const response = await fetch("http://localhost:5000/store-role-steps-info", {
                     method: "POST",
                     body: data,
                     headers: {
@@ -326,7 +326,7 @@ function CreateAccountForm(props: any) {
                 });
         }
 
-        const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
+        const response = await fetch(`http://localhost:5000/get-otp/${phone}`)
         const data = await response.json()
         console.log(data)
 
@@ -362,7 +362,7 @@ function CreateAccountForm(props: any) {
     function verifyOtp () {
         const phone = phoneNumber;;
 
-        fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
+        fetch(`http://localhost:5000/verify-otp/${phone}/${otp}`)
         .then(response => response.json())
         .then(data => {
             console.log(data)
@@ -743,18 +743,18 @@ function CreateAccountForm(props: any) {
               </Card>
           </div>
 
-        <InputGroup value={name} onChange={setName} hintAccessory={()=>{return validate("name", name)}} label='Full Name' placeholder='Your Full Name' type="text" className='!mt-10' />
+        <InputGroup value={name} required onChange={setName} hintAccessory={()=>{return validate("name", name)}} label='Full Name' placeholder='Your Full Name' type="text" className='!mt-10' />
         
         {/* <InputGroup value={username} onChange={setUsername} hintAccessory={()=>{validate("username", username)}} label='Username' placeholder='Your Username to be used for loggin in' type="username" /> */}
 
-        <InputGroup value={email} onChange={setEmail} label='Email Address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />
+        <InputGroup value={email} required onChange={setEmail} label='Email Address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />
 
-        <InputGroup label='Phone Number' value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span className='text-green-400 text-xs font-semibold'>Phone Nubmer verified!</span> : <span onClick={sendOtp} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
+        <InputGroup label='Phone Number' required value={phoneNumber} onChange={setPhoneNumber} hintAccessory={()=>{return otpVerified ? <span className='text-green-400 text-xs font-semibold'>Phone Nubmer verified!</span> : <span onClick={sendOtp} className='text-blue-500 cursor-pointer text-xs font-semibold'>Send Verification Code</span>}} placeholder='Your Phone Number' type="number" />
 
         <div id="sign-in-button"></div>
 
         <div className='flex flex-col mt-4 gap-3'>
-            <span className="font-medium text-bg-50">Purpose Of Bot</span>
+            <span className="font-medium text-bg-50">Purpose Of Bot<span className="text-red-500">*</span> </span>
             {/* <div className="flex gap-5">
                 <div className="flex">
                     <input type="radio" checked={purpose === "personal"} onChange={()=>{setPurpose("personal")}} name="purpose" id="purpose1" className='w-4 border-2 outline-2 border-black outline-black p-1 text-sm duration-300' />
@@ -769,8 +769,8 @@ function CreateAccountForm(props: any) {
             <InputGroup type="options" radioOptions={{name: "purpose", title: "Agent", subtext: "You will teach your bot certain skills and it will render its services on your behalf. You may consider monetizing this bot in the future ideal for freelancers, consultants and businesses",  checked: (purpose === "business"), onChange:()=>{setPurpose("business"); console.log(`purpose changed to ${purpose}`)}}} />
             <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal & Agent", subtext: "You will get 2 separate ids. One for personal and another for agent.",  checked: (purpose === "personalandbusiness"), onChange:()=>{setPurpose("personalandbusiness"); console.log(`purpose changed to ${purpose}`)}}} />
             
-            <InputGroup label='Personal VBot ID' value={username} onChange={setUsername} placeholder="MyAccount101" type="username" className={`${purpose === "personal" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className='text-xs font-medium text-red-500'>{validate("username", username)}</span>}} />
-            <InputGroup label='Agent Bot ID' value={b_username} onChange={setB_username} placeholder="Username_b that people will see as your business ID" type="username" className={`${purpose === "business" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className={`text-xs ${validate("username", b_username)===true ? "text-gray-600" : "text-red-500"}`}>{b_username && validate("username", b_username)===true ? `Your username will look like ${b_username}_b` : validate("username", b_username)}</span>}} />
+            <InputGroup label='Personal VBot ID' required value={username} onChange={setUsername} placeholder="MyAccount101" type="username" className={`${purpose === "personal" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className='text-xs font-medium text-red-500'>{validate("username", username)}</span>}} />
+            <InputGroup label='Agent Bot ID' required value={b_username} onChange={setB_username} placeholder="Username_b that people will see as your business ID" type="username" className={`${purpose === "business" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className={`text-xs ${validate("username", b_username)===true ? "text-gray-600" : "text-red-500"}`}>{b_username && validate("username", b_username)===true ? `Your username will look like ${b_username}_b` : validate("username", b_username)}</span>}} />
         </div>
 
         <div id="recaptcha"></div>
@@ -781,6 +781,7 @@ function CreateAccountForm(props: any) {
             type="password"
             value={password}
             onChange={setPassword}
+            required
             hintAccessory={()=>{return validate("password", password)}}
             // passwordAccessory={
             //     <label htmlFor="password" className='text-sm text-neutral-900'>
@@ -792,6 +793,7 @@ function CreateAccountForm(props: any) {
             label='Confirm Password'
             placeholder='Re-Enter Password'
             type="password"
+            required
             value={confirmPassword}
             hintAccessory={()=>{return validate("confirmPassword", confirmPassword)}}
             onChange={setConfirmPassword}

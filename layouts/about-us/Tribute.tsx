@@ -16,7 +16,7 @@ function Tribute() {
             <SpecialText extra="text-5xl font-bold mb-6 text-center md:text-left">Tribute to Vikrambhai</SpecialText>
             {
                 tributeTextArray.map((paragraph, index) => {
-                    return <p key={index} className="text-bg-50 mt-4">{paragraph}</p>
+                    return <p key={index} className="text-bg-50 mt-4 text-justify">{paragraph}</p>
                 })
             }
         </div>

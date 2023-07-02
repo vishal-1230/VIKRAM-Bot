@@ -102,7 +102,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
           }
           {/* <Link href="/auth/create-account" className='self-center flex gap-5 items-center'> */}
             {
-              router.pathname.startsWith("/chat-bot") && infoLoading ? <img src="/assets/loading-circle.svg" className='w-6 h-6 ml-4' /> : <span className="text-white hidden md:block ml-4">{userDetails?.name}</span>
+              router.pathname.startsWith("/chat-bot") && (infoLoading ? <img src="/assets/loading-circle.svg" className='w-6 h-6 ml-4' /> : <span className="text-white hidden md:block ml-4">{userDetails?.name}</span>)
             }
             <div className="relative">
               <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block ' width={30} height={30} priority onClick={()=>{

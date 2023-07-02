@@ -6,8 +6,8 @@ const orbitron = Orbitron({ subsets: ['latin'] })
 
 function MissionVision() {
 
-    const mission = "At the core of our mission is a profound ambition: to revolutionize the landscape of digital interactions for individuals and organizations. Our vision entails a transformative paradigm shift in everyday communication, accomplished through the deployment of autonomous and personalized AI bots."
-    const vision = "Our mission is to empower users to create their unique bot identities, setting new standards for digital interaction, and freeing individuals and organizations to focus on what truly matters. Through our innovative platform, we aim to provide a tool that enables seamless, autonomous communication in an increasingly connected world."
+    const vision = "At the core of our mission is a profound ambition: to revolutionize the landscape of digital interactions for individuals and organizations. Our vision entails a transformative paradigm shift in everyday communication, accomplished through the deployment of autonomous and personalized AI bots."
+    const mission = "Our mission is to empower users to create their unique bot identities, setting new standards for digital interaction, and freeing individuals and organizations to focus on what truly matters. Through our innovative platform, we aim to provide a tool that enables seamless, autonomous communication in an increasingly connected world."
 
   return (
     <div className="bg-bg-900 w-full px-4 md:px-24 p-14 md:p-24 flex flex-col items-center">

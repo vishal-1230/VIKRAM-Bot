@@ -655,25 +655,25 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           break;
         case "rules":
           title = "Rules"
-          uri = "http://localhost:5000/edit_rules"
+          uri = "https://server.vikrambots.in/edit_rules"
           body = {rules: botRules2}
           setUpdatingRules(true)
           break;
         case "company_details":
           title = "Company Details"
-          uri = "http://localhost:5000/edit_company_info"
+          uri = "https://server.vikrambots.in/edit_company_info"
           body = {company_details: companyDetails}
           setUpdatingCompanyDetails(true)
           break;
         case "role_description":
           title = "Role Description"
-          uri = "http://localhost:5000/edit_botrole"
+          uri = "https://server.vikrambots.in/edit_botrole"
           body = {role_description: roleDesciption}
           setUpdatingRoleDescription(true)
           break;
         case "steps":
           title = "Steps"
-          uri = "http://localhost:5000/edit_steps"
+          uri = "https://server.vikrambots.in/edit_steps"
           body = {new_steps: botBusinessSteps2}
           setUpdatingSteps(true)
           break;

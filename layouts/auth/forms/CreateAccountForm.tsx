@@ -111,7 +111,7 @@ function CreateAccountForm(props: any) {
         console.log(username)
 
         console.log(name, email, phoneNumber, password, confirmPassword, checkboxInputs)
-        const response = await fetch('http://localhost:5000/register', {
+        const response = await fetch('https://server.vikrambots.in/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -208,7 +208,7 @@ function CreateAccountForm(props: any) {
         data.append("info_file", user_info_file)
 
 
-        const response = await fetch("http://localhost:5000/store-rules", {
+        const response = await fetch("https://server.vikrambots.in/store-rules", {
             method: "POST",
             body: data,
             headers: {
@@ -284,7 +284,7 @@ function CreateAccountForm(props: any) {
             data.append("company_file", companyDetailsFile)
     
             try {
-                const response = await fetch("http://localhost:5000/store-role-steps-info", {
+                const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
                     method: "POST",
                     body: data,
                     headers: {
@@ -326,7 +326,7 @@ function CreateAccountForm(props: any) {
                 });
         }
 
-        const response = await fetch(`http://localhost:5000/get-otp/${phone}`)
+        const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
         const data = await response.json()
         console.log(data)
 
@@ -362,7 +362,7 @@ function CreateAccountForm(props: any) {
     function verifyOtp () {
         const phone = phoneNumber;;
 
-        fetch(`http://localhost:5000/verify-otp/${phone}/${otp}`)
+        fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
         .then(response => response.json())
         .then(data => {
             console.log(data)

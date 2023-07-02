@@ -13,14 +13,10 @@ function Makers() {
                 <img src="/assets/makers-bg-1.png" alt="" />
                 <img src="/assets/makers-bg-2.png" alt="" />
             </div>
-            <MakerCard />
-            <MakerCard />
-            <MakerCard />
-            <MakerCard />
-            <MakerCard />
-            <MakerCard />
-            <MakerCard />
-            <MakerCard />
+            <MakerCard name="Ria" designation="AI Architect" description="Machine Learning & AI Specialist" />
+            <MakerCard name="Aastha Katakwar" designation="Python Wizard" description="Developer with Expertise in Python and Logic" />
+            <MakerCard name="Vishal Vishwajeet" designation="Web Craftsman" description="Interface Specialist with Backend APIs" />
+            <MakerCard name="Gunjan" designation="Visual Stylist" description="The UI Designer for Web Interface Aesthetics" />
         </div>
 
         <SubscribeBox boxStyle="mt-14" />

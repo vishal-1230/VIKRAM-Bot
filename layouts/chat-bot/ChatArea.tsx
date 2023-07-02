@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import OutlineButton from "@/components/OutlineButton"
 import Button from "@/components/SpecialButton"
 
-function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any}) {
+function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any}) {
 
   const router = useRouter()
 
@@ -30,6 +30,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     const [toConnectWith, setToConnectWith] = useState<string>("")
 
     const [loadingChat, setLoadingChat] = useState(false)
+    const [loadingThirdMessages, setLoadingThirdMessages] = useState(false)
+    const [loadingThirdBusinessMessages, setLoadingThirdBusinessMessages] = useState(false)
 
     const [connecting, setConnecting] = useState(false)
 
@@ -413,8 +415,36 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     }
 
     async function fetchBothsMessages () {
-      const response = await fetch ("")
+      setLoadingThirdMessages(true)
+      const response = await fetch (`http://localhost:5000/chats/${toConnectWith}/${userDetails.username}`)
       const data = await response.json()
+      setLoadingThirdMessages(false)
+
+      console.log(data)
+      let temp:{message: string, sender: string}[] = []
+      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
+        temp.push({message: item.Bot, sender: "bot"})
+        temp.push({message: item.User, sender: "user"})
+      })
+      console.log("TEMP", temp)
+      setThirdChats(temp)
+    }
+
+    async function fetchBothsBusinessMessage () {
+      setLoadingThirdBusinessMessages(true)
+      const response = await fetch(`http://localhost:5000/chats/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${userDetails.username}`)
+      const data = await response.json()
+      setLoadingThirdBusinessMessages(false)
+
+      console.log(data)
+      let temp:{message: string, sender: string}[] = []
+      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
+        temp.push({message: item.Bot, sender: "bot"})
+        temp.push({message: item.User, sender: "user"})
+      })
+      console.log("TEMP", temp)
+      setThirdBusinessChats(temp)
+      console.log("3rd bizz", data)
     }
 
     async function fetchTrainingMessage () {
@@ -508,6 +538,28 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     useEffect(()=>{
       userDetails?.username ? getAllPersonalInfo() : getAllBusinessInfo()
     }, [showPersonalBotDialog, showBusinessBotDialog])
+
+    useEffect(()=>{
+      if (chatCategory === "initiator") {
+        fetchBothsMessages()
+      } else if (chatCategory === "business_initiator") {
+        fetchBothsBusinessMessage()
+      }
+    }, [connectedBot])
+
+    useEffect(()=>{
+      const changeChatTo = props.changeChatTo
+
+      if (changeChatTo?.endsWith("_b")){
+        setChatCategory("business_initiator")
+        setToConnectWith(changeChatTo)
+        checkBotExists()
+      } else if (changeChatTo) {
+        setChatCategory("initiator")
+        setToConnectWith(changeChatTo)
+        checkBotExists()
+      }
+    }, [props.changeChatTo])
 
     const mode = props.mode
     const setMode = props.setMode
@@ -742,11 +794,11 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                             userInfoLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} value={user_info} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         }
 
-                        <span className="text-semibold mb-2 mt-8 justify-self-end">or Simply upload your Resume PDF</span>
+                        {/* <span className="text-semibold mb-2 mt-8 justify-self-end">or Simply upload your Resume PDF</span> */}
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 pb-5 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
                         }} /> */}
-                        <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                        {/* <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
                         }} onDrop={(e)=>{
                             e.preventDefault()
@@ -758,13 +810,12 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         <span className='-mb-2'>
                             or
                         </span>
-                        {/* <input type="file" id="images" accept="image/*" required> */}
                         <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md'
                         // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
                         onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
                         }} />
-                        </label>
+                        </label> */}
                         <Button title="Update my Info" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         // trainBotRules()
                         updateInfo("user_info")
@@ -801,20 +852,19 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                             botRulesLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Type the rules that your bot will follow while interacting' rows={6} cols={4} value={botRules2} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         }
                         {/* <textarea placeholder='Type the rules that your bot will follow while interacting' rows={6} cols={4} value={botRules2} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" /> */}
-                        <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
+                        {/* <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span> */}
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
                         }} /> */}
-                        <label htmlFor="images" className="drop-container" onDragOver={(e)=>{ e.preventDefault() }} onDrop={(e)=>{ e.preventDefault(); setBotRulesFile(e?.dataTransfer?.files[0]) }}>
+                        {/* <label htmlFor="images" className="drop-container" onDragOver={(e)=>{ e.preventDefault() }} onDrop={(e)=>{ e.preventDefault(); setBotRulesFile(e?.dataTransfer?.files[0]) }}>
                         <span className="drop-title">Drop files here</span>
                         <span className='-mb-2'>
                             or
                         </span>
-                        {/* <input type="file" id="images" accept="image/*" required> */}
                         <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
                         }} />
-                        </label>
+                        </label> */}
                         <Button title="Update bot rules" buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         // trainBotRules()
                             updateInfo("rules")
@@ -853,9 +903,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         }
                         {/* <textarea placeholder='Enter role description' rows={5} cols={4} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" /> */}
                         {/* <div className="flex gap-3 items-center"> */}
-                            <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span>
+                            {/* <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span> */}
                             
-                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            {/* <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
                         }} onDrop={(e)=>{
                             e.preventDefault()
@@ -869,7 +919,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         </span>
                         <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md w-full' onChange={(e)=>{ e?.target?.files && setCompanyDetailsFile(e?.target?.files[0]) }} />
 
-                        </label>
+                        </label> */}
                         <Button title="Update company info" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
                             // trainBotSteps()
                             updateInfo("company_details")
@@ -892,8 +942,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                           }
                           {/* <textarea placeholder='Enter role description' rows={5} onChange={(e)=>{setRoleDescription(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" /> */}
                           {/* <div className="flex"> */}
-                            <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span>
-                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            {/* <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span> */}
+                            {/* <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
                         }} onDrop={(e)=>{
                             e.preventDefault()
@@ -907,7 +957,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                         </span>
                             <input type="file" name="" id="" className='self-center text-center text-sm text-white p-1 min-h-fit outline-none rounded-md' onChange={(e)=>{e?.target?.files && setRoleDescriptionFile(e?.target?.files[0])}} />
 
-                        </label>
+                        </label> */}
                             <Button title="Update Bot Role" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
                                 // trainBotSteps()
                                 updateInfo("role_description")
@@ -944,8 +994,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                               botBusinessStepsLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Type the steps that your bot will follow while interacting' rows={5} cols={1} value={botBusinessSteps2} onChange={(e)=>{setBotBusinessSteps2(e.target.value)}} className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full h-full" />
                           }
                             {/* <textarea placeholder='Type the steps that your bot will follow while interacting' rows={5} cols={1} onChange={(e)=>{setBotBusinessSteps2(e.target.value)}} className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full h-full" /> */}
-                            <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span>
-                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            {/* <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span> */}
+                            {/* <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
                         }} onDrop={(e)=>{
                             e.preventDefault()
@@ -958,7 +1008,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
                             or
                         </span>
                             <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md' onChange={(e)=>{e?.target?.files && setBotBusinessStepsFile(e?.target?.files[0])}} />
-                        </label>
+                        </label> */}
                             <Button title="Update Steps" buttonStyle='mx-auto font-semibold mt-8' onClick={()=>{
                                 // trainBotSteps()
                                 updateInfo("steps")
@@ -983,7 +1033,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
 
       <div className="w-fit md:w-full mt-2 py-2 flex flex-col md:flex-row justify-between z-50 backdrop-blur-sm">
-        <Dropdown title="Select a bot" className="md:ml-5 min-w-max" list={categories} />
+        <Dropdown title="Select a bot" className="md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
         <Tooltip title={descriprions[chatCategory]} placement="right">
           <InfoRounded className="w-5 h-5 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 mr-auto self-center mt-2 ml-1" />
         </Tooltip>
@@ -1022,7 +1072,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
             text: "YouTube",
             onClick: () => { setPlugin("YouTube") }
           }          
-        ]} />
+        ]} selectedChatCategory={plugin} />
       </div>
         <ChatList
           chats={ chatCategory != "personal" ? chatCategory != "personaltraining" ? chatCategory != "business" ? chatCategory != "initiator" ? thirdBusinessChats : thirdChats : trainingChats : personalTrainingChats : chats }

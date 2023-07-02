@@ -3,7 +3,7 @@ import { Tooltip } from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any}) {
+function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any}) {
 
     const router = useRouter()
 
@@ -52,7 +52,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
             setShowHistory(false)
             setPersonal(false)
         }
-        if (data.username_b) {
+        if (data.username_b != "None") {
             setBusiness(true)
         } else {
             setBusiness(false)
@@ -110,7 +110,9 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                         ) : (
                             history.map((chat, index) => {
                                 return (
-                                    <span key={index} className="text-sm ml-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">{chat}</span>
+                                    <span key={index} className="text-sm ml-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap" onClick={()=>{props.setChangeChatTo(chat)}}>
+                                        {chat}
+                                    </span>
                                 )
                             })
                         )

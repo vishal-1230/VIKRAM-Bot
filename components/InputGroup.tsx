@@ -11,7 +11,7 @@ function InputGroup(props: InputGroupProps) {
         return (props.type != "password" ? props.type != "number" ? props.type != "description" ? props.type!="options" ? props.type != "username" ?
             // Normal Text Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
-                <span className="font-medium text-bg-50">{props.label}</span>
+                <span className="font-medium text-bg-50">{props.label} {props.required && <span className='text-red-500'>*</span>}</span>
                 <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
                 <span className="text-xs font-medium text-red-500">
                   {props?.hintAccessory!=undefined && props?.hintAccessory()}
@@ -20,7 +20,7 @@ function InputGroup(props: InputGroupProps) {
             :
             // Username Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
-                <span className="font-medium text-bg-50">{props.label}</span>
+                <span className="font-medium text-bg-50">{props.label} {props.required && <span className='text-red-500'>*</span>}</span>
                 <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>{if(!e.target.value.endsWith(" ")){console.log(e.target.value); props.onChange(e.target.value.charAt(0).toUpperCase()+e.target.value.substring(1, e.target.value.length))}}} />
                 {props?.hintAccessory!=undefined && props?.hintAccessory()}
             </div>
@@ -30,19 +30,19 @@ function InputGroup(props: InputGroupProps) {
                   <input type="radio" checked={props.radioOptions?.checked} name={props.radioOptions?.name} id={props.radioOptions?.title} className='w-4 border-2 outline-2 border-black outline-black p-1 text-sm duration-300' />
                   <div className="flex flex-col gap-1">
                     <span className="text-neutral-900 font-medium text-sm">{props.radioOptions?.title}</span>
-                    <span className="text-xs text-neutral-700 font-medium flex-wrap max-w-[80vw] md:max-w-[30vw]">{props.radioOptions?.subtext}</span>
+                    <span className="text-xs text-neutral-700 font-medium flex-wrap max-w-[80vw] md:max-w-[30vw] text-justify">{props.radioOptions?.subtext}</span>
                   </div>
             </div>
             :
             // Textarea Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
-                <span className="font-medium text-bg-50">{props.label}</span>
+                <span className="font-medium text-bg-50">{props.label} {props.required && <span className='text-red-500'>*</span>}</span>
                 <textarea placeholder={props.placeholder} rows={props.textareaRows} cols={props.textareaCols} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
             </div>
             :
             // Number Input with Country Code
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
-                <span className="font-medium text-bg-50">{props.label}</span>
+                <span className="font-medium text-bg-50">{props.label} {props.required && <span className='text-red-500'>*</span>}</span>
                 <div className="flex relative items-center border-[1px] border-[#DDD6D6] rounded-md">
                     <CustomDropdown2 />
                     <input type={props.type} minLength={10} maxLength={12} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
@@ -52,7 +52,7 @@ function InputGroup(props: InputGroupProps) {
             :
             // Password Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
-                <span className="font-medium text-bg-50">{props.label}</span>
+                <span className="font-medium text-bg-50">{props.label} {props.required && <span className='text-red-500'>*</span>}</span>
                 <div className="flex relative items-center">
                     <input type={showPassword ? "text" : "password"} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md grow" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
                     {
@@ -144,6 +144,7 @@ const countryOptions = [
     textareaRows?:number,
     textareaCols?:number,
     radioOptions?:{name:string, title:string, subtext?:string, onClick?:any, onChange?:any, checked?:boolean},
+    required?: boolean
   }
   InputGroup.defaultProps = {
     className: '',
@@ -155,6 +156,7 @@ const countryOptions = [
     textareaRows: 4,
     passwordAccessory: null,
     hintAccessory: null,
+    required: false
   };
   
 

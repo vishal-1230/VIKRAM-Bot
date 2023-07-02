@@ -1,13 +1,27 @@
 import { KeyboardArrowDownOutlined } from '@mui/icons-material'
 import React from 'react'
 
-function Dropdown(props: {title?: string, list: {text: string, icon?:React.ReactDOM, onClick?:any}[], className?: string}) {
+function Dropdown(props: {title?: string, list: {text: string, icon?:React.ReactDOM, onClick?:any}[], className?: string, selectedChatCategory: string, setSelectedChatCategory?: any}) {
 
     const [open, setOpen] = React.useState(false)
 
     const toggle = () => setOpen(!open)
 
-    const [selected, setSelected] = React.useState(props.list[0].text)
+    const cats: {[cat: string]: string} =  {
+        "personal": "My Personal Bot",
+        "personaltraining": "My Personal Bot (Training)",
+        "business": "My Business Bot (Training)",
+        "initiator": "Connect to someone's bot",
+        "business_initiator": "Connect to a Business",
+        "none": "None",
+        "News": "News",
+        "Weather": "Weather",
+        "IMDB": "IMDB",
+        "Google": "Google",
+        "YouTube": "YouTube"
+    }
+
+    const [selected, setSelected] = React.useState(cats[props.selectedChatCategory] ? cats[props.selectedChatCategory] : props.list[0].text)
 
   return (
     <div className={`relative inline-block text-left z-50 ${props?.className}`}>

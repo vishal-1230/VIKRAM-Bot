@@ -38,7 +38,7 @@ function UseCases() {
                     <ul className="md:ml-5 mt-8">
                     {
                         useCases["Normal Users"].map((useCase, index) => {
-                            return <li key={index} className="text-sm text-bg-50 list-disc my-1.5 list-outside">{useCase}</li>
+                            return <li key={index} className="text-sm text-bg-50 list-disc my-1.5 text-justify list-outside">{useCase}</li>
                         })
                     }
                     </ul>

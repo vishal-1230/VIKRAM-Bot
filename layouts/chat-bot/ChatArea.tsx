@@ -30,6 +30,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     const [toConnectWith, setToConnectWith] = useState<string>("")
 
     const [loadingChat, setLoadingChat] = useState(false)
+    const [loadingThirdMessages, setLoadingThirdMessages] = useState(false)
+    const [loadingThirdBusinessMessages, setLoadingThirdBusinessMessages] = useState(false)
 
     const [connecting, setConnecting] = useState(false)
 
@@ -413,8 +415,36 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     }
 
     async function fetchBothsMessages () {
-      const response = await fetch ("")
+      setLoadingThirdMessages(true)
+      const response = await fetch (`http://localhost:5000/chats/${toConnectWith}/${userDetails.username}`)
       const data = await response.json()
+      setLoadingThirdMessages(false)
+
+      console.log(data)
+      let temp:{message: string, sender: string}[] = []
+      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
+        temp.push({message: item.Bot, sender: "bot"})
+        temp.push({message: item.User, sender: "user"})
+      })
+      console.log("TEMP", temp)
+      setThirdChats(temp)
+    }
+
+    async function fetchBothsBusinessMessage () {
+      setLoadingThirdBusinessMessages(true)
+      const response = await fetch(`http://localhost:5000/chats/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${userDetails.username}`)
+      const data = await response.json()
+      setLoadingThirdBusinessMessages(false)
+
+      console.log(data)
+      let temp:{message: string, sender: string}[] = []
+      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
+        temp.push({message: item.Bot, sender: "bot"})
+        temp.push({message: item.User, sender: "user"})
+      })
+      console.log("TEMP", temp)
+      setThirdBusinessChats(temp)
+      console.log("3rd bizz", data)
     }
 
     async function fetchTrainingMessage () {
@@ -508,6 +538,14 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     useEffect(()=>{
       userDetails?.username ? getAllPersonalInfo() : getAllBusinessInfo()
     }, [showPersonalBotDialog, showBusinessBotDialog])
+
+    useEffect(()=>{
+      if (chatCategory === "initiator") {
+        fetchBothsMessages()
+      } else if (chatCategory === "business_initiator") {
+        fetchBothsBusinessMessage()
+      }
+    }, [connectedBot])
 
     const mode = props.mode
     const setMode = props.setMode

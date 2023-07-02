@@ -52,7 +52,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
             setShowHistory(false)
             setPersonal(false)
         }
-        if (data.username_b) {
+        if (data.username_b != "None") {
             setBusiness(true)
         } else {
             setBusiness(false)

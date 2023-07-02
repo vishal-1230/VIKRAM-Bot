@@ -29,10 +29,10 @@ const AccordionItem = ({ header, headerStyle, contentStyle, numbering, expandBut
           }
           {
             expandButton == 2 && <div className="w-9 h-9 flex items-center justify-center ml-auto transition-transform duration-200 ease-in-out bg-white rounded">
-                <Add className={`h-5 w-5 fill-black absolute transition-transform duration-200 ease-in-out block ${
+                <Add className={`h-5 w-5 fill-black text-black absolute transition-transform duration-200 ease-in-out block ${
                     isEnter && "rotate-180 -z-10"
                 }`} />
-                <Remove className={`h-5 w-5 fill-black absolute transition-transform duration-200 -z-10 ease-in-out ${
+                <Remove className={`h-5 w-5 fill-black text-black absolute transition-transform duration-200 -z-10 ease-in-out ${
                     isEnter && "rotate-180 !z-10"
                 }`} />
             </div>

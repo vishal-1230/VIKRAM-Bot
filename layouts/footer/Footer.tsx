@@ -44,8 +44,8 @@ function Footer(props: {invertColor?: boolean}) {
       <div className="flex flex-col self-start">
       <div className={`flex flex-col ${inter.className} text-sm`}>
         <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Contact Us</span>
-        <span className='my-1'>mail@vikram.ai</span>
-        <span className='my-1'>+91 9999999999</span>
+        <span className='my-1'>info@arthlex.com</span>
+        {/* <span className='my-1'>+</span> */}
         <span className='my-1'>Web Interface Team</span>
       </div>
         

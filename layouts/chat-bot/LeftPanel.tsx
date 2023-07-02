@@ -15,32 +15,57 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     const [userDetails, setUserDetails] = useState<any>({})
 
     const [showHistory, setShowHistory] = useState<boolean>(false)
+    const [historyLoading, setHistoryLoading] = useState<boolean>(false)
+    const [history, setHistory] = useState<string[]>([])
 
     const [personal, setPersonal] = useState<boolean>(false)
     const [business, setBusiness] = useState<boolean>(false)
 
-    useEffect(()=>{
-        const userTemp = localStorage.getItem("user")
-        let userDetails = JSON.parse(userTemp ? userTemp : "{}")
+    async function getChats() {
+        setHistoryLoading(true)
+        const res = await fetch("https://server.vikrambots.in/history", {
+            headers: {
+                "x-access-token": localStorage.getItem("token")!
+            }
+        })
+        const data = await res.json()
+        setHistoryLoading(false)
+        console.log("Data", data)
+        if (data.success) {
+            setHistory(data.message)
+        }
+    }
 
-        console.log("User Details", userDetails)    
-  
-        console.log("User Details", userDetails)
-        if (userDetails.username){
-          setShowHistory(true)
-          setPersonal(true)
+    async function userInfo () {
+        const res = await fetch("https://server.vikrambots.in/ginfo", {
+            headers: {
+                "x-access-token": localStorage.getItem("token")!
+            }
+        })
+        const data = await res.json()
+        console.log(data)
+        if (data.username != data.username_b){
+            setShowHistory(true)
+            setPersonal(true)
+            getChats()
         } else {
             setShowHistory(false)
             setPersonal(false)
         }
-        if (userDetails.username_b) {
-          setBusiness(true)
+        if (data.username_b) {
+            setBusiness(true)
         } else {
             setBusiness(false)
         }
-  
-        setUserDetails(userDetails)
-  
+        setUserDetails(data)
+    }
+
+    useEffect(()=>{
+        if (localStorage.getItem("token")) {
+            userInfo()
+        } else {
+            router.replace("/auth/login")
+        }  
       }, [])
 
   return (
@@ -69,19 +94,30 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
             </div>
 
         {
-            showHistory &&
+            Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-8 h-8 seld-center" /> : showHistory &&
             <div className="flex flex-col gap-4">
                 <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
                     <UpdateOutlined />
                     Your Chats History
                 </span>
                 
-                <Tooltip title="VIKRAM Bot" placement="right">
-                    <span className="text-sm text-transparent cursor-default bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Can you prepare a writeup for my presentation</span>
-                </Tooltip>
-                <Tooltip title="Trial Bot" placement="right">
-                    <span className="text-sm text-transparent cursor-default bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Suggest some stress relieving videos</span>
-                </Tooltip>
+                {
+                    historyLoading ? (
+                        <img src="/assets/loading-circle.svg" alt="" className="w-6 h-6 animate-spin self-center" />
+                    ) : (
+                        history.length === 0 ? (
+                            <span className="text-sm text-gray-300 flex-wrap">No chats history</span>
+                        ) : (
+                            history.map((chat, index) => {
+                                return (
+                                    <span key={index} className="text-sm ml-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">{chat}</span>
+                                )
+                            })
+                        )
+                    )
+                }
+
+                {/* <span className="text-sm text-transparent cursor-default bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Can you prepare a writeup for my presentation</span> */}
 
             </div>
         }
@@ -90,15 +126,15 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         <div className="flex flex-col gap-3 mt-8 pt-4 border-t-2 border-bg-500 pr-2">
 
     {
-        personal &&
+        Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-6 h-6 my-2 self-center" /> : (personal &&
             <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{props.setShowPersonalBotDialog(true)}}>
                 <SettingsSuggest />
                 Personal Bot Settings
-            </span>
+            </span>)
     }
 
     {
-        business &&
+        (Object.keys(userDetails).length != 0 && business) &&
             <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{props.setShowBusinessBotDialog(true)}}>
                 <SettingsOutlined />
                 Business Bot Settings
@@ -122,7 +158,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                 FAQs
             </span>
 
-            <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); router.replace("/")}}>
+            <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}}>
                 <LogoutOutlined />
                 Logout
             </span>

@@ -1,5 +1,6 @@
 import OutlineButton from '@/components/OutlineButton'
 import { Orbitron } from 'next/font/google'
+import Link from 'next/link'
 import React from 'react'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
@@ -14,7 +15,9 @@ function HeroSection(props: { title: string, previewParagraph: string[], image: 
               return <p key={index} className='text-neutral-500 font-normal text-base md:text-lg mt-5'>{paragraph}</p>
             })
           }
-          <OutlineButton title={props.buttonText ? props.buttonText : "Learn more"} buttonStyle='mt-10 w-fit' />
+          <Link href="/blogs/1" passHref>
+            <OutlineButton title={props.buttonText ? props.buttonText : "Read more"} buttonStyle='mt-10 w-fit' />
+          </Link>
         </div>
         <img src={props.image} alt="Blog Image Special" className='rounded md:w-1/2 object-cover' />
     </div>

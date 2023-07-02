@@ -4,13 +4,24 @@ function UseCases() {
 
     const useCases = {
         "Normal Users": [
-            "Shopping: Integrated with Flipkart, Amazon, and Meesho APIs, your bot will help you find and shop your favorite items like a fashion expert.",
-            "Food Delivery: Your bot is integrated with Swiggy and Zomato APIs, making it easy to discover the perfect restaurants and food items.",
-            "Ticket Booking: With MakeMyTrip API integration, your bot will assist you in booking tickets for flights, trains, and buses.",
-            "Job Search & Careers: Linked with Naukri and LinkedIn APIs, your bot offers job search assistance, resume modification, and basic career advice.",
-            "Personal Assistant & Scheduler: Your VIKRAM bot can act as your personal assistant, interacting with the world on your behalf. It can schedule appointments, meetings, and manage your calendar. The bot can also receive and store important documents, such as bills or invoices, from third parties and retrieve them for you on demand.",
+            "If you are a vendor manager and keep getting proposals from sales representatives, you can ask them to reach out to your VBot. Set interaction rules to evaluate the proposals. This will enable your VBot to speak to the sales reps first and shortlist  the most useful ones and set up meetings with you.",
+            "If you are a recruiter and keep getting  CVs from candidates, publish your VBot id and direct all resume's to be sent there. The most relevant CVs will be shortlisted by your VBot and sent to you. You can even have your VBot interview the candidate and provide you with a score for each and send you the best candidates.",
+            "If you are a business leader and wish to mentor young professionals to build your personal brand. Get a Vbot and program it to offer career advice to young professionals.",
         ],
-        "Professionals": "As an expert, you can use VIKRAM to monetize your skills by building on top of the built-in learning. Create commercial bots that share your expertise, and rest easy knowing your knowledge is protected."
+        "Professionals": [
+            {
+                title: "Use Case 1: Customized Shopping Assistance",
+                description: " If you are a shopping expert, you can create your VBot for personalized shopping assistance • You teach the bots on how to take customer's requirements and suggest the best options by browsing the internet • Customers receive tailored product recommendations • You generate income from their bot's services*"
+            },
+            {
+                title: "Use Case 2: Local City Advisor",
+                description: "If you are a long time resident of a city, create a VBot and load it with your valuable knowledge about the city • Teach it on how to answer queries regarding the city to new travellers • Travellers get useful tips regarding the city during their stay • You generate income from Bots services.*"
+            },
+            {
+                title: "Use Case 3: Career counselor",
+                description: "If you are a financial advisor, you can create a VBot and teach your approach to financial planning and investment • Clients receive financial advice based on the advisor's unique insights • You earn extra revenue from their bot's consultations*"
+            }
+        ]
     }
 
   return (
@@ -27,17 +38,26 @@ function UseCases() {
                     <ul className="md:ml-5 mt-8">
                     {
                         useCases["Normal Users"].map((useCase, index) => {
-                            return <li key={index} className="text-sm text-bg-50 list-disc list-outside">{useCase}</li>
+                            return <li key={index} className="text-sm text-bg-50 list-disc my-1.5 list-outside">{useCase}</li>
                         })
                     }
                     </ul>
                     <span className="font-semibold text-bg-50 mt-3">Experience the power of VIKRAM and make your life easier by having a personalized AI bot that caters to your individual needs!</span>
                 </div>
             </div>
-            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-10 mt-14">
+            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-10 mt-10">
                 <SpecialText extra="text-4xl">Professionals</SpecialText>
                 <span className="font-semibold text-bg-50">As an expert, you can use VIKRAM to monetize your skills by building on top of the built-in learning. Create commercial bots that share your expertise, and rest easy knowing your knowledge is protected.</span>
             </div>
+                <div className="flex flex-col">
+                    <ul className="md:ml-5 mt-4 md:px-16">
+                    {
+                        useCases["Professionals"].map((useCase, index) => {
+                            return <li key={index} className="text-sm text-bg-50 list-none my-1.5 list-outside"><b>{useCase.title} : </b>{useCase.description}</li>
+                        })
+                    }
+                    </ul>
+                </div>
         </div>
     </div>
   )

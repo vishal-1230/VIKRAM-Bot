@@ -23,16 +23,16 @@ function HeroSection() {
   return (
     <div className='flex flex-col'>
         <span className={`text-white px-4 md:px-0 ${orbitron.className} font-semibold text-3xl md:text-5xl text-center heading-text mt-10 md:mt-24`}>
-            Get Your Own <SpecialText>PERSONAL BOT</SpecialText><br />And Have It Work For You!
+            Get Your Own <SpecialText>PERSONAL BOT</SpecialText><br />To Interact with The World!
         </span>
-        <span className='font-normal px-4 md:px-0 text-sm md:text-xl text-center mt-5 text-[#FFFFFFB2]'>
-            VIKRAM is a platform that lets you create your own bot that learns your preferences and<br className='hidden md:block' /> skills. Then helps others on your behalf!!
+        <span className='font-normal px-4 md:px-0 text-sm md:text-lg text-center mt-5 text-[#FFFFFFB2]'>
+        You may have a number and an email id or even a website. But do you have a bot with a bot id?<br /> Vikram is a platform that lets you create your own bot with a unique VBot id. Use this <br/>as a communication medium or train it with your skills to help others. 
         </span>
         {/* <Button title="Start Asking" buttonStyle='mt-10' Icon={({extras} : {extras : string})=>{
             return <Image src='/assets/button-arrow.svg' className={extras} alt='Arrow' width={15} height={15} priority />
         }} /> */}
         <Link href={loggedIn ? "/chat-bot" : "/auth/login"} className='self-center z-20'>
-          <PrimaryButton title="Start Asking" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer' showIcon />
+          <PrimaryButton title="Get Your VBot" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer' showIcon />
         </Link>
         <div className='flex flex-row justify-between relative md:-mt-24'>
           <Image src='/assets/gradient-pink-left.png' alt='Gradient Pink' width={800} height={320} className='mt-2 md:-mt-0 w-2/3 md:w-fit object-cover absolute left-0 bg-gradient-to-r from-current' />

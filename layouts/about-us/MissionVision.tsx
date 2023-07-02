@@ -6,8 +6,8 @@ const orbitron = Orbitron({ subsets: ['latin'] })
 
 function MissionVision() {
 
-    const mission = "Lorem ipsum dolor sit amet consectetur. Lectus nisl sed tempus aliquam. Aliquam sit ultrices lectus dolor venenatis viverra tempor neque placerat. Dui suscipit convallis diam integer nullam. Ultrices non condimentum libero tincidunt eget purus. Nunc sed nunc nullam pulvinar lectus donec adipiscing suspendisse elit. Ornare facilisis elementum pulvinar turpis. Aliquet platea aliquet ipsum proin nunc."
-    const vision = "Lorem ipsum dolor sit amet consectetur. Lectus nisl sed tempus aliquam. Aliquam sit ultrices lectus dolor venenatis viverra tempor neque placerat. Dui suscipit convallis diam integer nullam. Ultrices non condimentum libero tincidunt eget purus. Nunc sed nunc nullam pulvinar lectus donec adipiscing suspendisse elit. Ornare facilisis elementum pulvinar turpis. Aliquet platea aliquet ipsum proin nunc."
+    const vision = "At the core of our mission is a profound ambition: to revolutionize the landscape of digital interactions for individuals and organizations. Our vision entails a transformative paradigm shift in everyday communication, accomplished through the deployment of autonomous and personalized AI bots."
+    const mission = "Our mission is to empower users to create their unique bot identities, setting new standards for digital interaction, and freeing individuals and organizations to focus on what truly matters. Through our innovative platform, we aim to provide a tool that enables seamless, autonomous communication in an increasingly connected world."
 
   return (
     <div className="bg-bg-900 w-full px-4 md:px-24 p-14 md:p-24 flex flex-col items-center">
@@ -27,7 +27,7 @@ function MissionVision() {
                     <Image src="/assets/vision.svg" className="fill-white" alt="Mission Image" width={25} height={25} />
                 </div>
                 <span className="text-xl font-bold text-white pb-5 w-fit mt-5 border-b-2 border-b-secondary-500">OUR VISION</span>
-                <span className="text-neutral-500 mt-5">{mission}</span>
+                <span className="text-neutral-500 mt-5">{vision}</span>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ import React from 'react'
 function BlogCard(props: BlogCardProps = DefaultBlogProps) {
   return (
     <Link href={`/blogs/${props.blogId}`}>
-    <div className='flex flex-col cursor-pointer p-6 rounded-lg mx-5 mb-5' style={{boxShadow: "0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)"}}>
+    <div className='flex flex-col cursor-pointer h-full p-6 rounded-lg mx-5' style={{boxShadow: "0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)"}}>
         <img src={props.image} alt="Blog Image" className='w-full mb-3' />
         <span className='text-secondary-500 font-semibold text-sm'>{props.category}</span>
         <div className="flex w-full justify-between my-2">

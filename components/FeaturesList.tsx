@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-function FeaturesList({features} : {features: {image: string, description: string}[]}) {
+function FeaturesList({features} : {features: {image: string, title?: string, description: string}[]}) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 px-0 my-[5.5rem] flex-0">
     {
@@ -21,7 +21,7 @@ function FeaturesList({features} : {features: {image: string, description: strin
                     "flex flex-col items-center gap-6 h-full p-10 bg-[#0B0B15] bg-gradient-to-b from-[#181e2c] to-[#141824]"
                 }>
                     <Image src={feature.image} alt="Feature" height={70} width={70} />
-                    <p className='text-center text-[#FFFFFFD9]'>{feature.description}</p>
+                    <p className='text-center text-[#FFFFFFD9]'><b className="mb-2">{feature?.title}<br /></b>{feature.description}</p>
                 </div>
                 </div>
             )

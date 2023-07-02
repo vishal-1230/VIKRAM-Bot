@@ -4,7 +4,7 @@ import NavLink from '@/components/NavLink'
 import OutlineButton from '@/components/OutlineButton'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { CloseOutlined, MenuOpenOutlined } from '@mui/icons-material'
+import { AlternateEmail, Call, CloseOutlined, MailOutline, MenuOpenOutlined, Person, Person2 } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import PrimaryButton from '@/components/PrimaryButton'
 
@@ -31,9 +31,12 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
 
   const [showInfoBox, setShowInfoBox] = useState<boolean>(false)
 
+  const [infoLoading, setInfoLoading] = useState<boolean>(false)
+
   const [userDetails, setUserDetails] = useState<any>(null)
 
   async function getInfo() {
+    setInfoLoading(true)
     const res = await fetch("https://server.vikrambots.in/ginfo", {
       headers: {
         "x-access-token": localStorage.getItem("token")!
@@ -41,6 +44,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
     })
     const data = await res.json()
     console.log(data)
+    setInfoLoading(false)
 
     setUserDetails(data)
   }
@@ -52,11 +56,11 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
     } else {
       setLoggedIn(false)
     }
-    if(localStorage.getItem("user")) {
-      const user = localStorage.getItem("user")
-      const parsed = JSON.parse(user ? user : "{}")
-      setUserDetails(parsed)
-    }
+    // if(localStorage.getItem("user")) {
+    //   const user = localStorage.getItem("user")
+    //   const parsed = JSON.parse(user ? user : "{}")
+    //   setUserDetails(parsed)
+    // }
   }, [])
   
 
@@ -88,7 +92,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
             router.pathname.startsWith("/chat-bot") ? (
               <div className="flex gap-10">
                 {/* <span className="text-warning-500 font-medium flex gap-3 self-end">Upgrade Plan <img src="/assets/thunder-gold.svg" alt="" className="w-3.5 self-start mt-1" /></span> */}
-                <span className="text-white hidden md:block">Help</span>
+                <span className="text-white hidden md:block" onClick={()=>{router.push("/contact-us")}}>Help</span>
               </div>
             ) : (
               <Link href="/contact-us" className='hidden md:block'>
@@ -98,10 +102,10 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
           }
           {/* <Link href="/auth/create-account" className='self-center flex gap-5 items-center'> */}
             {
-              router.pathname.startsWith("/chat-bot") && <span className="text-white hidden md:block">{userDetails?.name}</span>
+              router.pathname.startsWith("/chat-bot") && (infoLoading ? <img src="/assets/loading-circle.svg" className='w-6 h-6 ml-4' /> : <span className="text-white hidden md:block ml-4">{userDetails?.name}</span>)
             }
             <div className="relative">
-              <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block' width={30} height={30} priority onClick={()=>{
+              <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block ' width={30} height={30} priority onClick={()=>{
                 if (loggedIn) {
                   setShowInfoBox(!showInfoBox)
                 } else {
@@ -109,13 +113,16 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                 }
               }} />
               {
-              showInfoBox && <div className="bg-white absolute top-[35px] min-w-[14rem] pb-6 rounded-lg right-0 flex flex-col">
-                <div className="flex flex-col gap-1 p-6 items-end justify-center">
+              showInfoBox && <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg right-0 flex shadow-lg drop-shadow-md flex-col">
+                {
+                  infoLoading ? <img src="/assets/loading-circle.svg" alt="" className="w-10 mb-8 self-center mt-10" /> :
+                <div className="flex text-neutral-50 flex-col gap-1 p-6 pr-12 items-start justify-center">
                   {/* <span className="font-medium text-sm">Logged in as</span> */}
-                  <span className="font-medium text-sm">{userDetails?.name}</span>
-                  <span className="font-medium text-sm">{userDetails?.email_id || userDetails?.email}</span>
-                  <span className="font-medium text-sm">{userDetails?.phone}</span>
-                  <span className="font-medium text-sm">{userDetails?.business_b}</span>
+                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm"><Person /> {userDetails?.name}</span>
+                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm"><AlternateEmail /> {userDetails?.username}</span>
+                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm"><MailOutline /> {userDetails?.email_id || userDetails?.email}</span>
+                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm"><Call /> {userDetails?.phone}</span>
+                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm">{userDetails?.b_username}</span>
                   {/* settings */}
                   {/* <div className="flex flex-col gap-2 mt-4"> */}
                     {/* <span className="font-medium text-sm">Settings</span> */}
@@ -125,6 +132,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                     <span className="font-medium text-sm">Change Rules & other info</span> */}
                   {/* </div> */}
                 </div>
+                }
 
                     {/* {
                       userDetails?.username && <OutlineButton buttonStyle='text-sm p-1 self-end mr-5 min-w-max mb-1.5 ml-8' title="Personal Settings" onClick={() => {setShowPersonalEditBox(!setShowPersonalEditBox)}} />

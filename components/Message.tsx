@@ -18,7 +18,7 @@ function Message({ children, mode, sender } : {children: string, mode:string, se
       {/* <ToastContainer autoClose={1000} position="bottom-right" /> */}
         {
             sender === "user" || sender === "User" ? (
-                <AccountCircleOutlined className={`w-8 h-8 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />
+                <AccountCircleOutlined className={`w-10 h-10 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />
             ) : (
                 <Image src={mode === "night" ? "/assets/navlogo1.png" : "/assets/botBlack.png"} alt="VIKRAM Bot" className="duration-200" width={40} height={40} />
             )

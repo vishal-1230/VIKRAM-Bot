@@ -1,5 +1,6 @@
 import { BookmarkBorderOutlined, DarkModeOutlined, LaunchOutlined, LightModeOutlined, LogoutOutlined, Notifications, NotificationsOutlined, PersonOutlineOutlined, Settings, SettingsApplications, SettingsOutlined, SettingsRounded, SettingsSuggest, UpdateOutlined } from "@mui/icons-material"
 import { Tooltip } from "@mui/material"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
@@ -94,7 +95,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
             </div>
 
         {
-            Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-8 h-8 seld-center" /> : showHistory &&
+            Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-8 h-8 self-center" /> : showHistory &&
             <div className="flex flex-col gap-4">
                 <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
                     <UpdateOutlined />
@@ -155,10 +156,10 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                 {/* Dark Mode */}
             </span>
 
-            <span className="font-medium text-sm text-neutral-500 flex items-center gap-2.5" onClick={()=>{router.push("/")}}>
+            <Link href="/#faqs" className="font-medium text-sm text-neutral-500 flex items-center gap-2.5">
                 <LaunchOutlined />
                 FAQs
-            </span>
+            </Link>
 
             <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}}>
                 <LogoutOutlined />

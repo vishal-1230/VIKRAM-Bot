@@ -67,7 +67,7 @@ const faqs = [
 
 function FAQs() {
   return (
-    <div className={`text-white flex flex-col relative self-center text-center w-full px-5 md:px-32 py-16 md:py-32 md:p-32 lg:px-60 ${inter.className} bg-gradient-to-r from-[#C816D333] to-[#1A9EDA33]`}>
+    <div id="faqs" className={`text-white flex flex-col relative self-center text-center w-full px-5 md:px-32 py-16 md:py-32 md:p-32 lg:px-60 ${inter.className} bg-gradient-to-r from-[#C816D333] to-[#1A9EDA33]`}>
       <span className={`font-semibold text-4xl mb-10 ${orbitron.className}`}>FAQS</span>
       <Accordion faqs={faqs} expandButon={2} showBorder={false} />
       {/* <SubscribeBox boxStyle='mt-24 -bottom-24 -mb-56' /> */}

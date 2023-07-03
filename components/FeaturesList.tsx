@@ -21,7 +21,7 @@ function FeaturesList({features} : {features: {image: string, title?: string, de
                     "flex flex-col items-center gap-6 h-full p-10 bg-[#0B0B15] bg-gradient-to-b from-[#181e2c] to-[#141824]"
                 }>
                     <Image src={feature.image} alt="Feature" height={70} width={70} />
-                    <p className='text-center text-[#FFFFFFD9]'><b className="mb-2">{feature?.title}<br /></b>{feature.description}</p>
+                    <p className='text-center flex flex-col text-[#FFFFFFD9]'><b className="">{feature?.title}</b><span className="mt-2">{feature.description}</span></p>
                 </div>
                 </div>
             )

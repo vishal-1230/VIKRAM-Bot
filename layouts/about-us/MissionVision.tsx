@@ -20,14 +20,14 @@ function MissionVision() {
                     <Image src="/assets/mission.svg" className="fill-white" alt="Mission Image" width={25} height={25} />
                 </div>
                 <span className="text-xl font-bold text-white pb-5 w-fit mt-5 border-b-2 border-b-secondary-500">OUR MISSION</span>
-                <span className="text-neutral-500 mt-5">{mission}</span>
+                <span className="text-neutral-500 mt-5 text-justify">{mission}</span>
             </div>
             <div className="rounded-lg bg-bg-800 px-6 md:px-10 py-8 flex flex-col">
                 <div className="p-6 bg-secondary-500 rounded-[10px] w-fit">
                     <Image src="/assets/vision.svg" className="fill-white" alt="Mission Image" width={25} height={25} />
                 </div>
                 <span className="text-xl font-bold text-white pb-5 w-fit mt-5 border-b-2 border-b-secondary-500">OUR VISION</span>
-                <span className="text-neutral-500 mt-5">{vision}</span>
+                <span className="text-neutral-500 mt-5 text-justify">{vision}</span>
             </div>
         </div>
     </div>

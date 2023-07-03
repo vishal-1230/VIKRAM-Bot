@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { AlternateEmail, Call, CloseOutlined, MailOutline, MenuOpenOutlined, Person, Person2 } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import PrimaryButton from '@/components/PrimaryButton'
+import { Chip } from '@mui/material'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -67,8 +68,9 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
   return (
     <div className={`bg-bg-900 flex flex-row duration-200 justify-between ${router.pathname.startsWith("/chat-bot") ? "px-5 md:px-32" : "px-6 md:px-48"} items-center w-screen h-20 px-0 py-8 z-50 ${inter.className}`} style={{boxShadow: "0px 20px 24px -4px rgba(3, 5, 12, 0.08), 0px 8px 8px -4px rgba(3, 5, 12, 0.03)"}}>
         
-        <Link href="/" className='navbar-logo cursor-pointer'>
+        <Link href="/" className='navbar-logo cursor-pointer relative'>
             <Image src='/assets/navlogo1.png' alt='VIKRAM Logo' width={55} height={34} priority />
+            <span className="absolute bottom-0 -right-2 text-white font-bold text-[0.6rem] p-0.5 px-1 rounded-md bg-warning-500">BETA</span>
         </Link>
 
         {

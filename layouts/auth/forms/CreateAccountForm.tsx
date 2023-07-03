@@ -601,7 +601,7 @@ function CreateAccountForm(props: any) {
                             })
                         }
                         */}
-                        <textarea placeholder='Type the rules that your bot will follow while interacting' rows={6} cols={4} value={botRules2} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                        <textarea placeholder='Type the rules that your bot will follow while interacting' rows={4} cols={4} value={botRules2} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])

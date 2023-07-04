@@ -93,9 +93,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       if(chatCategory === "personal") {
         uri = `https://server.vikrambots.in/general/${message}`
       } else if (chatCategory === "personaltraining") {
-        uri = `http://localhost:5000/test_personal`
+        uri = `https://server.vikrambots.in/test_personal`
       } else if(chatCategory === "business") {
-        uri = `http://localhost:5000/training`
+        uri = `https://server.vikrambots.in/training`
       } else if(chatCategory === "initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
@@ -785,9 +785,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
       let uri = ""
       if (chatCategory === "personaltraining") {
-        uri = `http://localhost:5000/test_personal`
+        uri = `https://server.vikrambots.in/test_personal`
       } else if(chatCategory === "business") {
-        uri = `http://localhost:5000/training`
+        uri = `https://server.vikrambots.in/training`
       }
 
       if (knowledgebaseFile === "") {

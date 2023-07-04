@@ -250,6 +250,9 @@ function CreateAccountForm(props: any) {
     const [botRules2, setBotRules2] = React.useState<string>("")
     const [botRulesFile, setBotRulesFile] = React.useState<File | string>("")
 
+    const [botRulesWordLimitExceeded, setBotRulesWordLimitExceeded] = React.useState(false)
+    const [user_infoWordLimitExceeded, setUser_infoWordLimitExceeded] = React.useState(false)
+
     const [showSampleRules, setShowSampleRules] = React.useState(false)
     
     const [disableSubmit, setDisableSubmit] = React.useState(true)
@@ -259,6 +262,9 @@ function CreateAccountForm(props: any) {
     const [botBusinessSteps, setBotBusinessSteps] = React.useState<string[]>([""])
     const [botBusinessSteps2, setBotBusinessSteps2] = React.useState<string>("")
     const [roleDesciption, setRoleDescription] = React.useState<string>("")
+    const [companyWordLimitExceeded, setCompanyWordLimitExceeded] = React.useState(false)
+    const [roleWordLimitExceeded, setRoleWordLimitExceeded] = React.useState(false)
+    const [botBusinessStepsWordLimitExceeded, setBotBusinessStepsWordLimitExceeded] = React.useState(false)
 
     const [companyDetailsFile, setCompanyDetailsFile] = React.useState<File | string>("")
     const [botBusinessStepsFile, setBotBusinessStepsFile] = React.useState<File | string>("")
@@ -550,8 +556,15 @@ function CreateAccountForm(props: any) {
                     <div className="flex flex-col h-full border-r border-r-gray-200 items-center gap-2 lg:px-6 py-5">
                         <span className="text-semibold">Tell the bot about yourself (optional)</span>
                         <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
-                        <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} value={user_info} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
-
+                        <textarea
+                            placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...'
+                            rows={4}
+                            cols={4}
+                            value={user_info}
+                            onChange={(e)=>{setUser_info(e.target.value); setUser_infoWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                        {/* word limit */}
+                        <span className={`text-xs font-medium ${user_infoWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{user_info.length}/200</span>
                         <span className="text-semibold mb-2 mt-6 justify-self-end">or Simply upload your Resume PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 pb-5 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
@@ -601,7 +614,14 @@ function CreateAccountForm(props: any) {
                             })
                         }
                         */}
-                        <textarea placeholder='Type the rules that your bot will follow while interacting' rows={4} cols={4} value={botRules2} onChange={(e)=>{setBotRules2(e.target.value)}} className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                        <textarea placeholder='Type the rules that your bot will follow while interacting'
+                            rows={4}
+                            cols={4}
+                            value={botRules2}
+                            onChange={(e)=>{setBotRules2(e.target.value); setBotRulesWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
+                        {/* word limit */}
+                        <span className={`text-xs font-medium ${botRulesWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{botRules2.length}/200</span>
                         <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
@@ -638,7 +658,15 @@ function CreateAccountForm(props: any) {
                   <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
                     <div className="flex flex-col h-full items-center gap-2 pxy-8 px-6">
                         <span className="text-semibold mb-4">Add information about your business or company (optional)</span>
-                        <textarea placeholder='Enter role description' rows={5} cols={4} value={companyDetails} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" />
+                        <textarea
+                            placeholder='Enter role description'
+                            rows={5}
+                            cols={4}
+                            value={companyDetails}
+                            onChange={(e)=>{setCompanyDetails(e.target.value); setCompanyWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" />
+                        {/* word limit */}
+                        <span className={`text-xs font-medium mt-2 ${companyWordLimitExceeded && "text-red-500"}`}>{companyDetails.split(" ").length}/200</span>
                         {/* <div className="flex gap-3 items-center"> */}
                             <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span>
                             
@@ -667,7 +695,12 @@ function CreateAccountForm(props: any) {
                           <span className='text-semibold -mb-1'>Add Role Description
                           <OutlineButton title='Check sample description' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleRoleDescription(true)}} />
                           </span>
-                          <textarea placeholder='Enter role description' rows={5} value={roleDesciption} onChange={(e)=>{setRoleDescription(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" />
+                          <textarea
+                            placeholder='Enter role description'
+                            rows={5}
+                            value={roleDesciption}
+                            onChange={(e)=>{setRoleDescription(e.target.value); setRoleWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" />
                           {/* <div className="flex"> */}
                             <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span>
                             <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
@@ -711,9 +744,17 @@ function CreateAccountForm(props: any) {
                                   </div>
                               })
                           } */}
-                            <textarea placeholder='Type the steps that your bot will follow while interacting' rows={5} cols={1} value={botBusinessSteps2} onChange={(e)=>{setBotBusinessSteps2(e.target.value)}} className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full h-full" />
-                            <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span>
-                            <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
+                            <textarea
+                                placeholder='Type the steps that your bot will follow while interacting'
+                                rows={5}
+                                cols={1}
+                                value={botBusinessSteps2}
+                                onChange={(e)=>{setBotBusinessSteps2(e.target.value); setBotBusinessStepsWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                                className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full" />
+                            {/* word limit */}
+                            <span className={`text-xs font-medium mt-2 ${botBusinessStepsWordLimitExceeded && "text-red-500"}`}>{botBusinessSteps2.split(" ").length}/200</span>
+                            {/* <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span> */}
+                            {/* <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
                         }} onDrop={(e)=>{
                             e.preventDefault()
@@ -726,7 +767,7 @@ function CreateAccountForm(props: any) {
                             or
                         </span>
                             <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md' onChange={(e)=>{e?.target?.files && setBotBusinessStepsFile(e?.target?.files[0])}} />
-                        </label>
+                        </label> */}
                           {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
                       </div>
                   </div>

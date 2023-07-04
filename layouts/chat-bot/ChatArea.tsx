@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react"
 import ChatList from "./ChatList"
-import { Autorenew, CancelOutlined, CheckCircle, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { Autorenew, CancelOutlined, CheckCircle, Delete, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
@@ -93,9 +93,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       if(chatCategory === "personal") {
         uri = `https://server.vikrambots.in/general/${message}`
       } else if (chatCategory === "personaltraining") {
-        uri = `https://server.vikrambots.in/test_personal/${message}`
+        uri = `https://server.vikrambots.in/test_personal`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training/${message}`
+        uri = `https://server.vikrambots.in/training`
       } else if(chatCategory === "initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
@@ -112,88 +112,120 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       console.log("URI=>", uri)
 
       if (plugin === "none") {
-        fetch(uri, {
-          headers: {
-            "x-access-token": localStorage.getItem("token")!,
-          }
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            if (chatCategory === "personal") {
+        if (chatCategory !== "personaltraining" && chatCategory !== "business") {
+          fetch(uri, {
+            headers: {
+              "x-access-token": localStorage.getItem("token")!,
+            }
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              if (chatCategory === "personal") {
+                setChats([
+                  ...chats,
+                  { message: message, sender: "user" },
+                  { message: data.message, sender: "bot" },
+                ]);
+              } else if (chatCategory === "initiator") {
+                setThirdChats([
+                  ...thirdChats,
+                  { message: message, sender: "user" },
+                  { message: data.message, sender: "bot" },
+                ]);
+              } else if (chatCategory === "business_initiator") {
+                setThirdBusinessChats([
+                  ...thirdBusinessChats,
+                  { message: message, sender: "user" },
+                  { message: data.message, sender: "bot" },
+                ]);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              toast.info("Our servers are overloaded. Please try again later.");
+              if (chatCategory === "personal") {
+  
               setChats([
                 ...chats,
                 { message: message, sender: "user" },
-                { message: data.message, sender: "bot" },
+                {
+                  message: "Apologies, people are using my servers too much. Please try again later.",
+                  sender: "bot",
+                },
               ]);
-            } else if (chatCategory === "personaltraining") {
-              setPersonalTrainingChats([
-                ...personalTrainingChats,
-                { message: message, sender: "user" },
-                { message: data.message, sender: "bot" },
-              ]);
-            } else if (chatCategory === "business") {
-              setTrainingChats([
-                ...trainingChats,
-                { message: message, sender: "user" },
-                { message: data.message, sender: "bot" },
-              ]);
-            } else if (chatCategory === "initiator") {
-              setThirdChats([
-                ...thirdChats,
-                { message: message, sender: "user" },
-                { message: data.message, sender: "bot" },
-              ]);
-            } else if (chatCategory === "business_initiator") {
-              setThirdBusinessChats([
-                ...thirdBusinessChats,
-                { message: message, sender: "user" },
-                { message: data.message, sender: "bot" },
-              ]);
-            }
+              } else if (chatCategory === "initiator") {
+                setThirdChats([
+                  ...thirdChats,
+                  { message: message, sender: "user" },
+                  {
+                    message: "Apologies, people are using my servers too much. Please try again later.",
+                    sender: "bot",
+                  },
+                ]);
+              } else if (chatCategory === "business_initiator") {
+                setThirdBusinessChats([
+                  ...thirdBusinessChats,
+                  { message: message, sender: "user" },
+                  {
+                    message: "Apologies, people are using my servers too much. Please try again later.",
+                    sender: "bot",
+                  },
+                ]);
+              }
+            });
+        } else {
+          const formData = new FormData()
+          formData.append("typeOfFile", "text")
+          formData.append("userinput", message)
+          fetch(uri, {
+            headers: {
+              method: "POST",
+              "x-access-token": localStorage.getItem("token")!,
+            },
+            body: formData
           })
-          .catch((err) => {
-            console.log(err);
-            toast.info("Our servers are overloaded. Please try again later.");
-            if (chatCategory === "personal") {
-
-            setChats([
-              ...chats,
-              { message: message, sender: "user" },
-              {
-                message: "Apologies, people are using my servers too much. Please try again later.",
-                sender: "bot",
-              },
-            ]);
-            } else if (chatCategory === "business") {
-              setTrainingChats([
-                ...trainingChats,
-                { message: message, sender: "user" },
-                {
-                  message: "Apologies, people are using my servers too much. Please try again later.",
-                  sender: "bot",
-                },
-              ]);
-            } else if (chatCategory === "initiator") {
-              setThirdChats([
-                ...thirdChats,
-                { message: message, sender: "user" },
-                {
-                  message: "Apologies, people are using my servers too much. Please try again later.",
-                  sender: "bot",
-                },
-              ]);
-            } else if (chatCategory === "business_initiator") {
-              setThirdBusinessChats([
-                ...thirdBusinessChats,
-                { message: message, sender: "user" },
-                {
-                  message: "Apologies, people are using my servers too much. Please try again later.",
-                  sender: "bot",
-                },
-              ]);
-            }
-          });
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              if (chatCategory === "personaltraining") {
+                setPersonalTrainingChats([
+                  ...personalTrainingChats,
+                  { message: message, sender: "user" },
+                  { message: data.message, sender: "bot" },
+                ]);
+              } else if (chatCategory === "business") {
+                setTrainingChats([
+                  ...trainingChats,
+                  { message: message, sender: "user" },
+                  { message: data.message, sender: "bot" },
+                ])
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              toast.info("Our servers are overloaded. Please try again later.");
+              if (chatCategory === "business") {
+                setTrainingChats([
+                  ...trainingChats,
+                  { message: message, sender: "user" },
+                  {
+                    message: "Apologies, people are using my servers too much. Please try again later.",
+                    sender: "bot",
+                  },
+                ]);
+              } else if (chatCategory === "personaltraining") {
+                setPersonalTrainingChats([
+                  ...thirdChats,
+                  { message: message, sender: "user" },
+                  {
+                    message: "Apologies, people are using my servers too much. Please try again later.",
+                    sender: "bot",
+                  },
+                ]);
+              }
+            });
+        }
       } else if (plugin === "News") {
         fetch(`https://server.vikrambots.in/news/${message}`, {
             headers: {
@@ -336,24 +368,11 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
       setConnecting(true)
 
-      let uri=""
       const message = "Hi"
-      if(chatCategory === "initiator") {
-        if (toConnectWith === "") {
-          toast.error("Please enter a VBot ID to connect to.")
-        } else {
-          uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${message}`
-        }
-      } else if(chatCategory === "business_initiator") {
-        if (toConnectWith === "") {
-          toast.error("Please enter a VBot ID to connect to.")
-        } else {
-            uri = `https://server.vikrambots.in/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
-        }
-      }
+
 
       try{
-        const response = await fetch(uri, {
+        const response = await fetch(`https://server.vikrambots.in/check-username-exists/${toConnectWith}`, {
           headers: {
             "x-access-token": localStorage.getItem("token")!,
           }
@@ -757,6 +776,40 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     }
 
+    const [showFileUploadDialog, setShowFileUploadDialog] = useState(false)
+    const [knowledgebaseFile, setKnowledgebaseFile] = useState<File | string>("")
+    async function uploadKnowledgebase () {
+
+      let uri = ""
+      if (chatCategory === "personaltraining") {
+        uri = `https://server.vikrambots.in/test_personal`
+      } else if(chatCategory === "business") {
+        uri = `https://server.vikrambots.in/training`
+      }
+
+      if (knowledgebaseFile === "") {
+        toast.error("Please select a file to upload.")
+      } else {
+        const formData = new FormData()
+        formData.append("typeOfFile", "file")
+        formData.append("file", knowledgebaseFile)
+        const response = await fetch(uri, {
+          method: "POST",
+          headers: {
+            "x-access-token": localStorage.getItem("token")!,
+          },
+          body: formData
+        })
+        const data = await response.json()
+        console.log(data)
+        if (data.success === true) {
+          toast.success("Knowledgebase uploaded successfully!")
+        } else {
+          toast.error("Something went wrong. Please try again.")
+        }
+      }
+    }
+
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-white text-bg-500" : "bg-bg-700 text-white"}`}>
         <ToastContainer position="bottom-right" autoClose={2500} />
@@ -1046,8 +1099,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           } />
         </div>
         }
-
-        <Dropdown title="Plugin" className="mr-5" list={[
+        {
+        chatCategory==="personal" && <Dropdown title="Plugin" className="mr-5" list={[
           {
             text: "None",
             onClick: () => { setPlugin("none") }
@@ -1073,6 +1126,19 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
             onClick: () => { setPlugin("YouTube") }
           }          
         ]} selectedChatCategory={plugin} />
+        }
+        {
+          (chatCategory === "personaltraining" || chatCategory === "business") && <div className="flex relative align-center self-center mt-1.5 mr-5" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>
+            {/* knowledgebase pdf upload dropdown upload */}
+            <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 rounded-lg font-medium cursor-pointer hover:bg-neutral-200">Upload some Knowledgebase?</span>
+            <div className={`flex flex-col gap-3 bg-[rgba(0,0,0,0.3)] backdrop-blur-md absolute top-12 rounded-xl border mt-2 border-neutral-200 right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`}>
+              <input type="file" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
+              <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} />
+              <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
+              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} />
+            </div>
+          </div>
+        }
       </div>
         <ChatList
           chats={ chatCategory != "personal" ? chatCategory != "personaltraining" ? chatCategory != "business" ? chatCategory != "initiator" ? thirdBusinessChats : thirdChats : trainingChats : personalTrainingChats : chats }

@@ -93,9 +93,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       if(chatCategory === "personal") {
         uri = `https://server.vikrambots.in/general/${message}`
       } else if (chatCategory === "personaltraining") {
-        uri = `https://server.vikrambots.in/test_personal`
+        uri = `http://localhost:5000/test_personal`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training`
+        uri = `http://localhost:5000/training`
       } else if(chatCategory === "initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
@@ -112,7 +112,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       console.log("URI=>", uri)
 
       if (plugin === "none") {
-        if (chatCategory !== "personaltraining" && chatCategory !== "business") {
+        if (chatCategory === "personal" || chatCategory === "initiator" || chatCategory === "business_initiator") {
           fetch(uri, {
             headers: {
               "x-access-token": localStorage.getItem("token")!,
@@ -179,8 +179,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           formData.append("typeOfFile", "text")
           formData.append("userinput", message)
           fetch(uri, {
+            method: "POST",
             headers: {
-              method: "POST",
               "x-access-token": localStorage.getItem("token")!,
             },
             body: formData
@@ -778,13 +778,16 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     const [showFileUploadDialog, setShowFileUploadDialog] = useState(false)
     const [knowledgebaseFile, setKnowledgebaseFile] = useState<File | string>("")
+    const [knowledgebaseLoading, setKnowledgebaseLoading] = useState(false)
     async function uploadKnowledgebase () {
+      setShowFileUploadDialog(true)
+      setKnowledgebaseLoading(true)
 
       let uri = ""
       if (chatCategory === "personaltraining") {
-        uri = `https://server.vikrambots.in/test_personal`
+        uri = `http://localhost:5000/test_personal`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training`
+        uri = `http://localhost:5000/training`
       }
 
       if (knowledgebaseFile === "") {
@@ -801,7 +804,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           body: formData
         })
         const data = await response.json()
-        console.log(data)
+        setKnowledgebaseLoading(false)
+        console.log("UPLOAD", data)
         if (data.success === true) {
           toast.success("Knowledgebase uploaded successfully!")
         } else {
@@ -1135,7 +1139,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
               <input type="file" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
               <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} />
               <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
-              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} />
+              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} Icon={()=>{ return knowledgebaseLoading === true && <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> }} />
             </div>
           </div>
         }

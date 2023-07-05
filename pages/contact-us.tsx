@@ -18,7 +18,7 @@ function ContactUs() {
 
         <span className="mt-5 text-neutral-500">Got questions or ideas? We&apos;d love to chat! Hit us up through our contact form or email, and we&apos;ll get back to you ASAP.</span>
 
-        <Link href="mailto:mail@arthlex.com" className='text-lg md:text-xl mb-12 font-medium text-neutral-500 mt-10'><Mail className='fill-neutral-500 w-5 h-6 mr-1.5 align-text-top' />Email us at: <span className='text-primary-500'>mail@arthlex.com</span></Link>
+        <Link href="mailto:info@arthlex.com" className='text-lg md:text-xl mb-12 font-medium text-neutral-500 mt-10'><Mail className='fill-neutral-500 w-5 h-6 mr-1.5 align-text-top' />Email us at: <span className='text-primary-500'>mail@arthlex.com</span></Link>
 
         <ContactForm showDescription={false} showTitle={false} showMail={false} />
 

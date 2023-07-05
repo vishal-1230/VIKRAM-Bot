@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
 
-function TrendingTopics(props: {title?: string, blogs?: BlogCardProps[]}) {
+function TrendingTopics(props: {title?: string, blogs?: BlogCardProps[], number?: number}) {
   return (
     <div className='md:px-24 flex flex-col mt-6'>
         <SpecialText extra={`font-bold text-4xl my-16 mb-8 ml-10 md:ml-0`}>{props.title? props.title : "Trending Topics"}</SpecialText>

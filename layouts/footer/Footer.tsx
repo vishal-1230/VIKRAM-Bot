@@ -22,12 +22,12 @@ function Footer(props: {invertColor?: boolean}) {
           <Image src="/assets/insta.svg" alt="Instagram" width={30} height={30} />
           <Image src="/assets/dc.svg" alt="Discord" width={30} height={30} />
           <Image src="/assets/twitter.svg" alt="Twitter" width={30} height={30} /> */}
-          <Instagram className={`${props.invertColor ? "fill-white" : "fill-black"} w-8 h-8`} />
-          <Twitter className={`${props.invertColor ? "fill-white" : "fill-black"} w-8 h-8`} />
+          {/* <Instagram className={`${props.invertColor ? "fill-white" : "fill-black"} w-8 h-8`} /> */}
+          {/* <Twitter className={`${props.invertColor ? "fill-white" : "fill-black"} w-8 h-8`} /> */}
         </div>
         <div className="flex flex-row mt-5">
-          <span className="font-semibold text-sm">Terms and Conditions</span>
-          <span className={`font-semibold text-sm border-l-[1px] ml-3 pl-3 ${props.invertColor ? "border-l-bg-white" : "border-l-bg-900"}`}>Privacy Policy</span>
+          <a href="/VIKRAM TermsNConditions.pdf" className="font-semibold text-sm">Terms and Conditions</a>
+          <a href="/VIKRAM Privacy Policy.pdf" className={`font-semibold text-sm border-l-[1px] ml-3 pl-3 ${props.invertColor ? "border-l-bg-white" : "border-l-bg-900"}`}>Privacy Policy</a>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ function Footer(props: {invertColor?: boolean}) {
         <span className={`${inter.className} font-semibold text-2xl py-5 mt-3`}>Contact Us</span>
         <span className='my-1'>info@arthlex.com</span>
         {/* <span className='my-1'>+</span> */}
-        <span className='my-1'>Web Interface Team</span>
+        {/* <span className='my-1'>Web Interface Team</span> */}
       </div>
         
       {/* Newsletter */}

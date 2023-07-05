@@ -8,8 +8,8 @@ import SubscribeBox from '@/components/SubscribeBox'
 const inter = Inter({ subsets: ['latin'] })
 
 function Blogs() {
-    
-    const [blogs, setBlogs] = React.useState([
+
+    const [blogs2, setBlogs2] = React.useState([
         {
             title: "VBots and VIKRAM",
             blogId: "1",
@@ -29,6 +29,19 @@ function Blogs() {
             date: "12 June, 2023",
             author: "John Doe",
             authorImage: "/assets/temporaryAuthor.png"
+        }
+    ])
+    
+    const [blogs, setBlogs] = React.useState([
+        {
+            title: "Melding Human Individuality with AI",
+            blogId: "2",
+            previewParagraph: "In recent years, a burning question has fueled substantial debate within our society: will artificial (AI) usurp human jobs?",
+            image: "/assets/bg-2.jpeg",
+            category: "AI and ML",
+            date: "12 June, 2023",
+            author: "John Doe",
+            authorImage: "/assets/temporaryAuthor.png"
         },
         {
             title: "What the Future Holds?",
@@ -39,7 +52,17 @@ function Blogs() {
             date: "12 June, 2023",
             author: "John Doe",
             authorImage: "/assets/temporaryAuthor.png"
-        }
+        },
+        {
+            title: "VBots and VIKRAM",
+            blogId: "1",
+            previewParagraph: "Hey there! You've probably heard about VIKRAM, right? If you haven't, let me introduce you: VIKRAM, or the Variable Inference Knowledge & Response Augmentation Model...",
+            image: "/assets/temporaryBlog2.png",
+            category: "AI and ML",
+            date: "12 June, 2023",
+            author: "John Doe",
+            authorImage: "/assets/temporaryAuthor.png"
+        },
     ])
 
   return (
@@ -51,7 +74,7 @@ function Blogs() {
             ]} image="/assets/temporaryBlog.png"
         />
 
-        <BlogsSection title="Trending Topics" blogs={blogs} />
+        <BlogsSection title="Trending Topics" blogs={blogs2} />
 
         <BlogsSection title="Suggested Topics" blogs={blogs} />
 

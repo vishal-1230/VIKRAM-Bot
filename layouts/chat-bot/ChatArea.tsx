@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react"
 import ChatList from "./ChatList"
-import { Autorenew, CancelOutlined, CheckCircle, Delete, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { ArrowOutward, ArrowOutwardOutlined, Autorenew, CancelOutlined, CheckCircle, Delete, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
@@ -807,6 +807,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         setKnowledgebaseLoading(false)
         console.log("UPLOAD", data)
         if (data.success === true) {
+          setShowFileUploadDialog(false)
           toast.success("Knowledgebase uploaded successfully!")
         } else {
           toast.error("Something went wrong. Please try again.")
@@ -1132,14 +1133,15 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         ]} selectedChatCategory={plugin} />
         }
         {
-          (chatCategory === "personaltraining" || chatCategory === "business") && <div className="flex relative align-center self-center mt-1.5 mr-5" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>
+          (chatCategory === "personaltraining" || chatCategory === "business") && <div className="flex relative align-center self-center mt-1.5 mr-5">
             {/* knowledgebase pdf upload dropdown upload */}
-            <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 rounded-lg font-medium cursor-pointer hover:bg-neutral-200">Upload some Knowledgebase?</span>
-            <div className={`flex flex-col gap-3 bg-[rgba(0,0,0,0.3)] backdrop-blur-md absolute top-12 rounded-xl border mt-2 border-neutral-200 right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`}>
+            <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
+            <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 rounded-xl mt-2 right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`}>
               <input type="file" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
-              <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} />
+              <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
+              {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}
               <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
-              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} Icon={()=>{ return knowledgebaseLoading === true && <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> }} />
+              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} Icon={()=>{ return knowledgebaseLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <ArrowOutwardOutlined className="w-5 h-5 self-center ml-1" /> }} />
             </div>
           </div>
         }
@@ -1150,9 +1152,9 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           setMode={setMode}
         />
         
-        <div className={`flex flex-col gap-5 absolute w-full px-4 md:px-32 bottom-0 z-50 py-6 pt-16 duration-200 ${mode == "day" ? chats.length != 0 && "bg-gradient-to-t from-white via-white to-transparent" : chats.length != 0 && "bg-gradient-to-t from-bg-700 via-bg-700 to-transparent"}`}>
+        <div className={`flex flex-col gap-5 absolute w-full px-4 md:px-32 bottom-0 z-50 py-6 pt-16 duration-200 ${mode == "day" ? ((chatCategory === "personal" && chats.length != 0) || (chatCategory === "business" && trainingChats.length!=0) || (chatCategory === "personaltraining" && personalTrainingChats.length != 0) || (chatCategory === "initiator" && thirdChats.length != 0) || (chatCategory === "business_initiator" && thirdBusinessChats.length != 0)) && "bg-gradient-to-t from-white via-white to-transparent" : ((chatCategory === "personal" && chats.length != 0) || (chatCategory === "business" && trainingChats.length!=0) || (chatCategory === "personaltraining" && personalTrainingChats.length != 0) || (chatCategory === "initiator" && thirdChats.length != 0) || (chatCategory === "business_initiator" && thirdBusinessChats.length != 0)) && "bg-gradient-to-t from-bg-700 via-bg-700 to-transparent"}`}>
           
-          <button className={`py-3 px-4 flex min-w-max items-center w-fit gap-2 text-sm self-center font-medium bg-transparent rounded border duration-200 ${mode === "day" ? "border-bg-50 text-bg-50" : "border-neutral-700 text-neutral-700"} `} onClick={()=>{ setChats([]); setTrainingChats([]); setThirdChats([]); setThirdBusinessChats([]) }}>
+          <button className={`py-3 px-4 flex min-w-max items-center w-fit gap-2 text-sm self-center font-medium bg-transparent rounded border duration-200 ${mode === "day" ? "border-bg-50 text-bg-50" : "border-neutral-700 text-neutral-700"} `} onClick={()=>{ setChats([]); setPersonalTrainingChats([]); setTrainingChats([]); setThirdChats([]); setThirdBusinessChats([]) }}>
             <RefreshOutlined className="w-5 h-5" />
             Reset chat
           </button>

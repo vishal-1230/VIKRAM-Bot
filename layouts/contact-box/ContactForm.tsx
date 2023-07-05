@@ -51,7 +51,7 @@ function ContactForm(props: {className?: string, showTitle: boolean, showDescrip
 
             {props.showDescription && <span className="mt-5 text-bg-50">Got questions or ideas? We'd love to chat! Hit us up through our contact form or email, and we'll get back to you ASAP.</span>}
 
-            {props.showMail && <Link href="mailto:info@arthlex.com" className='text-xl font-medium text-neutral-500 mt-5'><MailOutline className='fill-neutral-500 w-8 h-6' />Email us at: <span className='text-primary-500'>mail@arthlex.com</span></Link>}
+            {props.showMail && <Link href="mailto:info@arthlex.com" className='text-xl font-medium text-neutral-500 mt-5'><MailOutline className='fill-neutral-500 w-8 h-6' />Email us at: <span className='text-primary-500'>info@arthlex.com</span></Link>}
 
             <InputGroup label="Name" type="text" placeholder="Enter your name" className="mt-5" value={name} onChange={setName} />
 

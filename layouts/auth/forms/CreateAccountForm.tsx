@@ -302,7 +302,7 @@ function CreateAccountForm(props: any) {
                 console.log(data2)
                 setLoading(false)
         
-                if (data2.message.startsWith("Saved successfully")) {
+                if (data2.success === true) {
                     toast.success("Rules stored successfully")
                     setShowBusinessBotDialog(false)
                     router.replace("/chat-bot")
@@ -842,7 +842,7 @@ function CreateAccountForm(props: any) {
 
         <div className="flex gap-3 mt-5">
             <input type="checkbox" name="agree" id="agree" onChange={()=>{setCheckboxChecked(!checkboxChecked)}} className='w-4' />
-            <span className="text-sm font-medium text-neutral-900">I agree to the <Link href="/" className='text-primary-500'>terms of service</Link> and <Link href="/" className='text-primary-500'>privacy policy</Link>.</span>
+            <span className="text-sm font-medium text-neutral-900">I agree to the <a href="/VIKRAM TermsNConditions.pdf" className='text-primary-500'>terms of service</a> and <a href="/VIKRAM Privacy Policy.pdf" className='text-primary-500'>privacy policy</a>.</span>
         </div>
 
         <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? toast.error("All Fields are mandatory") : otpVerified ? createAccount() : toast.error("Verify your phone first")} title="Create account" buttonStyle="mt-5 mb-5 w-full" />

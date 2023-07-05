@@ -2,8 +2,98 @@ import InputGroup from "@/components/InputGroup";
 import RightAuthContainer from "../RightAuthContainer";
 import Link from "next/link";
 import PrimaryButton from "@/components/PrimaryButton";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 function ResetPasswordForm() {
+
+    const router = useRouter()
+
+    const username = router.query.username
+
+    const [password, setPassword] = useState<string | undefined>(undefined)
+    const [confirmPassword, setConfirmPassword] = useState<string | undefined>(undefined)
+
+    async function resetPassword () {
+        const pass = password;
+        const confirmPass = confirmPassword;
+
+        if (pass === undefined || pass === null || pass === "") {
+            // toast("Please enter a valid phone number")
+            toast.error('Please enter a valid password', {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+        } else {
+            if (confirmPass === undefined || confirmPass === null || confirmPass === "") {
+                // toast("Please enter a valid phone number")
+                toast.error('Please enter a valid password', {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+            } else {
+                if (pass === confirmPass) {
+                    const response = await fetch(`https://server.vikrambots.in/change_password/${username}/${pass}`)
+                    const data = await response.json()
+                    console.log(data)
+                    if (data.return === true) {
+                        // toast("OTP sent successfully")
+                        toast.success('Password changed successfully', {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                        });
+                        router.push({
+                            pathname: "/auth/login",
+                        })
+                    } else {
+                        // toast("Error sending OTP")
+                        toast.error('Error changing password', {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                        });
+                    }
+                } else {
+                    toast.error('Passwords do not match', {
+                        position: "top-right",
+                        autoClose: 2500,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
+            }
+        }
+    }
+
+
   return (
     <RightAuthContainer title="Reset Password">
 

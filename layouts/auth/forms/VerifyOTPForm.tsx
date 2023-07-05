@@ -63,6 +63,8 @@ function VerifyOTPForm() {
 }
 
   function verifyOtp () {
+
+    const router = useRouter()
     // if (window != undefined) {
     // const phone = localStorage.getItem("phoneForForgotPassword");
 
@@ -79,7 +81,12 @@ function VerifyOTPForm() {
     // })
 // }
         toast.success("OTP verified successfully")
-        router.push("/auth/forgot-password/reset-password", undefined)
+        router.push({
+          pathname: "/auth/forgot-password/reset-password",
+          query: {
+            username: router.query.username,
+          }
+        })
 }
 
 

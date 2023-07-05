@@ -289,7 +289,7 @@ function CreateAccountForm(props: any) {
             data.append("company_info", companyDetails)
             data.append("company_file", companyDetailsFile)
     
-            try {
+            // try {
                 const response = await fetch("https://server.vikrambots.in/store-role-steps-info", {
                     method: "POST",
                     body: data,
@@ -309,10 +309,10 @@ function CreateAccountForm(props: any) {
                 } else {
                     toast.error("Error storing rules")
                 }
-            } catch (error) {
-                console.log(error)
-                setLoading(false)
-            }
+            // } catch (error) {
+                // console.log(error)
+                // setLoading(false)
+            // }
     }
 
     async function sendOtp () {

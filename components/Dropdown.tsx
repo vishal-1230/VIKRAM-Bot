@@ -1,5 +1,5 @@
 import { KeyboardArrowDownOutlined } from '@mui/icons-material'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function Dropdown(props: {title?: string, list: {text: string, icon?:React.ReactDOM, onClick?:any}[], className?: string, selectedChatCategory: string, setSelectedChatCategory?: any}) {
 
@@ -23,6 +23,10 @@ function Dropdown(props: {title?: string, list: {text: string, icon?:React.React
 
     const [selected, setSelected] = React.useState(cats[props.selectedChatCategory] ? cats[props.selectedChatCategory] : props.list[0].text)
 
+    useEffect(()=>{
+        console.log("Sel", cats[props.selectedChatCategory])
+    }, [])
+
   return (
     <div className={`relative inline-block text-left z-50 ${props?.className}`}>
         {
@@ -30,7 +34,7 @@ function Dropdown(props: {title?: string, list: {text: string, icon?:React.React
         }
         <div className={props.title && "mt-1.5"}>
             <button type="button" onClick={()=>{setOpen(!open)}} className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium duration-200 text-gray-700 hover:bg-bg-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-bg-700">
-                {selected}
+                {cats[props.selectedChatCategory]}
                 <KeyboardArrowDownOutlined className="-mr-1 ml-2 #000 w-5 h-5 stroke-2" aria-hidden="true" />
             </button>   
         </div>

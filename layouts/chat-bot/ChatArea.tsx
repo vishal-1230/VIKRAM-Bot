@@ -64,13 +64,63 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       //   })
       //   // router.replace("/auth/login")
       // }
-      if (data.username === data.username_b) {
-        localStorage.setItem("user", JSON.stringify({username_b: data.username, name: data.name, phone: data.phone, email: data.email}))
-      } else if (data.username_b === "None") {
-        localStorage.setItem("user", JSON.stringify({username: data.username, name: data.name, phone: data.phone, email: data.email}))
-      } else {
-        localStorage.setItem("user", JSON.stringify(data))
+      let userDetails: {username?: string, username_b?: string, email: string, name: string, phone: number} = {
+        username: "",
+        username_b: "",
+        name: "",
+        phone: 0,
+        email: ""
       }
+      if (data.username === data.username_b) {
+        userDetails = {
+          username_b: data.username,
+          name: data.name,
+          phone: data.phone,
+          email: data.email
+        }
+        // localStorage.setItem("user", JSON.stringify({username_b: data.username, name: data.name, phone: data.phone, email: data.email}))
+      } else if (data.username_b === "None") {
+        userDetails = {
+          username: data.username,
+          name: data.name,
+          phone: data.phone,
+          email: data.email
+        }
+        // localStorage.setItem("user", JSON.stringify({username: data.username, name: data.name, phone: data.phone, email: data.email}))
+      } else {
+        userDetails = data
+      }
+      localStorage.setItem("user", JSON.stringify(userDetails))
+
+      if (userDetails.username){
+        setChatCategory("personal")
+        if (userDetails.username_b) {
+          setCategories([
+            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
+            {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+          ])
+          localStorage.getItem("token") && fetchMessage()
+        } else {
+          setCategories([
+            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
+            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+          ])
+        }
+      } else if (userDetails.username_b) {
+        setChatCategory("business")
+        setCategories([
+          {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+          // {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+          // {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+        ])
+        localStorage.getItem("token") && fetchTrainingMessage()
+      }
+
     }
 
     async function sendMessage() {
@@ -507,9 +557,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     useEffect(()=>{
       // delete this calling
       pastConnections()
-      const userTemp = localStorage.getItem("user")
-      let userDetails = JSON.parse(userTemp ? userTemp : "{}")
-
+      
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token") as string)
         getInfo()
@@ -519,36 +567,39 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         })
         router.replace("/auth/login")
       }
+      const userTemp = localStorage.getItem("user")
+      console.log("TEMPUSER", userTemp)
+      let userDetails = JSON.parse(userTemp ? userTemp : "{}")
 
       console.log("User Details", userDetails)
-      if (userDetails.username){
-        setChatCategory("personal")
-        if (userDetails.username_b) {
-          setCategories([
-            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
-            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
-            {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
-            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
-            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
-          ])
-          localStorage.getItem("token") && fetchMessage()
-        } else {
-          setCategories([
-            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
-            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
-            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
-            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
-          ])
-        }
-      } else if (userDetails.username_b) {
-        setChatCategory("business")
-        setCategories([
-          {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
-          // {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
-          // {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
-        ])
-        localStorage.getItem("token") && fetchTrainingMessage()
-      }
+      // if (userDetails.username){
+      //   setChatCategory("personal")
+      //   if (userDetails.username_b) {
+      //     setCategories([
+      //       {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+      //       {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
+      //       {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+      //       {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+      //       {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+      //     ])
+      //     localStorage.getItem("token") && fetchMessage()
+      //   } else {
+      //     setCategories([
+      //       {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+      //       {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
+      //       {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+      //       {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+      //     ])
+      //   }
+      // } else if (userDetails.username_b) {
+      //   setChatCategory("business")
+      //   setCategories([
+      //     {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+      //     // {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+      //     // {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+      //   ])
+      //   localStorage.getItem("token") && fetchTrainingMessage()
+      // }
       
       setUserDetails(userDetails)
       

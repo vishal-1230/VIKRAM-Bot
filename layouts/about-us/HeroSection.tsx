@@ -12,7 +12,7 @@ function HeroSection(props: { title: string, previewParagraph: string[], image: 
           <span className={`text-white font-bold text-5xl mb-5 ${orbitron.className}`}>About <SpecialText>Us</SpecialText></span>
           {
             props.previewParagraph.map((paragraph, index) => {
-              return <p key={index} className='text-neutral-500 font-normal text-lg mt-5'>{paragraph}</p>
+              return <p key={index} className='text-neutral-500 text-justify font-normal text-lg mt-5'>{paragraph}</p>
             })
           }
           <PrimaryButton title="Get your bot" showIcon buttonStyle="w-fit mt-10" />

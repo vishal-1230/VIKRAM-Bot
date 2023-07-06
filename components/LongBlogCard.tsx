@@ -16,9 +16,15 @@ function LongBlogCard(props: LongBlogCardProps) {
             </div>
 
             <div className="flex flex-col gap-3">
-                <span className="text-bg-900 text-2xl font-bold">Blog topic name will come here</span>
-                <span className="font-medium text-base text-bg-50">Lorem ipsum dolor sit amet consectetur. Varius nulla in elit interdum. Nisl et metus a sem lacus aliquet. Vulputate arcu eget quam sed purus mattis duis in ante. Viverra ac enim massa maecenas. Et praesent maecenas sed augue eu nisl condimentum.</span>
-                <span className="text-primary-500 font-semibold cursor-pointer">Learn more</span>
+                <span className="text-bg-900 text-2xl font-bold">
+                    {props.title}
+                </span>
+                <span className="font-medium text-base text-bg-50">
+                    {props.description}
+                </span>
+                <span className="text-primary-500 font-semibold cursor-pointer">
+                    Read more
+                </span>
             </div>
         </div>
 

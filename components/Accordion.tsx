@@ -49,7 +49,7 @@ const AccordionItem = ({ header, headerStyle, contentStyle, numbering, expandBut
           // }
       }}
       contentProps={{
-        className: `transition-height duration-200 ease-in-out text-left ${contentStyle}`
+        className: `transition-height duration-200 ease-in-out text-justify ${contentStyle}`
       }}
       panelProps={{ className: "p-4" }}
     />

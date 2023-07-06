@@ -70,18 +70,18 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
       }, [])
 
   return (
-    <div className="flex-col absolute md:relative hidden w-64 md:flex justify-between z-10 py-5 bg-bg-900 px-6 pr-3 mt-20 max-w-[16rem]">
+    <div className={`flex-col absolute md:relative hidden w-64 md:flex justify-between z-10 py-5 px-6 pr-3 mt-20 max-w-[16rem] ${mode === "day" ? "bg-neutral-100 !text-bg-900" : "bg-bg-900"}`}>
         <div className="flex flex-col gap-8 overflow-y-scroll overflow-x-clip">
 
             <div className="flex flex-col gap-4 min-w-max">
                 
-                <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
+                <span className={`text-sm font-semibold ${mode === "day" ? "text-bg-900" :"text-white"} flex gap-2.5 flex-row items-center mb-1`}>
                     <NotificationsOutlined />
                     Your Notifications
                 </span>
                 {
                     notifications.length === 0 ? (
-                        <span className="text-sm text-gray-300 flex-wrap">No new notifications</span>
+                        <span className={`text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex-wrap`}>No new notifications</span>
                     ) : (
                         notifications.map((notification, index) => {
                             return (
@@ -97,7 +97,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         {
             Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-8 h-8 self-center" /> : showHistory &&
             <div className="flex flex-col gap-4">
-                <span className="text-sm font-semibold text-white flex gap-2.5 flex-row items-center mb-1">
+                <span className={`text-sm font-semibold ${mode === "day" ? "text-bg-900" :"text-white"} flex gap-2.5 flex-row items-center mb-1`}>
                     <UpdateOutlined />
                     Your Chats History
                 </span>
@@ -130,7 +130,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     {
         Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-6 h-6 my-2 self-center" /> : (personal &&
-            <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{props.setShowPersonalBotDialog(true)}}>
+            <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowPersonalBotDialog(true)}}>
                 <SettingsSuggest />
                 Personal Bot Settings
             </span>)
@@ -138,14 +138,14 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     {
         (Object.keys(userDetails).length != 0 && business) &&
-            <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{props.setShowBusinessBotDialog(true)}}>
+            <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowBusinessBotDialog(true)}}>
                 <SettingsOutlined />
                 Business Bot Settings
             </span>
     }
 
             
-            <span className="font-medium text-sm select-none text-neutral-500 flex items-center gap-2.5 cursor-pointer duration-200" onClick={()=>{setMode(mode === "day" ? "night" : "day")}}>
+            <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{setMode(mode === "day" ? "night" : "day")}}>
                 {
                     mode === "day" ? ( <DarkModeOutlined /> ) : (<LightModeOutlined />)
                 }
@@ -156,12 +156,12 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                 {/* Dark Mode */}
             </span>
 
-            <Link href="/#faqs" className="font-medium text-sm text-neutral-500 flex items-center gap-2.5">
+            <Link href="/#faqs" className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5`}>
                 <LaunchOutlined />
                 FAQs
             </Link>
 
-            <span className="font-medium text-sm text-neutral-500 flex cursor-pointer items-center gap-2.5" onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}}>
+            <span className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex cursor-pointer items-center gap-2.5`} onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}}>
                 <LogoutOutlined />
                 Logout
             </span>

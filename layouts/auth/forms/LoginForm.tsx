@@ -86,9 +86,9 @@ function LoginForm() {
             </div>
         </Dialog>
 
-        <InputGroup value={username} onChange={setusername} label='VIKRAM Username' placeholder='user_9696' type="text" className='!mt-10' />
+        <InputGroup value={username} required onChange={setusername} label='VIKRAM Username' placeholder='user_9696' type="text" className='!mt-10' />
 
-        <InputGroup value={password} onChange={setPassword} label='Password' placeholder='Your Password' type="password"  passwordAccessory={
+        <InputGroup value={password} required onChange={setPassword} label='Password' placeholder='Your Password' type="password"  passwordAccessory={
             <div className='flex justify-between mt-1'>
 
                 <div className="flex gap-1 5 items-center">

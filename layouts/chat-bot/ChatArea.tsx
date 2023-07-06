@@ -816,7 +816,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     }
 
   return (
-    <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-white text-bg-500" : "bg-bg-700 text-white"}`}>
+    <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-neutral-300 text-bg-500" : "bg-bg-700 text-white"}`}>
         <ToastContainer position="bottom-right" autoClose={2500} />
       {
         (chatCategory==="personal" ? chats.length === 0 : trainingChats.length===0) &&
@@ -1164,7 +1164,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           <div className={`flex flex-row justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
             <input
               type="text"
-              className="bg-transparent grow text-sm border-none outline-none text-neutral-500"
+              className={`bg-transparent grow text-sm border-none outline-none ${mode === "day" ? "text-bg-50" : "text-neutral-500"}}`}
               placeholder="Text area"
               value={userMessage}
               onKeyUp={(e) => {

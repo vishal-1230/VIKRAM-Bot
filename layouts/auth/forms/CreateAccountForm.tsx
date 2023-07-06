@@ -564,7 +564,7 @@ function CreateAccountForm(props: any) {
                             onChange={(e)=>{setUser_info(e.target.value); setUser_infoWordLimitExceeded(e.target.value.split(" ").length > 200)}}
                             className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         {/* word limit */}
-                        <span className={`text-xs font-medium ${user_infoWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{user_info.length}/200</span>
+                        <span className={`text-xs font-medium ${user_infoWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{user_info.split(" ").length}/200</span>
                         <span className="text-semibold mb-2 mt-6 justify-self-end">or Simply upload your Resume PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 pb-5 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
@@ -621,7 +621,7 @@ function CreateAccountForm(props: any) {
                             onChange={(e)=>{setBotRules2(e.target.value); setBotRulesWordLimitExceeded(e.target.value.split(" ").length > 200)}}
                             className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         {/* word limit */}
-                        <span className={`text-xs font-medium ${botRulesWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{botRules2.length}/200</span>
+                        <span className={`text-xs font-medium ${botRulesWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{botRules2.split(" ").length}/200</span>
                         <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
@@ -701,6 +701,7 @@ function CreateAccountForm(props: any) {
                             value={roleDesciption}
                             onChange={(e)=>{setRoleDescription(e.target.value); setRoleWordLimitExceeded(e.target.value.split(" ").length > 200)}}
                             className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" />
+                        <span className={`text-xs font-medium mt-2 ${companyWordLimitExceeded && "text-red-500"}`}>{companyDetails.split(" ").length}/200</span>
                           {/* <div className="flex"> */}
                             <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span>
                             <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
@@ -842,7 +843,7 @@ function CreateAccountForm(props: any) {
 
         <div className="flex gap-3 mt-5">
             <input type="checkbox" name="agree" id="agree" onChange={()=>{setCheckboxChecked(!checkboxChecked)}} className='w-4' />
-            <span className="text-sm font-medium text-neutral-900">I agree to the <a href="/VIKRAM TermsNConditions.pdf" className='text-primary-500'>terms of service</a> and <a href="/VIKRAM Privacy Policy.pdf" className='text-primary-500'>privacy policy</a>.</span>
+            <span className="text-sm font-medium text-neutral-900">I agree to the <Link href="/info/terms-and-conditions" className='text-primary-500'>terms of service</Link> and <Link href="/info/privacy-policy" className='text-primary-500'>privacy policy</Link>.</span>
         </div>
 
         <PrimaryButton onClick={()=>name===undefined || email===undefined || phoneNumber===undefined || password===undefined || confirmPassword===undefined || checkboxChecked===false ? toast.error("All Fields are mandatory") : otpVerified ? createAccount() : toast.error("Verify your phone first")} title="Create account" buttonStyle="mt-5 mb-5 w-full" />

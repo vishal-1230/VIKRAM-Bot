@@ -73,8 +73,8 @@ function InputGroup(props: InputGroupProps) {
 
 const countryOptions = [
     { name: 'India', code: '+91', logoUrl: 'https://seeklogo.com/images/I/india-flag-logo-3522C6780F-seeklogo.com.png' },
-    { name: 'United States', code: '+1', logoUrl: 'https://w7.pngwing.com/pngs/666/76/png-transparent-flag-of-the-united-states-national-flag-usa-flag-flag-logo-united-states.png' },
-    { name: 'United Kingdom', code: '+44', logoUrl: 'https://w7.pngwing.com/pngs/599/178/png-transparent-flag-of-the-united-kingdom-flag-of-england-flags-of-the-world-united-kingdom-flag-logo-united-kingdom.png' },
+    // { name: 'United States', code: '+1', logoUrl: 'https://w7.pngwing.com/pngs/666/76/png-transparent-flag-of-the-united-states-national-flag-usa-flag-flag-logo-united-states.png' },
+    // { name: 'United Kingdom', code: '+44', logoUrl: 'https://w7.pngwing.com/pngs/599/178/png-transparent-flag-of-the-united-kingdom-flag-of-england-flags-of-the-world-united-kingdom-flag-logo-united-kingdom.png' },
     // Add more country options with their respective logo URLs
   ];
   

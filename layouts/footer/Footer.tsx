@@ -26,8 +26,8 @@ function Footer(props: {invertColor?: boolean}) {
           {/* <Twitter className={`${props.invertColor ? "fill-white" : "fill-black"} w-8 h-8`} /> */}
         </div>
         <div className="flex flex-row mt-5">
-          <a href="/VIKRAM TermsNConditions.pdf" className="font-semibold text-sm">Terms and Conditions</a>
-          <a href="/VIKRAM Privacy Policy.pdf" className={`font-semibold text-sm border-l-[1px] ml-3 pl-3 ${props.invertColor ? "border-l-bg-white" : "border-l-bg-900"}`}>Privacy Policy</a>
+          <Link href="/info/terms-and-conditions" className="font-semibold text-sm">Terms and Conditions</Link>
+          <Link href="/info/privacy-policy" className={`font-semibold text-sm border-l-[1px] ml-3 pl-3 ${props.invertColor ? "border-l-bg-white" : "border-l-bg-900"}`}>Privacy Policy</Link>
         </div>
       </div>
 

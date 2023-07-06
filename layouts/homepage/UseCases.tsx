@@ -11,15 +11,15 @@ function UseCases() {
         "Professionals": [
             {
                 title: "Use Case 1: Customized Shopping Assistance",
-                description: " If you are a shopping expert, you can create your VBot for personalized shopping assistance • You teach the bots on how to take customer's requirements and suggest the best options by browsing the internet • Customers receive tailored product recommendations • You generate income from their bot's services*"
+                description: ["• If you are a shopping expert, you can create your VBot for personalized shopping assistance", "• You teach the bots on how to take customer's requirements and suggest the best options by browsing the internet", "• Customers receive tailored product recommendations", "• You generate income from their bot's services*"]
             },
             {
                 title: "Use Case 2: Local City Advisor",
-                description: "If you are a long time resident of a city, create a VBot and load it with your valuable knowledge about the city • Teach it on how to answer queries regarding the city to new travellers • Travellers get useful tips regarding the city during their stay • You generate income from Bots services.*"
+                description: ["• If you are a long time resident of a city, create a VBot and load it with your valuable knowledge about the city", "• Teach it on how to answer queries regarding the city to new travellers", "• Travellers get useful tips regarding the city during their stay", "• You generate income from Bots services.*"]
             },
             {
                 title: "Use Case 3: Career counselor",
-                description: "If you are a financial advisor, you can create a VBot and teach your approach to financial planning and investment • Clients receive financial advice based on the advisor's unique insights • You earn extra revenue from their bot's consultations*"
+                description: ["• If you are a financial advisor, you can create a VBot and teach your approach to financial planning and investment", "• Clients receive financial advice based on the advisor's unique insights", "• You earn extra revenue from their bot's consultations*"]
             }
         ]
     }
@@ -33,7 +33,7 @@ function UseCases() {
             <SpecialText extra="text-3xl md:text-4xl">Normal Users</SpecialText>
             <span className="font-semibold text-bg-50">Your personal bot comes with a range of pre-built use cases to help you with various tasks. Here's what you can expect from your VIKRAM bot:</span>
             <div className="flex flex-col md:flex-row px-4 md:px-0 gap-0 mt-5">
-                <img src="/assets/use-case.png" className="self-center md:self-start" alt="" />
+                <img src="/assets/about-robot.svg" className="self-center drop-shadow-xl md:self-start" alt="" />
                 <div className="flex flex-col">
                     <ul className="md:ml-5 mt-8">
                     {
@@ -53,7 +53,9 @@ function UseCases() {
                     <ul className="md:ml-5 mt-4 md:px-16">
                     {
                         useCases["Professionals"].map((useCase, index) => {
-                            return <li key={index} className="text-sm text-bg-50 list-none my-1.5 list-outside"><b>{useCase.title} : </b>{useCase.description}</li>
+                            return <li key={index} className="text-sm text-bg-50 list-none my-4 list-outside"><b>{useCase.title} : </b>{useCase.description.map((i)=>{
+                                return <p className="text-justify ml-1 mt-1">{i}</p>
+                            })}</li>
                         })
                     }
                     </ul>

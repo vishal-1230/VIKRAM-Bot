@@ -37,6 +37,18 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         }
     }
 
+    async function getNotif() {
+        const response = await fetch("https://server.vikrambots.in/gnoti", {
+            method: "GET",
+            headers: {
+                "x-access-token": localStorage.getItem("token")!
+            }
+        })
+
+        const data = await response.json()
+        setNotifications(data)
+    }
+
     async function userInfo () {
         const res = await fetch("https://server.vikrambots.in/ginfo", {
             headers: {

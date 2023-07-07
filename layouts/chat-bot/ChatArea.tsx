@@ -838,7 +838,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       if (chatCategory === "personaltraining") {
         uri = `https://server.vikrambots.in/test_personal`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training`
+        uri = `http://localhost:5000/training`
       }
 
       if (knowledgebaseFile === "") {

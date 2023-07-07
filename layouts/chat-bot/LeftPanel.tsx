@@ -60,6 +60,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         if (data.username != data.username_b){
             setShowHistory(true)
             setPersonal(true)
+            getNotif()
             getChats()
         } else {
             setShowHistory(false)

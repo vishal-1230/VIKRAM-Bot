@@ -43,15 +43,15 @@ function ContactForm(props: {className?: string, showTitle: boolean, showDescrip
   }
 
   return (
-    <div className={`flex flex-row md:px-24 py-8 md:py-20 bg-white w-screen relative ${props.className}`}>
+    <div className={`flex flex-row px-5 md:px-24 py-8 md:py-20 bg-white w-screen relative ${props.className}`}>
       <ToastContainer position="top-right" autoClose={2000} />
         <div className="flex flex-col grow justify-center px-3 md:px-0 z-10">
             
-            {props.showTitle && <span className={`font-bold text-5xl text-bg-900 ${orbitron.className}`}>Get in <SpecialText extra="text-5xl font-bold">Touch</SpecialText></span>}
+            {props.showTitle && <span className={`font-bold text-4xl md:text-5xl text-bg-900 ${orbitron.className}`}>Get in <SpecialText extra="text-4xl md:text-5xl font-bold">Touch</SpecialText></span>}
 
             {props.showDescription && <span className="mt-5 text-bg-50">Got questions or ideas? We'd love to chat! Hit us up through our contact form or email, and we'll get back to you ASAP.</span>}
 
-            {props.showMail && <Link href="mailto:info@arthlex.com" className='text-xl font-medium text-neutral-500 mt-5'><MailOutline className='fill-neutral-500 w-8 h-6' />Email us at: <span className='text-primary-500'>info@arthlex.com</span></Link>}
+            {props.showMail && <Link href="mailto:info@arthlex.com" className='text-lg md:text-xl font-medium text-neutral-500 mt-5'><MailOutline className='fill-neutral-500 w-8 h-6' />Email us at: <span className='text-primary-500'>info@arthlex.com</span></Link>}
 
             <InputGroup label="Name" type="text" placeholder="Enter your name" className="mt-5" value={name} onChange={setName} />
 

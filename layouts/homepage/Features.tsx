@@ -11,7 +11,7 @@ function Features() {
     <div className='text-white flex flex-col'>
       <span className={`${orbitron.className} font-medium text-4xl md:text-5xl text-center`}>Our <SpecialText extra={`${orbitron.className}`}>Features</SpecialText></span>
       <span className='text-base text-neutral-500 text-center mt-5'>The bot you create via VIKRAM would be unlike anything you or anyone else would have seen. It will have:</span>
-      <div>
+      <div className='px-3 md:px-0'>
         <FeaturesList features={[
           {
             image: '/assets/feature-image1.svg',

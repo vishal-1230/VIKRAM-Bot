@@ -34,9 +34,9 @@ function SubscribeBox(props: {boxStyle?: string}) {
           <span className='font-bold text-2xl md:text-3xl flex-wrap'>Subscribe to our Updates!</span>
           <span className='font-light mt-1 md:mt-0 text-base md:text-lg'>Stay Informed with our newer developments.</span>
         </div>
-        <div className='flex flex-col md:flex-row md:justify-between border-[1px] border-[#eeeeee] py-2.5 pl-6 pr-3.5 rounded-lg w-[full] lg:min-w-max h-fit self-center' style={{boxShadow: "0px 0px 6px -2px #000"}}>
-          <input type="text" placeholder="Enter your email" className='outline-none text-center md:text-left text-black w-48 md:w-min mt-2 md:mt-0 mr-2' value={email} onChange={(e)=>{setEmail(e.target.value)}} />
-          <Button title="Sign Up" buttonStyle='mt-3 md:mt-0' Icon={()=>{return}} onClick={submitForm} />
+        <div className='flex flex-row md:justify-between border-[1px] border-[#eeeeee] p-1.5 md:py-2.5 md:pl-6 md:pr-3.5 rounded-lg w-[full] lg:min-w-max h-fit self-center' style={{boxShadow: "0px 0px 6px -2px #000"}}>
+          <input type="text" placeholder="Enter your email" className='outline-none text-left pl-2 md:pl-0 text-black w-48 md:w-min mr-2' value={email} onChange={(e)=>{setEmail(e.target.value)}} />
+          <Button title="Sign Up" buttonStyle='' Icon={()=>{return}} onClick={submitForm} />
         </div>
       </div>
   )

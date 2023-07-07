@@ -238,7 +238,7 @@ function CreateAccountForm(props: any) {
     }
 
     // AFTER AUTHORIZING, THE BOT ROLE & STEPS HE'S TO FOLLOW
-    const [showPersonalBotDialog, setShowPersonalBotDialog] = React.useState(false)
+    const [showPersonalBotDialog, setShowPersonalBotDialog] = React.useState(true)
     const [showBusinessBotDialog, setShowBusinessBotDialog] = React.useState(false)
 
     const [typeOfRules, setTypeOfRules] = React.useState<"text" | "file">("text")
@@ -551,9 +551,9 @@ function CreateAccountForm(props: any) {
 
             {/* Personal bot user_info & rules */}
         <div className={`flex flex-col items-center fixed top-0 left-0 z-50 h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showPersonalBotDialog === true ? "block" : "hidden"}`}>
-            <Card className='!bg-bg-800 max-w-[75vw] p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center]'>
-            <DialogTitle className='text-2xl font-semibold text-center'>Set Interaction Rules</DialogTitle>
-            <span className="text-lg text-center">Set the rules which your bot needs to follow when others use it.</span>
+            <Card className='!bg-bg-800 max-w-[85vw] md:max-w-[75vw] p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center]'>
+            <DialogTitle className='text-2xl font-semibold text-center -mt-4 md:mt-0'>Set Interaction Rules</DialogTitle>
+            <span className="text-base md:text-lg -mt-2 md:mt-0 text-center">Set the rules which your bot needs to follow when others use it.</span>
                 <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
                     <div className="flex flex-col h-full border-r border-r-gray-200 items-center gap-2 lg:px-6 py-5">
                         <span className="text-semibold">Tell the bot about yourself (optional)</span>
@@ -583,15 +583,22 @@ function CreateAccountForm(props: any) {
                         <span className='-mb-2'>
                             or
                         </span>
-                        {/* <input type="file" id="images" accept="image/*" required> */}
                         <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md'
                         // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
                         onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
                         }} />
                         </label>
+
+                        {/* <input type="file" name="" id="images" className='self-center md:hidden flex flex-col text-center text-sm text-neutral-50 p-1 max-w-min mb-8 md:mb-0 outline-none rounded-md'
+                        // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
+                        onChange={(e)=>{
+                            e?.target?.files && setUser_info_file(e?.target?.files[0])
+                        }}
+                        /> */}
+
                     </div>
-                    <div className="flex flex-col h-full items-center  gap-2 px-6 py-5">
+                    <div className="flex flex-col h-full items-center gap-2 md:px-6 py-5">
                         <span className='text-semibold'>Add rules manually</span>
                         <span className="text-xs font-light mb-4">Your bot will follow these rules when interacting with others. You can add as many rules as you want.</span>
                         {/* 
@@ -638,14 +645,20 @@ function CreateAccountForm(props: any) {
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
                         }} />
                         </label>
+
+                        {/* <input type="file" name="" id="images" className='self-center md:hidden block text-center text-sm text-neutral-50 p-1 outline-none rounded-md'
+                        // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
+                        onChange={(e)=>{
+                            e?.target?.files && setUser_info_file(e?.target?.files[0])
+                        }} /> */}
                     </div>
                 </div>
                 <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
-                    <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
+                    <OutlineButton title="Show sample rules" buttonStyle='text-sm order-2 inline md:order-1 w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
                     <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         trainBotRules()
                     }} />
-                    <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full lg:w-fit ml-auto' onClick={()=>{
+                    <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full inline lg:w-fit ml-auto' onClick={()=>{
                         setBotRules2("Verify the identity of the person initiating contact. Confirm their name and organization. Ask the person to briefly state the purpose of the interaction or the problem they want t. Try responding to the problem to the best of your ability. Politely decline the interaction appears negative, abusive or harmful. After every interaction, ask for feedback")
                     }} />
                 </div>

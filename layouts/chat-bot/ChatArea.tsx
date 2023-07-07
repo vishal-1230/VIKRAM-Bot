@@ -1141,8 +1141,8 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
           </div>
 
 
-      <div className="w-fit md:w-full mt-2 py-2 flex flex-col md:flex-row justify-between z-50 backdrop-blur-sm">
-        <Dropdown title="Select a bot" className="md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
+      <div className="w-full md:w-full mt-2 py-2 flex flex-row justify-between z-50 backdrop-blur-sm">
+        <Dropdown title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
         <Tooltip title={descriprions[chatCategory]} placement="right">
           <InfoRounded className="w-5 h-5 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 mr-auto self-center mt-2 ml-1" />
         </Tooltip>
@@ -1156,7 +1156,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         </div>
         }
         {
-        chatCategory==="personal" && <Dropdown title="Plugin" className="mr-5" list={[
+        chatCategory==="personal" && <Dropdown title="Plugin" className="mr-2 md:mr-5" list={[
           {
             text: "None",
             onClick: () => { setPlugin("none") }

@@ -85,11 +85,10 @@ function Info() {
 
     useEffect(()=>{
         console.log("INFO", infoName)
-        if(!infoName) {
-            router.push("/404")
-        }
+        // if(!infoName) {
+        //     router.push("/404")
+        // }
         console.log(infos.filter((info) => info.name === infoName))
-
     }, [])
 
     // const title = infos.filter((info) => info.name === infoName)[0].title
@@ -98,12 +97,12 @@ function Info() {
   return (
     <div className="w-full bg-bg-900 flex flex-col text-justify p-6 md:p-16 md:px-20">
         <SpecialText extra="text-5xl font-bold mb-3">
-            {infos.filter((info) => info.name === infoName)[0].title}
+            {infos.filter((info) => info.name === infoName)[0] && infos.filter((info) => info.name === infoName)[0].title}
             {/* Abcd */}
         </SpecialText>
-        <span className={`text-lg text-neutral-50 mb-14 ${inter.className}`}>{infos.filter((info) => info.name === infoName)[0].subtext}</span>
+        <span className={`text-lg text-neutral-50 mb-14 ${inter.className}`}>{infos.filter((info) => info.name === infoName)[0] && infos.filter((info) => info.name === infoName)[0].subtext}</span>
         {
-            infos.filter((info) => info.name === infoName)[0].content.map((content, index) => {
+            infos.filter((info) => info.name === infoName)[0] && infos.filter((info) => info.name === infoName)[0].content.map((content, index) => {
                 return (
                     <div key={index} className={`flex flex-col gap-3 mb-14 text-neutral-50 ${inter.className}`}>
                         <span className="font-semibold text-2xl">{content.title}</span>

@@ -14,11 +14,11 @@ function Message({ children, mode, sender } : {children: string, mode:string, se
 
 
   return (
-    <div className={`flex flex-col md:flex-row duration-200 gap-8 items-start md:items-center w-full h-fit px-7 md:px-28 py-8 ${sender === "user" ? mode === "night" ? "bg-bg-800" : "bg-white" : mode === "night" ? "bg-bg-700" : "bg-gray-3"}`}>
+    <div className={`flex flex-col md:flex-row duration-200 gap-4 md:gap-8 items-start md:items-center w-full h-fit px-7 md:px-28 py-5 md:py-8 ${sender === "user" ? mode === "night" ? "bg-bg-800" : "bg-white" : mode === "night" ? "bg-bg-700" : "bg-gray-3"}`}>
       {/* <ToastContainer autoClose={1000} position="bottom-right" /> */}
         {
             sender === "user" || sender === "User" ? (
-                <AccountCircleOutlined className={`w-10 h-10 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />
+                <AccountCircleOutlined className={`w-9 h-9 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />
             ) : (
                 <Image src={mode === "night" ? "/assets/navlogo1.png" : "/assets/botBlack.png"} alt="VIKRAM Bot" className="duration-200" width={40} height={40} />
             )

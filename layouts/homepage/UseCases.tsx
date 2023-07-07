@@ -45,7 +45,7 @@ function UseCases() {
                     <span className="font-semibold text-bg-50 mt-3">Experience the power of VIKRAM and make your life easier by having a personalized AI bot that caters to your individual needs!</span>
                 </div>
             </div>
-            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-10 mt-10">
+            <div className="flex flex-col md:flex-row px-4 md:px-0 gap-5 md:gap-10 mt-10">
                 <SpecialText extra="text-4xl">Professionals</SpecialText>
                 <span className="font-semibold text-bg-50">As an expert, you can use VIKRAM to monetize your skills by building on top of the built-in learning. Create commercial bots that share your expertise, and rest easy knowing your knowledge is protected.</span>
             </div>

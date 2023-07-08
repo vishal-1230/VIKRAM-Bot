@@ -5,16 +5,38 @@ import OutlineButton from '@/components/OutlineButton'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { AlternateEmail, Call, CloseOutlined, MailOutline, MenuOpenOutlined, Person, Person2 } from '@mui/icons-material'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PrimaryButton from '@/components/PrimaryButton'
 import { Chip } from '@mui/material'
 
 const inter = Inter({ subsets: ['latin'] })
 
+function useOutsideAlerter(ref: any, onBlur?: any) {
+  useEffect(() => {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(event: any) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        onBlur()
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+}
+
 function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBox, setShowBusinessEditBox}: {showPersonalEditBox: boolean, setShowPersonalEditBox: any, showBusinessEditBox: boolean, setShowBusinessEditBox: any}) {
 
   const router = useRouter()
   console.log(router.pathname)
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, ()=>{setShowInfoBox(false)});
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
@@ -106,16 +128,21 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
             {
               router.pathname.startsWith("/chat-bot") && (infoLoading ? <img src="/assets/loading-circle.svg" className='w-6 h-6 ml-4' /> : <span className="text-white hidden md:block ml-4">{userDetails?.name}</span>)
             }
-            <div className="relative">
+            <div className="relative" onBlur={()=>{
+                alert("BLURRed")
+                if (loggedIn) {
+                  setShowInfoBox(false)
+                }
+              }}>
               <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block ' width={30} height={30} priority onClick={()=>{
                 if (loggedIn) {
                   setShowInfoBox(!showInfoBox)
                 } else {
                   router.push("/auth/login")
                 }
-              }} />
+              }}  />
               {
-              showInfoBox && <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg right-0 flex shadow-lg drop-shadow-md flex-col">
+              showInfoBox && <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
                 {
                   infoLoading ? <img src="/assets/loading-circle.svg" alt="" className="w-10 mb-8 self-center mt-10" /> :
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 pr-12 items-start justify-center">

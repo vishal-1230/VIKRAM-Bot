@@ -12,6 +12,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     const setMode = props.setMode
 
     const [notifications, setNotifications] = useState<string[]>([])
+    const [notificationsLoading, setNotificationsLoading] = useState<boolean>(false)
 
     const [userDetails, setUserDetails] = useState<any>({})
 
@@ -38,6 +39,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     }
 
     async function getNotif() {
+        setNotificationsLoading(true)
         const response = await fetch("https://server.vikrambots.in/gnoti", {
             method: "GET",
             headers: {
@@ -46,6 +48,8 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         })
 
         const data = await response.json()
+        console.log(data)
+        setNotificationsLoading(false)
         setNotifications(data)
     }
 
@@ -93,7 +97,9 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                     Your Notifications
                 </span>
                 {
-                    notifications.length === 0 ? (
+                    notificationsLoading ? (
+                        <img src="/assets/loading-circle.svg" alt="" className="w-6 h-6 animate-spin self-center" />
+                    ) : notifications.length === 0 ? (
                         <span className={`text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex-wrap`}>No new notifications</span>
                     ) : (
                         notifications.map((notification, index) => {
@@ -120,7 +126,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                         <img src="/assets/loading-circle.svg" alt="" className="w-6 h-6 animate-spin self-center" />
                     ) : (
                         history.length === 0 ? (
-                            <span className="text-sm text-gray-300 flex-wrap">No chats history</span>
+                            <span className={`text-sm ${mode === "day" ? "text-bg-900" :"text-neutral-300"} flex-wrap`}>No chats history</span>
                         ) : (
                             history.map((chat, index) => {
                                 return (

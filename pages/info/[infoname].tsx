@@ -95,7 +95,7 @@ function Info() {
     // console.log(title)
 
   return (
-    <div className="w-full bg-bg-900 flex flex-col text-justify p-6 md:p-16 md:px-20">
+    <div className="w-full bg-bg-900 flex flex-col text-justify p-6 md:p-16 md:px-20 border-b">
         <SpecialText extra="text-5xl font-bold mb-3">
             {infos.filter((info) => info.name === infoName)[0] && infos.filter((info) => info.name === infoName)[0].title}
             {/* Abcd */}

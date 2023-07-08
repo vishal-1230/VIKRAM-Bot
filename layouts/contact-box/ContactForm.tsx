@@ -53,11 +53,11 @@ function ContactForm(props: {className?: string, showTitle: boolean, showDescrip
 
             {props.showMail && <Link href="mailto:info@arthlex.com" className='text-lg md:text-xl font-medium text-neutral-500 mt-5'><MailOutline className='fill-neutral-500 w-8 h-6' />Email us at: <span className='text-primary-500'>info@arthlex.com</span></Link>}
 
-            <InputGroup label="Name" type="text" placeholder="Enter your name" className="mt-5" value={name} onChange={setName} />
+            <InputGroup label="Name" type="text" required placeholder="Enter your name" className="mt-5" value={name} onChange={setName} />
 
-            <InputGroup label="Email" type="text" placeholder="Enter your email" className="mt-4" value={email} onChange={setEmail} />
+            <InputGroup label="Email" type="text" required placeholder="Enter your email" className="mt-4" value={email} onChange={setEmail} />
 
-            <InputGroup label="Query Description" textareaRows={6} type="description" placeholder="Ask us your Query in Brief" className="mt-4" value={description} onChange={setDescription} />
+            <InputGroup label="Query Description" required textareaRows={6} type="description" placeholder="Ask us your Query in Brief" className="mt-4" value={description} onChange={setDescription} />
 
             <PrimaryButton title="Submit" buttonStyle="mt-5 w-full z-10" onClick={submitForm} />
 

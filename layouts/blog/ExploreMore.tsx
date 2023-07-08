@@ -1,5 +1,6 @@
 import LongBlogCard from "@/components/LongBlogCard"
 import SpecialText from "@/components/SpecialText"
+import Link from "next/link"
 
 function ExploreMore(props: {blogId?: string}) {
 
@@ -82,7 +83,9 @@ function ExploreMore(props: {blogId?: string}) {
   return (
     <div className="flex flex-col">
         <span className="flex flex-col md:flex-row justify-between">
-            <SpecialText extra="font-bold text-3xl md:text-4xl">Explore More</SpecialText>
+            <Link href="/blogs">
+                <SpecialText extra="font-bold text-3xl md:text-4xl">Explore More</SpecialText>
+            </Link>
             <span className="text-primary-500 cursor-pointer mt-2 md:mt-0">View all</span>
         </span>
         <div className="blogs mt-2 border-b border-bg-50">

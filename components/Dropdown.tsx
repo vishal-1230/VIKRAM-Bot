@@ -1,7 +1,7 @@
 import { KeyboardArrowDownOutlined } from '@mui/icons-material'
 import React, { useEffect } from 'react'
 
-function Dropdown(props: {title?: string, list: {text: string, icon?:React.ReactDOM, onClick?:any}[], className?: string, selectedChatCategory: string, setSelectedChatCategory?: any}) {
+function Dropdown(props: {title?: string, list: {text: string, icon?:React.ReactDOM, onClick?:any}[], className?: string, selectedChatCategory: string, setSelectedChatCategory?: any, mode?: string, setMode?: any}) {
 
     const [open, setOpen] = React.useState(false)
 
@@ -30,7 +30,7 @@ function Dropdown(props: {title?: string, list: {text: string, icon?:React.React
   return (
     <div className={`relative inline-block text-left z-50 ${props?.className}`}>
         {
-            props.title && <span className="text-white font-semibold text-sm">{props?.title}:</span>
+            props.title && <span className={`${props.mode==="day" ? "text-bg-900" : "text-white"} font-semibold text-sm`}>{props?.title}:</span>
         }
         <div className={props.title && "mt-1.5"}>
             <button type="button" onClick={()=>{setOpen(!open)}} className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium duration-200 text-gray-700 hover:bg-bg-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-bg-700">

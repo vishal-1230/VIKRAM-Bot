@@ -3,7 +3,7 @@ import { Instagram, LinkedIn, Mail } from "@mui/icons-material"
 function MakerCard(props: MakerCardProps) {
   return (
     <div className="flex flex-col rounded-lg border border-white bg-white">
-        <img src={props.image} alt={props.name + " Image"} className="h-64 w-full object-cover rounded-t-lg" />
+        <img src={props.image} alt={props.name + " Image"} className={`h-64 w-full object-cover rounded-t-lg ${props.imageStyle}`} />
         <div className="flex flex-col mt-4 px-4">
             <span className="text-xl font-bold text-bg-900">{props.name}</span>
             <span className="text-lg font-medium text-neutral-900">{props.designation}</span>
@@ -28,20 +28,21 @@ function MakerCard(props: MakerCardProps) {
 
 interface MakerCardProps {
     name: string
-    description: string
+    description?: string
     image: string
     college?: string
     designation: string
     linkedin: string
     instagram: string
     mail: string
+    imageStyle?: string
 }
 
 MakerCard.defaultProps = {
     name: "Vikram Singh",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    // description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     image: "/assets/tempMaker.png",
-    college: "IIT Roorkee",
+    // college: "IIT Roorkee",
     designation: "Co-Founder",
     linkedin: "https://www.linkedin.com/in/vikram-singh-ai/",
     instagram: "https://www.instagram.com/vikram.ai/",

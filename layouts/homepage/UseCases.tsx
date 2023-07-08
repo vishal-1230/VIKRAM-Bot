@@ -60,6 +60,9 @@ function UseCases() {
                     }
                     </ul>
                 </div>
+                <span className="text-bg-400 text-sm font-medium">
+                    * Coming Soon
+                </span>
         </div>
     </div>
   )

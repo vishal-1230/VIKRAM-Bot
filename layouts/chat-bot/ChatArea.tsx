@@ -422,7 +422,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
 
       try{
-        const response = await fetch(`https://server.vikrambots.in/check-username-exists/${toConnectWith}`, {
+        const response = await fetch(`https://server.vikrambots.in/check-username-exists/${ chatCategory==="initiator" ? toConnectWith : toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}`, {
           headers: {
             "x-access-token": localStorage.getItem("token")!,
           }
@@ -1142,7 +1142,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
 
       <div className="w-full md:w-full mt-2 py-2 flex flex-row justify-between z-50 backdrop-blur-sm">
-        <Dropdown title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
+        <Dropdown mode={mode} title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
         <Tooltip title={descriprions[chatCategory]} placement="right">
           <InfoRounded className="w-5 h-5 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 mr-auto self-center mt-2 ml-1" />
         </Tooltip>

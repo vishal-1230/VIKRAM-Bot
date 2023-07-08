@@ -35,7 +35,7 @@ function Message({ children, mode, sender } : {children: string, mode:string, se
               // <BorderColorOutlined className={`w-5 h-5 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} />
                 // <ContentCopyRounded className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} onClick={() => {navigator.clipboard.writeText(children); toast.success("Copied to Clipboard!")}} />
                   null
-                ) : (
+                ) : children === "Loading..." ? null : (
               <div className="flex gap-2">{
                 liked ? (
                   <ThumbUpAltSharp className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-primary-500" : "fill-primary-900"}`} onClick={()=>{setLiked(false)}} />

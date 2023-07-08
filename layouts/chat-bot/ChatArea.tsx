@@ -159,7 +159,7 @@ function ChatArea(props: {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          uri = `http://localhost:5000/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
+          uri = `https://server.vikrambots.in/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
         }
       }
       console.log("URI=>", uri)
@@ -1174,7 +1174,7 @@ function ChatArea(props: {
           </div>
 
 
-      <div className="w-full md:w-full mt-2 py-2 flex flex-row justify-between z-50 backdrop-blur-sm">
+      <div className="w-full md:w-full mt-2 py-2 flex flex-row justify-between z-50 backdrop-blur-md">
         <Dropdown mode={mode} title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
         {
           chatCategory === "personal" || chatCategory === "personaltraining" || chatCategory === "business" || chatCategory === "initiator" || chatCategory === "business_initiator" && <Tooltip title={descriprions[chatCategory]} placement="right">

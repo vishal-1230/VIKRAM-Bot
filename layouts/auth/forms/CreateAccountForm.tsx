@@ -563,10 +563,10 @@ function CreateAccountForm(props: any) {
                             rows={4}
                             cols={4}
                             value={user_info}
-                            onChange={(e)=>{setUser_info(e.target.value); setUser_infoWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            onChange={(e)=>{setUser_info(e.target.value); setUser_infoWordLimitExceeded(e.target.value.split(" ").length > 500)}}
                             className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         {/* word limit */}
-                        <span className={`text-xs font-medium ${user_infoWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{user_info.split(" ").length}/200</span>
+                        <span className={`text-xs font-medium ${user_infoWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{user_info.split(" ").length}/500</span>
                         <span className="text-semibold mb-2 mt-6 justify-self-end">or Simply upload your Resume PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 pb-5 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
@@ -589,6 +589,7 @@ function CreateAccountForm(props: any) {
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
                         }} />
                         </label>
+                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
 
                         {/* <input type="file" name="" id="images" className='self-center md:hidden flex flex-col text-center text-sm text-neutral-50 p-1 max-w-min mb-8 md:mb-0 outline-none rounded-md'
                         // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
@@ -627,10 +628,10 @@ function CreateAccountForm(props: any) {
                             rows={4}
                             cols={4}
                             value={botRules2}
-                            onChange={(e)=>{setBotRules2(e.target.value); setBotRulesWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            onChange={(e)=>{setBotRules2(e.target.value); setBotRulesWordLimitExceeded(e.target.value.split(" ").length > 500)}}
                             className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         {/* word limit */}
-                        <span className={`text-xs font-medium ${botRulesWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{botRules2.split(" ").length}/200</span>
+                        <span className={`text-xs font-medium ${botRulesWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{botRules2.split(" ").length}/500</span>
                         <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
@@ -646,6 +647,7 @@ function CreateAccountForm(props: any) {
                         }} />
                         </label>
 
+                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
                         {/* <input type="file" name="" id="images" className='self-center md:hidden block text-center text-sm text-neutral-50 p-1 outline-none rounded-md'
                         // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
                         onChange={(e)=>{
@@ -655,8 +657,12 @@ function CreateAccountForm(props: any) {
                 </div>
                 <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
                     <OutlineButton title="Show sample rules" buttonStyle='text-sm inline w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
-                    <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
-                        trainBotRules()
+                    <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{
+                        if (botRulesWordLimitExceeded || user_infoWordLimitExceeded) {
+                            toast.error("Word limit exceeded")
+                        } else {
+                            trainBotRules()
+                        }
                     }} />
                     <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-full inline lg:w-fit ml-auto' onClick={()=>{
                         setBotRules2("Verify the identity of the person initiating contact. Confirm their name and organization. Ask the person to briefly state the purpose of the interaction or the problem they want t. Try responding to the problem to the best of your ability. Politely decline the interaction appears negative, abusive or harmful. After every interaction, ask for feedback")
@@ -678,10 +684,10 @@ function CreateAccountForm(props: any) {
                             rows={5}
                             cols={4}
                             value={companyDetails}
-                            onChange={(e)=>{setCompanyDetails(e.target.value); setCompanyWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            onChange={(e)=>{setCompanyDetails(e.target.value); setCompanyWordLimitExceeded(e.target.value.split(" ").length > 500)}}
                             className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full" />
                         {/* word limit */}
-                        <span className={`text-xs font-medium mt-2 ${companyWordLimitExceeded && "text-red-500"}`}>{companyDetails.split(" ").length}/200</span>
+                        <span className={`text-xs font-medium mt-2 ${companyWordLimitExceeded && "text-red-500"}`}>{companyDetails.split(" ").length}/500</span>
                         {/* <div className="flex gap-3 items-center"> */}
                             <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span>
                             
@@ -700,6 +706,7 @@ function CreateAccountForm(props: any) {
                         <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md w-full' onChange={(e)=>{ e?.target?.files && setCompanyDetailsFile(e?.target?.files[0]) }} />
 
                         </label>
+                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
                         {/* </div> */}
                         {/* <div className="flex gap-3 items-center"> */}
                             {/* <span className="text-neutral-50 mt-4">Or give the link to your business LinkedIn Page (optional)</span>
@@ -714,9 +721,9 @@ function CreateAccountForm(props: any) {
                             placeholder='Enter role description'
                             rows={5}
                             value={roleDesciption}
-                            onChange={(e)=>{setRoleDescription(e.target.value); setRoleWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                            onChange={(e)=>{setRoleDescription(e.target.value); setRoleWordLimitExceeded(e.target.value.split(" ").length > 500)}}
                             className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" />
-                        <span className={`text-xs font-medium mt-2 ${companyWordLimitExceeded && "text-red-500"}`}>{companyDetails.split(" ").length}/200</span>
+                        <span className={`text-xs font-medium mt-2 ${roleWordLimitExceeded && "text-red-500"}`}>{roleDesciption.split(" ").length}/500</span>
                           {/* <div className="flex"> */}
                             <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span>
                             <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
@@ -734,6 +741,7 @@ function CreateAccountForm(props: any) {
                             <input type="file" name="" id="" className='self-center text-center text-sm text-white p-1 min-h-fit outline-none rounded-md' onChange={(e)=>{e?.target?.files && setRoleDescriptionFile(e?.target?.files[0])}} />
 
                         </label>
+                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
                           {/* </div> */}
                       </div>
                       <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-8 py-8">
@@ -765,10 +773,10 @@ function CreateAccountForm(props: any) {
                                 rows={5}
                                 cols={1}
                                 value={botBusinessSteps2}
-                                onChange={(e)=>{setBotBusinessSteps2(e.target.value); setBotBusinessStepsWordLimitExceeded(e.target.value.split(" ").length > 200)}}
+                                onChange={(e)=>{setBotBusinessSteps2(e.target.value); setBotBusinessStepsWordLimitExceeded(e.target.value.split(" ").length > 500)}}
                                 className="text-sm text-white bg-transparent p-2 mx-28 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full max-w-full" />
                             {/* word limit */}
-                            <span className={`text-xs font-medium mt-2 ${botBusinessStepsWordLimitExceeded && "text-red-500"}`}>{botBusinessSteps2.split(" ").length}/200</span>
+                            <span className={`text-xs font-medium mt-2 ${botBusinessStepsWordLimitExceeded && "text-red-500"}`}>{botBusinessSteps2.split(" ").length}/500</span>
                             {/* <span className="text-semibold mb-2 mt-8 justify-self-end text-sm">or Upload Steps PDF</span> */}
                             {/* <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
@@ -790,7 +798,13 @@ function CreateAccountForm(props: any) {
                   <div className="grid grid-cols-3 mt-auto justify-between">
                       <div></div>
                         {/* <Link href='/auth/login'> */}
-                            <Button title="Submit" buttonStyle='mx-auto font-semibold' onClick={trainBusinessBot} />
+                            <Button title="Submit" buttonStyle='mx-auto font-semibold' onClick={()=>{
+                                if (botBusinessStepsWordLimitExceeded || roleWordLimitExceeded || companyWordLimitExceeded) {
+                                    toast.error("Word limit exceeded")
+                                } else {
+                                    trainBusinessBot()
+                                }
+                            }} />
                         {/* </Link> */}
                         <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
                           setBotBusinessSteps2(

@@ -220,7 +220,7 @@ function CreateAccountForm(props: any) {
         console.log(data2)
         setLoading(false)
 
-        if (data2.message.startsWith("Saved successfully")) {
+        if (data2.success === true) {
             toast.success("Rules stored successfully!")
             setShowPersonalBotDialog(false)
             if (purpose == "business" || purpose === "personalandbusiness") {
@@ -233,7 +233,7 @@ function CreateAccountForm(props: any) {
             }
 
         } else {
-            toast.error("Error storing rules")
+            toast.error(data2.message)
         }
     }
 
@@ -307,7 +307,7 @@ function CreateAccountForm(props: any) {
                     setShowBusinessBotDialog(false)
                     router.replace("/chat-bot")
                 } else {
-                    toast.error("Error storing rules")
+                    toast.error(data2.message)
                 }
             } catch (error) {
                 // console.log(error)

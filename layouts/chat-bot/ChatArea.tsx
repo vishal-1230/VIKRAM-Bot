@@ -1191,7 +1191,7 @@ function ChatArea(props: {
         </div>
         }
         {
-        chatCategory==="personal" && <Dropdown title="Plugin" className="mr-2 md:mr-5" list={[
+        chatCategory==="personal" && <Dropdown mode={mode} title="Plugin" className="mr-2 md:mr-5" list={[
           {
             text: "None",
             onClick: () => { setPlugin("none") }

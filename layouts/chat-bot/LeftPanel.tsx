@@ -104,7 +104,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                     ) : (
                         notifications.map((notification, index) => {
                             return (
-                                <span key={index} className="text-sm ml-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap" onClick={()=>{props.setChangeChatToNotif(notification)}}>
+                                <span key={index} className={`text-sm ml-2 text-transparent bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`} onClick={()=>{props.setChangeChatToNotif(notification)}}>
                                     {notification}
                                 </span>
                             )
@@ -132,7 +132,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                         ) : (
                             history.map((chat, index) => {
                                 return (
-                                    <span key={index} className="text-sm ml-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap" onClick={()=>{props.setChangeChatTo(chat)}}>
+                                    <span key={index} className={`text-sm ml-2 text-transparent bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`} onClick={()=>{props.setChangeChatTo(chat)}}>
                                         {chat}
                                     </span>
                                 )

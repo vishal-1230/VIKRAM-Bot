@@ -4,7 +4,8 @@ import Link from "next/link";
 import PrimaryButton from "@/components/PrimaryButton";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ResetPasswordForm() {
 
@@ -49,7 +50,7 @@ function ResetPasswordForm() {
                     const response = await fetch(`https://server.vikrambots.in/change_password/${username}/${pass}`)
                     const data = await response.json()
                     console.log(data)
-                    if (data.return === true) {
+                    if ("properties" in data) {
                         // toast("OTP sent successfully")
                         toast.success('Password changed successfully', {
                             position: "top-right",
@@ -96,10 +97,11 @@ function ResetPasswordForm() {
 
   return (
     <RightAuthContainer title="Reset Password">
+        <ToastContainer />
 
-        <InputGroup label="New Password" placeholder="Enter your new password" type="password" className="!mt-10" passwordAccessory={<label htmlFor="password" className='text-sm text-neutral-900'>Password should contain atleast number, capital letter, small letter and symbol.</label>} />
+        <InputGroup label="New Password" placeholder="Enter your new password" value={password} onChange={setPassword} type="password" className="!mt-10" passwordAccessory={<label htmlFor="password" className='text-sm text-neutral-900'>Password should contain atleast number, capital letter, small letter and symbol.</label>} />
         
-        <InputGroup label="Confirm Password" placeholder="Confirm your new password" type="password" passwordAccessory={
+        <InputGroup label="Confirm Password" value={confirmPassword} onChange={setConfirmPassword} placeholder="Confirm your new password" type="password" passwordAccessory={
             <div className="flex justify-between">
                 <div className="flex gap-1 5 items-center">
                     <input type="checkbox" name="" id="" />
@@ -111,7 +113,7 @@ function ResetPasswordForm() {
             </div>
         } />
 
-        <PrimaryButton title="Reset Password" buttonStyle="w-full mt-5 mb-5" />
+        <PrimaryButton title="Reset Password" buttonStyle="w-full mt-5 mb-5" onClick={resetPassword} disabled={password === undefined || password === null || password === "" || confirmPassword === undefined || confirmPassword === null || confirmPassword === ""} />
 
         <span className="text-sm text-neutral-900">You will be required to sign in with new password on all devices</span>
 

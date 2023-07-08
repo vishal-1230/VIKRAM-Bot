@@ -4,7 +4,8 @@ import RightAuthContainer from '@/layouts/auth/RightAuthContainer'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
 
 function ForgotPasswordForm() {
 
@@ -70,6 +71,7 @@ function ForgotPasswordForm() {
 
   return (
     <RightAuthContainer title="Forgot Password">
+        <ToastContainer />
         
         <InputGroup required label='Username' placeholder='Your Personal/Agent VBot ID' type="username" className='!mt-10' value={username?.toString()} onChange={setUsername} />
         <InputGroup required label='Phone Number' placeholder='Your Phone Number' type="number" className='' value={phoneNumber?.toString()} onChange={setPhoneNumber} />

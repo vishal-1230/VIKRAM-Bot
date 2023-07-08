@@ -14,6 +14,7 @@ function ChatBot() {
   const [showBusinessBotDialog, setShowBusinessBotDialog] = useState(false)
 
   const [changeChatTo, setChangeChatTo] = useState<string | null>(null)
+  const [changeChatToNotif, setChangeChatToNotif] = useState<string | null>(null)
 
   const router = useRouter()
 
@@ -27,16 +28,37 @@ function ChatBot() {
   }, [])
 
   return (
-    <div className={`flex absolute top-0 left-0 w-screen h-screen -z-10 flex-row ${inter.className}`}>
+    <div
+      className={`flex absolute top-0 left-0 w-screen h-screen -z-10 flex-row ${inter.className}`}
+    >
+      <div className="absolute top-20 left-0 w-6 h-6 bg-white block md:hidden"></div>
 
-        <div className="absolute top-20 left-0 w-6 h-6 bg-white block md:hidden"></div>
-        
-        <LeftPanel mode={mode} setMode={setMode} showPersonalBotDialog={showPersonalBotDialog} setShowPersonalBotDialog={setShowPersonalBotDialog} showBusinessBotDialog={showBusinessBotDialog} setShowBusinessBotDialog={setShowBusinessBotDialog} changeChatTo={changeChatTo} setChangeChatTo={setChangeChatTo} />
+      <LeftPanel
+        mode={mode}
+        setMode={setMode}
+        showPersonalBotDialog={showPersonalBotDialog}
+        setShowPersonalBotDialog={setShowPersonalBotDialog}
+        showBusinessBotDialog={showBusinessBotDialog}
+        setShowBusinessBotDialog={setShowBusinessBotDialog}
+        changeChatTo={changeChatTo}
+        setChangeChatTo={setChangeChatTo}
+        changeChatToNotif={changeChatToNotif!}
+        setChangeChatToNotif={setChangeChatToNotif}
+      />
 
-        <ChatArea mode={mode} setMode={setMode} showPersonalBotDialog={showPersonalBotDialog} setShowPersonalBotDialog={setShowPersonalBotDialog} showBusinessBotDialog={showBusinessBotDialog} setShowBusinessBotDialog={setShowBusinessBotDialog} changeChatTo={changeChatTo} setChangeChatTo={setChangeChatTo} />
-
+      <ChatArea
+        mode={mode}
+        setMode={setMode}
+        showPersonalBotDialog={showPersonalBotDialog}
+        setShowPersonalBotDialog={setShowPersonalBotDialog}
+        showBusinessBotDialog={showBusinessBotDialog}
+        setShowBusinessBotDialog={setShowBusinessBotDialog}
+        changeChatTo={changeChatTo}
+        setChangeChatTo={setChangeChatTo}
+        changeChatToNotif={changeChatToNotif!}
+      />
     </div>
-  )
+  );
 }
 
 export default ChatBot

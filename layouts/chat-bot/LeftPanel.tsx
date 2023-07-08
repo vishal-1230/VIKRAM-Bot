@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any}) {
+function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any, changeChatToNotif: string | null, setChangeChatToNotif: any}) {
 
     const router = useRouter()
 
@@ -104,7 +104,9 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                     ) : (
                         notifications.map((notification, index) => {
                             return (
-                                <span key={index} className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">{notification}</span>
+                                <span key={index} className="text-sm ml-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap" onClick={()=>{props.setChangeChatToNotif(notification)}}>
+                                    {notification}
+                                </span>
                             )
                         })
                     )

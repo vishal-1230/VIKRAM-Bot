@@ -11,13 +11,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import OutlineButton from "@/components/OutlineButton"
 import Button from "@/components/SpecialButton"
 
-function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any}) {
+function ChatArea(props: {
+  changeChatToNotif: string, mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any
+}) {
 
   const router = useRouter()
 
   const [userDetails, setUserDetails] = useState<any>(null)
 
-  const [chatCategory, setChatCategory] = useState<"personal" | "personaltraining" | "business" | "business_initiator" | "initiator">("personal")
+  const [chatCategory, setChatCategory] = useState<"personal" | "personaltraining" | "business" | "business_initiator" | "initiator" | string>("personal")
 
   const [plugin, setPlugin] = useState<"News" | "Weather" | "IMDB" | "Google" | "YouTube" | "none">("none")
     
@@ -26,6 +28,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     const [trainingChats, setTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [thirdChats, setThirdChats] = useState<{message: string, sender: string}[]>([])
     const [thirdBusinessChats, setThirdBusinessChats] = useState<{message: string, sender: string}[]>([])
+    const [tempChats, setTempChats] = useState<{message: string, sender: string}[]>([])
 
     const [toConnectWith, setToConnectWith] = useState<string>("")
 
@@ -156,7 +159,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          uri = `https://server.vikrambots.in/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
+          uri = `http://localhost:5000/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
         }
       }
       console.log("URI=>", uri)
@@ -414,11 +417,12 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       }
     }
 
-    async function checkBotExists () {
+    async function checkBotExists (toConnectWith: string) {
 
       setConnecting(true)
 
       const message = "Hi"
+      console.log("Testing", toConnectWith)
 
 
       try{
@@ -483,7 +487,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       console.log("CONNxns", data)
     }
 
-    async function fetchBothsMessages () {
+    async function fetchMyWithThemMessages () {
       setLoadingThirdMessages(true)
       const response = await fetch (`https://server.vikrambots.in/chats/${toConnectWith}/${userDetails.username}`)
       const data = await response.json()
@@ -497,6 +501,24 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
       })
       console.log("TEMP", temp)
       setThirdChats(temp)
+    }
+
+    async function fetchTheirWithMyMessages (toConnectWith: string) {
+      if (userDetails !== null) {
+      setLoadingThirdMessages(true)
+      const response = await fetch (`https://server.vikrambots.in/chats/${userDetails.username}/${toConnectWith}`)
+      const data = await response.json()
+      setLoadingThirdMessages(false)
+
+      console.log(data)
+      let temp:{message: string, sender: string}[] = []
+      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
+        temp.push({message: item.Bot, sender: "bot"})
+        temp.push({message: item.User, sender: "user"})
+      })
+      console.log("TEMP", temp)
+      setTempChats(temp)
+    }
     }
 
     async function fetchBothsBusinessMessage () {
@@ -611,7 +633,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     useEffect(()=>{
       if (chatCategory === "initiator") {
-        fetchBothsMessages()
+        fetchMyWithThemMessages()
       } else if (chatCategory === "business_initiator") {
         fetchBothsBusinessMessage()
       }
@@ -619,17 +641,27 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
     useEffect(()=>{
       const changeChatTo = props.changeChatTo
-
+      console.log("Changing", changeChatTo)
+      
       if (changeChatTo?.endsWith("_b")){
         setChatCategory("business_initiator")
         setToConnectWith(changeChatTo)
-        checkBotExists()
+        checkBotExists(changeChatTo)
+        fetchBothsBusinessMessage()
       } else if (changeChatTo) {
         setChatCategory("initiator")
         setToConnectWith(changeChatTo)
-        checkBotExists()
+        checkBotExists(changeChatTo)
+        fetchMyWithThemMessages()
       }
     }, [props.changeChatTo])
+
+    useEffect(()=>{
+      const changeChatToNotif = props.changeChatToNotif
+      console.log("Changing", changeChatToNotif)
+      fetchTheirWithMyMessages(changeChatToNotif)
+      setChatCategory(changeChatToNotif)
+    }, [props.changeChatToNotif])
 
     const mode = props.mode
     const setMode = props.setMode
@@ -830,6 +862,7 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
     const [showFileUploadDialog, setShowFileUploadDialog] = useState(false)
     const [knowledgebaseFile, setKnowledgebaseFile] = useState<File | string>("")
     const [knowledgebaseLoading, setKnowledgebaseLoading] = useState(false)
+
     async function uploadKnowledgebase () {
       setShowFileUploadDialog(true)
       setKnowledgebaseLoading(true)
@@ -1143,15 +1176,17 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
 
       <div className="w-full md:w-full mt-2 py-2 flex flex-row justify-between z-50 backdrop-blur-sm">
         <Dropdown mode={mode} title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
-        <Tooltip title={descriprions[chatCategory]} placement="right">
+        {
+          chatCategory === "personal" || chatCategory === "personaltraining" || chatCategory === "business" || chatCategory === "initiator" || chatCategory === "business_initiator" && <Tooltip title={descriprions[chatCategory]} placement="right">
           <InfoRounded className="w-5 h-5 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 mr-auto self-center mt-2 ml-1" />
         </Tooltip>
+        }
         {
           (chatCategory === "initiator" || chatCategory === "business_initiator") && 
         <div className="flex p-1.5 border-b border-b-gray-500 mr-auto ml-3 z-50 self-end">
           <input type="text" className="bg-transparent z-50 outline-none text-sm text-neutral-400 w-fit" placeholder="Enter any VBot ID" value={toConnectWith} onChange={(e)=>{setToConnectWith(e.target.value)}} />
-          <PrimaryButton buttonStyle="ml-5 text-xs" title={connecting ? "Connecting" : connectedBot===toConnectWith ? "Connected" : "Connect"} onClick={connectedBot===toConnectWith ? console.log : checkBotExists} showIcon Icon={
-            ()=>{return connectedBot===toConnectWith ? <CheckCircle className="w-4 h-4 fill-green-500" /> : <Autorenew className={`w-4 h-4 fill-white ${connecting && "animate-spin"}`} />}
+          <PrimaryButton buttonStyle="ml-5 text-xs" title={connecting ? "Connecting" : (connectedBot===toConnectWith && connectedBot!=null) ? "Connected" : "Connect"} onClick={()=>{return (connectedBot===toConnectWith && connectedBot!=null) ? console.log() : checkBotExists(toConnectWith)}} showIcon Icon={
+            ()=>{return connectedBot !== null && (connectedBot===toConnectWith ? <CheckCircle className="w-4 h-4 fill-green-500" /> : <Autorenew className={`w-4 h-4 fill-white ${connecting && "animate-spin"}`} />)}
           } />
         </div>
         }
@@ -1198,12 +1233,22 @@ function ChatArea(props: {mode: string, setMode: any, showPersonalBotDialog: boo
         }
       </div>
         <ChatList
-          chats={ chatCategory != "personal" ? chatCategory != "personaltraining" ? chatCategory != "business" ? chatCategory != "initiator" ? thirdBusinessChats : thirdChats : trainingChats : personalTrainingChats : chats }
+          chats={ chatCategory != "personal" ? 
+          chatCategory != "personaltraining" ? 
+          chatCategory != "business" ? 
+          chatCategory != "initiator" ? 
+          chatCategory != "business_initiator" ?
+          tempChats
+          : thirdBusinessChats 
+          : thirdChats 
+          : trainingChats 
+          : personalTrainingChats 
+          : chats }
           mode={mode}
           setMode={setMode}
         />
         
-        <div className={`flex flex-col gap-5 absolute w-full px-4 md:px-32 bottom-0 z-50 py-6 pt-16 duration-200 ${mode == "day" ? ((chatCategory === "personal" && chats.length != 0) || (chatCategory === "business" && trainingChats.length!=0) || (chatCategory === "personaltraining" && personalTrainingChats.length != 0) || (chatCategory === "initiator" && thirdChats.length != 0) || (chatCategory === "business_initiator" && thirdBusinessChats.length != 0)) && "bg-gradient-to-t from-white via-white to-transparent" : ((chatCategory === "personal" && chats.length != 0) || (chatCategory === "business" && trainingChats.length!=0) || (chatCategory === "personaltraining" && personalTrainingChats.length != 0) || (chatCategory === "initiator" && thirdChats.length != 0) || (chatCategory === "business_initiator" && thirdBusinessChats.length != 0)) && "bg-gradient-to-t from-bg-700 via-bg-700 to-transparent"}`}>
+        <div className={`${(chatCategory !== "personal" && chatCategory !== "personaltraining" && chatCategory !== "business" && chatCategory !== "initiator" && chatCategory !== "business_initiator") ? "hidden" : "flex"} flex-col gap-5 absolute w-full px-4 md:px-32 bottom-0 z-50 py-6 pt-16 duration-200 ${mode == "day" ? ((chatCategory === "personal" && chats.length != 0) || (chatCategory === "business" && trainingChats.length!=0) || (chatCategory === "personaltraining" && personalTrainingChats.length != 0) || (chatCategory === "initiator" && thirdChats.length != 0) || (chatCategory === "business_initiator" && thirdBusinessChats.length != 0)) && "bg-gradient-to-t from-white via-white to-transparent" : ((chatCategory === "personal" && chats.length != 0) || (chatCategory === "business" && trainingChats.length!=0) || (chatCategory === "personaltraining" && personalTrainingChats.length != 0) || (chatCategory === "initiator" && thirdChats.length != 0) || (chatCategory === "business_initiator" && thirdBusinessChats.length != 0)) && "bg-gradient-to-t from-bg-700 via-bg-700 to-transparent"}`}>
           
           <button className={`py-3 px-4 flex min-w-max items-center w-fit gap-2 text-sm self-center font-medium bg-transparent rounded border duration-200 ${mode === "day" ? "border-bg-50 text-bg-50" : "border-neutral-700 text-neutral-700"} `} onClick={()=>{ setChats([]); setPersonalTrainingChats([]); setTrainingChats([]); setThirdChats([]); setThirdBusinessChats([]) }}>
             <RefreshOutlined className="w-5 h-5" />

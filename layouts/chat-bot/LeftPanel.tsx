@@ -40,7 +40,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     async function getNotif() {
         setNotificationsLoading(true)
-        const response = await fetch("https://server.vikrambots.in/gnoti", {
+        const response = await fetch("https://server.vikrambots.in/get-connections", {
             method: "GET",
             headers: {
                 "x-access-token": localStorage.getItem("token")!

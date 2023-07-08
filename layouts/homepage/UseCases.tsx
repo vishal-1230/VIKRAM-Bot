@@ -11,15 +11,15 @@ function UseCases() {
         "Professionals": [
             {
                 title: "Use Case 1: Customized Shopping Assistance",
-                description: ["• If you are a shopping expert, you can create your VBot for personalized shopping assistance", "• You teach the bots on how to take customer's requirements and suggest the best options by browsing the internet", "• Customers receive tailored product recommendations", "• You generate income from their bot's services*"]
+                description: ["• If you are a shopping expert, you can create your VBot for personalized shopping assistance.", "• You teach the bots on how to take customer's requirements and suggest the best options by browsing the internet.", "• Customers receive tailored product recommendations.", "• You generate income from their bot's services.*"]
             },
             {
                 title: "Use Case 2: Local City Advisor",
-                description: ["• If you are a long time resident of a city, create a VBot and load it with your valuable knowledge about the city", "• Teach it on how to answer queries regarding the city to new travellers", "• Travellers get useful tips regarding the city during their stay", "• You generate income from Bots services.*"]
+                description: ["• If you are a long time resident of a city, create a VBot and load it with your valuable knowledge about the city.", "• Teach it on how to answer queries regarding the city to new travellers.", "• Travellers get useful tips regarding the city during their stay.", "• You generate income from Bots services.*"]
             },
             {
                 title: "Use Case 3: Career counselor",
-                description: ["• If you are a financial advisor, you can create a VBot and teach your approach to financial planning and investment", "• Clients receive financial advice based on the advisor's unique insights", "• You earn extra revenue from their bot's consultations*"]
+                description: ["• If you are a financial advisor, you can create a VBot and teach your approach to financial planning and investment.", "• Clients receive financial advice based on the advisor's unique insights.", "• You earn extra revenue from their bot's consultations.*"]
             }
         ]
     }

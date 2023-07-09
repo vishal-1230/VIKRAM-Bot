@@ -82,7 +82,7 @@ function VerifyOTPForm() {
     <RightAuthContainer title="Verify OTP">
       <ToastContainer />
 
-        <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 98XXXXXXX8</span>
+        <span className="font-medium text-neutral-900 mt-2">Please enter the verification code sent to +91 {router.query.phoneNumber}</span>
 
 
         <div className="flex gap-2 mt-10 self-center md:self-start">

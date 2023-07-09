@@ -467,7 +467,7 @@ function CreateAccountForm(props: any) {
         </Dialog>
 
         <Dialog open={otpSent} onClose={()=>{setOtpSent(false)}} className='flex flex-col !p-4 items-center justify-center gap-5'>
-            <DialogTitle className='text-2xl font-semibold text-center'>Enter the OTP sent to your phone from Fast2SMS</DialogTitle>
+            <DialogTitle className='text-2xl font-semibold text-center'>Enter the OTP sent to your phone from FTWSMS</DialogTitle>
             <div className="p-6 pt-2 gap-2 flex flex-col w-full">
                 <OtpInput
                     value={otp}

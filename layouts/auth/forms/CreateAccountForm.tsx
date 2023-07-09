@@ -185,7 +185,7 @@ function CreateAccountForm(props: any) {
                 toast.error("Username already exists")
                 setLoading(false)
             } else {
-                toast(data?.message)
+                toast(data.message)
                 console.log(data)
                 setLoading(false)
             }

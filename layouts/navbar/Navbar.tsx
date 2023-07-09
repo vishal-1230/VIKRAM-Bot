@@ -8,7 +8,6 @@ import { AlternateEmail, Call, CloseOutlined, MailOutline, MenuOpenOutlined, Per
 import { useEffect, useRef, useState } from 'react'
 import PrimaryButton from '@/components/PrimaryButton'
 import { Chip } from '@mui/material'
-import { setGlobal } from '@/pages/globalStore'
 
 const inter = Inter({ subsets: ['latin'] })
 

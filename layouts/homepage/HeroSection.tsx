@@ -31,8 +31,8 @@ function HeroSection() {
         {/* <Button title="Start Asking" buttonStyle='mt-10' Icon={({extras} : {extras : string})=>{
             return <Image src='/assets/button-arrow.svg' className={extras} alt='Arrow' width={15} height={15} priority />
         }} /> */}
-        <Link href={loggedIn ? "/chat-bot" : "/auth/login"} className='self-center z-20'>
-          <PrimaryButton title="Get Your VBot" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer' showIcon />
+        <Link href={loggedIn ? "/chat-bot" : "/auth/login"} className='self-center z-20 select-none'>
+          <PrimaryButton title="Get Your VBot" buttonStyle='mt-10 z-20 w-fit self-center cursor-pointer select-none' showIcon />
         </Link>
         <div className='flex flex-row justify-between relative md:-mt-24'>
           <Image src='/assets/gradient-pink-left.png' alt='Gradient Pink' width={800} height={320} className='mt-2 md:-mt-0 w-2/3 md:w-fit object-cover absolute left-0 bg-gradient-to-r from-current' />

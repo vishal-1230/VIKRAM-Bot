@@ -551,11 +551,11 @@ function CreateAccountForm(props: any) {
 
             {/* Personal bot user_info & rules */}
         <div className={`flex flex-col items-center fixed top-0 left-0 z-50 h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showPersonalBotDialog === true ? "block" : "hidden"}`}>
-            <Card className='!bg-bg-800 max-w-[85vw] md:max-w-[75vw] p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center]'>
+            <Card className='!bg-bg-800 max-h-[90vh] max-w-[95vw] md:max-w-[75vw] p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center]'>
             <DialogTitle className='text-2xl font-semibold text-center -mt-4 md:mt-0'>Set Interaction Rules</DialogTitle>
             <span className="text-base md:text-lg -mt-2 md:mt-0 text-center">Set the rules which your bot needs to follow when others use it.</span>
                 <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
-                    <div className="flex flex-col h-full border-r border-r-gray-200 items-center gap-2 lg:px-6 py-5">
+                    <div className="flex flex-col h-full md:border-r md:border-r-gray-200 items-center gap-2 px-2 md:px-6 py-5 border-t border-t-neutral-800 md:border-t-0">
                         <span className="text-semibold">Tell the bot about yourself (optional)</span>
                         <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
                         <textarea
@@ -567,7 +567,7 @@ function CreateAccountForm(props: any) {
                             className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         {/* word limit */}
                         <span className={`text-xs font-medium ${user_infoWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{user_info.split(" ").length}/500</span>
-                        <span className="text-semibold mb-2 mt-6 justify-self-end">or Simply upload your Resume PDF</span>
+                        <span className="text-semibold mb-2 mt-6 justify-self-end hidden md:inline">or Simply upload your Resume PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-1 pb-5 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
                         }} /> */}
@@ -589,7 +589,7 @@ function CreateAccountForm(props: any) {
                             e?.target?.files && setUser_info_file(e?.target?.files[0])
                         }} />
                         </label>
-                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
+                        <span className="text-xs hidden md:inline font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
 
                         {/* <input type="file" name="" id="images" className='self-center md:hidden flex flex-col text-center text-sm text-neutral-50 p-1 max-w-min mb-8 md:mb-0 outline-none rounded-md'
                         // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
@@ -599,7 +599,7 @@ function CreateAccountForm(props: any) {
                         /> */}
 
                     </div>
-                    <div className="flex flex-col h-full items-center gap-2 md:px-6 py-5">
+                    <div className="flex flex-col h-full items-center gap-2 px-2 md:px-6 py-5 border-t border-t-neutral-800 md:border-t-0">
                         <span className='text-semibold'>Add rules manually</span>
                         <span className="text-xs font-light mb-4">Your bot will follow these rules when interacting with others. You can add as many rules as you want.</span>
                         {/* 
@@ -632,7 +632,7 @@ function CreateAccountForm(props: any) {
                             className="text-sm text-white bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         {/* word limit */}
                         <span className={`text-xs font-medium ${botRulesWordLimitExceeded ? "text-red-500" : "text-neutral-400"}`}>{botRules2.split(" ").length}/500</span>
-                        <span className="text-semibold mb-2 mt-8 justify-self-end">or Upload Rules PDF</span>
+                        <span className="text-semibold mb-2 mt-8 justify-self-end hidden md:inline">or Upload Rules PDF</span>
                         {/* <input type="file" name="" id="" className='self-center text-center text-sm text-neutral-50 p-3 outline-none rounded-md' onChange={(e)=>{
                             e?.target?.files && setBotRulesFile(e?.target?.files[0])
                         }} /> */}
@@ -647,7 +647,7 @@ function CreateAccountForm(props: any) {
                         }} />
                         </label>
 
-                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
+                        <span className="text-xs hidden md:inline font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
                         {/* <input type="file" name="" id="images" className='self-center md:hidden block text-center text-sm text-neutral-50 p-1 outline-none rounded-md'
                         // value={typeof user_info_file === "object" ? user_info_file?.name : user_info_file}
                         onChange={(e)=>{
@@ -656,7 +656,7 @@ function CreateAccountForm(props: any) {
                     </div>
                 </div>
                 <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
-                    <OutlineButton title="Show sample rules" buttonStyle='text-sm inline w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
+                    <OutlineButton title="Show sample rules" buttonStyle='text-sm order-2 md:order-1 inline w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
                     <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{
                         if (botRulesWordLimitExceeded || user_infoWordLimitExceeded) {
                             toast.error("Word limit exceeded")
@@ -677,10 +677,10 @@ function CreateAccountForm(props: any) {
                   <DialogTitle className='text-2xl font-semibold text-center'>Set Agent Interaction Rules</DialogTitle>
                   <span className="text-lg text-center -mt-2">Set the rules which your bot needs to follow when others use it.</span>
                   <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
-                    <div className="flex flex-col h-full items-center gap-2 pxy-8 px-6">
+                    <div className="flex flex-col h-full items-center border-t md:border-none border-t-neutral-900 pb-4 gap-2 pt-8 md:py-8 px-3 md:px-8">
                         <span className="text-semibold mb-4">Add information about your business or company (optional)</span>
                         <textarea
-                            placeholder='Enter role description'
+                            placeholder='Enter the description of your business or company, your bot will use this information to introduce your business to others.'
                             rows={5}
                             cols={4}
                             value={companyDetails}
@@ -689,7 +689,7 @@ function CreateAccountForm(props: any) {
                         {/* word limit */}
                         <span className={`text-xs font-medium mt-2 ${companyWordLimitExceeded && "text-red-500"}`}>{companyDetails.split(" ").length}/500</span>
                         {/* <div className="flex gap-3 items-center"> */}
-                            <span className="text-neutral-50 mt-4">Or upload any document containing details of your bsuiness or company</span>
+                            <span className="text-neutral-50 mt-4 hidden md:inline">Or upload any document containing details of your bsuiness or company</span>
                             
                             <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
@@ -706,26 +706,26 @@ function CreateAccountForm(props: any) {
                         <input type="file" name="" id="images" className='self-center text-center text-sm text-neutral-50 p-1 outline-none rounded-md w-full' onChange={(e)=>{ e?.target?.files && setCompanyDetailsFile(e?.target?.files[0]) }} />
 
                         </label>
-                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
+                        <span className="text-xs font-light self-start text-neutral-50 hidden md:inline">PDF text should be selectable & not exceeding 500 words</span>
                         {/* </div> */}
                         {/* <div className="flex gap-3 items-center"> */}
                             {/* <span className="text-neutral-50 mt-4">Or give the link to your business LinkedIn Page (optional)</span>
                             <input type="text" name="" id="" placeholder='https://www.linkedin.com/company/arthlex-limited/' onChange={(e)=>{setCompanyDetails(e.target.value)}} className='self-start text-center text-sm w-full text-white p-3 min-h-fit outline-none border-2 border-[#DDD6D6] rounded-md' /> */}
                         {/* </div> */}
                     </div>
-                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-6 py-8">
-                          <span className='text-semibold -mb-1'>Add Role Description
-                          <OutlineButton title='Check sample description' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleRoleDescription(true)}} />
+                      <div className="flex flex-col h-full border-t md:border-t-0 border-t-neutral-900 md:border-l md:border-l-neutral-50 items-center gap-2 px-3 pt-8 py-6 md:px-8 md:py-8">
+                          <span className='text-semibold -mb-1 text-center'>Add Role Description
+                          <OutlineButton title='Check sample description' buttonStyle='md:ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleRoleDescription(true)}} />
                           </span>
                           <textarea
-                            placeholder='Enter role description'
+                            placeholder="Enter the description of the role you want your bot to play as an agent. Your bot will use this information to introduce itself to others."
                             rows={5}
                             value={roleDesciption}
                             onChange={(e)=>{setRoleDescription(e.target.value); setRoleWordLimitExceeded(e.target.value.split(" ").length > 500)}}
                             className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-neutral-50 rounded-md w-full" />
                         <span className={`text-xs font-medium mt-2 ${roleWordLimitExceeded && "text-red-500"}`}>{roleDesciption.split(" ").length}/500</span>
                           {/* <div className="flex"> */}
-                            <span className="text-neutral-50 mt-4 px-2">Or upload Resume to get a bot role description</span>
+                            <span className="text-neutral-50 mt-4 px-2 hidden md:inline">Or upload Resume to get a bot role description</span>
                             <label htmlFor="images" className="drop-container" onDragOver={(e)=>{
                             e.preventDefault()
                         }} onDrop={(e)=>{
@@ -741,10 +741,10 @@ function CreateAccountForm(props: any) {
                             <input type="file" name="" id="" className='self-center text-center text-sm text-white p-1 min-h-fit outline-none rounded-md' onChange={(e)=>{e?.target?.files && setRoleDescriptionFile(e?.target?.files[0])}} />
 
                         </label>
-                        <span className="text-xs font-light self-start text-neutral-50">PDF text should be selectable & not exceeding 500 words</span>
+                        <span className="text-xs font-light self-start text-neutral-50 hidden md:inline">PDF text should be selectable & not exceeding 500 words</span>
                           {/* </div> */}
                       </div>
-                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-8 py-8">
+                      <div className="flex flex-col h-full border-t md:border-t-0 border-t-neutral-900 md:border-l md:border-l-neutral-50 items-center gap-2 px-3 md:px-8 py-8">
                           <span className="!text-semibold mb-0">Add Steps
                           <OutlineButton title='Check sample Steps' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleBusinessSteps(true)}} />
                           </span>
@@ -795,7 +795,7 @@ function CreateAccountForm(props: any) {
                           {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
                       </div>
                   </div>
-                  <div className="grid grid-cols-3 mt-auto justify-between">
+                  <div className="flex flex-col items-center gap-2 md:grid md:grid-cols-3 mt-auto justify-between">
                       <div></div>
                         {/* <Link href='/auth/login'> */}
                             <Button title="Submit" buttonStyle='mx-auto font-semibold' onClick={()=>{
@@ -806,7 +806,7 @@ function CreateAccountForm(props: any) {
                                 }
                             }} />
                         {/* </Link> */}
-                        <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
+                        <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit md:ml-auto' onClick={() => {
                           setBotBusinessSteps2(
                               "Do not use abusive language. Do not spam. Do not use the bot for illegal purposes. Do not use the bot for spreading fake news. Do not use the bot for spreading hate speech.")
                       }} />

@@ -1173,8 +1173,11 @@ function ChatArea(props: {
               </Card>
           </div>
 
+      <span className="p-2 py-1 text-xs flex md:hidden items-center text-center justify-center bg-teal-600 text-white font-medium mt-2">
+        For Full Experience, use the Desktop Version.
+      </span>
 
-      <div className="w-full md:w-full mt-2 py-2 flex flex-row justify-between z-50 backdrop-blur-md">
+      <div className={`w-full md:w-full md:mt-2 py-2 flex ${chatCategory === "personal" ? "flex-row" : "flex-col flex-start items-start"} justify-between z-50 backdrop-blur-md`}>
         <Dropdown mode={mode} title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
         {
           chatCategory === "personal" || chatCategory === "personaltraining" || chatCategory === "business" || chatCategory === "initiator" || chatCategory === "business_initiator" && <Tooltip title={descriprions[chatCategory]} placement="right">
@@ -1219,9 +1222,9 @@ function ChatArea(props: {
         ]} selectedChatCategory={plugin} />
         }
         {
-          (chatCategory === "personaltraining" || chatCategory === "business") && <div className="flex relative align-center self-center mt-1.5 mr-5">
+          (chatCategory === "personaltraining" || chatCategory === "business") && <div className="flex relative align-center md:self-center ml-2 md:ml-0 mt-1.5 mr-5">
             {/* knowledgebase pdf upload dropdown upload */}
-            <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
+            <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 text-sm md:text-base rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
             <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 rounded-xl mt-2 right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`}>
               <input type="file" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
@@ -1232,6 +1235,7 @@ function ChatArea(props: {
           </div>
         }
       </div>
+
         <ChatList
           chats={ chatCategory != "personal" ? 
           chatCategory != "personaltraining" ? 

@@ -95,12 +95,9 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
             <span className="absolute bottom-0 -right-2 text-white font-bold text-[0.6rem] p-0.5 px-1 rounded-md bg-warning-500">BETA</span>
         </Link>
 
-        {
-          router.pathname.startsWith("/chat-bot") ? (
-            null
-          ) : (
+
         <div className={`flex-col absolute top-0 left-0 bg-bg-900 gap-5 md:gap-0 py-6 md:py-0 w-full h-screen z-50 md:w-fit md:h-fit ${navbarOpen ? "flex"  : "hidden"} md:relative md:bg-transparent md:!block`} id="navbar">
-            <CloseOutlined className="w-7 h-7 text-white block md:!hidden ml-auto mr-5" onClick={closeMobileNavbar} />
+            <CloseOutlined className="w-7 h-7 z-[500] text-white block md:!hidden ml-auto mr-5" onClick={closeMobileNavbar} />
             <NavLink closeNavbar={closeMobileNavbar} href="/" active ={router.pathname === "/"}>Home</NavLink>
             <NavLink closeNavbar={closeMobileNavbar} href="/about-us" active ={router.pathname === "/about-us"}>About</NavLink>
             <NavLink closeNavbar={closeMobileNavbar} href="/#features" active ={router.pathname === "/#features"}>Features</NavLink>
@@ -108,8 +105,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
             <NavLink closeNavbar={closeMobileNavbar} href="/blogs" active ={router.pathname === "/blogs"}>Blogs</NavLink>
             {/* <NavLink>Contact Us</NavLink> */}
         </div>
-          )
-        }
+
 
         <div className='profile cursor-pointer flex gap-10 items-center'>
           {
@@ -129,12 +125,11 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
               router.pathname.startsWith("/chat-bot") && (infoLoading ? <img src="/assets/loading-circle.svg" className='w-6 h-6 ml-4' /> : <span className="text-white hidden md:block ml-4">{userDetails?.name}</span>)
             }
             <div className="relative" onBlur={()=>{
-                alert("BLURRed")
                 if (loggedIn) {
                   setShowInfoBox(false)
                 }
               }}>
-              <Image src='/assets/profileIcon.svg' alt='Profile' className='hidden md:block ' width={30} height={30} priority onClick={()=>{
+              <Image src='/assets/profileIcon.svg' alt='Profile' className=' ' width={30} height={30} priority onClick={()=>{
                 if (loggedIn) {
                   setShowInfoBox(!showInfoBox)
                 } else {

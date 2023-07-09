@@ -1,10 +1,9 @@
 import { useEffect, useState, useContext } from "react"
 import ChatList from "./ChatList"
-import { ArrowOutward, ArrowOutwardOutlined, Autorenew, CancelOutlined, CheckCircle, Delete, InfoRounded, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { ArrowOutward, ArrowOutwardOutlined, Autorenew, CancelOutlined, CheckCircle, Delete, InfoRounded, MenuOpenOutlined, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
-
 import { Card, DialogTitle, Popover, Tooltip, selectClasses } from "@mui/material"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
@@ -566,6 +565,7 @@ function ChatArea(props: {
       "business_initiator": "You are connecting to some business's bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see."
     }
 
+
     const [showPersonalBotDialog, setShowPersonalBotDialog] = [props.showPersonalBotDialog, props.setShowPersonalBotDialog]
     const [showBusinessBotDialog, setShowBusinessBotDialog] = [props.showBusinessBotDialog, props.setShowBusinessBotDialog]
 
@@ -921,16 +921,16 @@ function ChatArea(props: {
       <br /><br /><br />
         {/* Personal bot user_info & rules */}
         <div className={`flex flex-col items-center mt-8 fixed top-0 left-0 z-[1000] h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showPersonalBotDialog === true ? "block" : "hidden"}`}>
-            <Card className='!bg-bg-800 max-w-[75vw] p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center relative'>
-            <DialogTitle className='text-2xl font-semibold text-center'>Update Interaction Rules
-              <span className="absolute h-fit cursor-pointer top-10 right-10" onClick={()=>{ setShowPersonalBotDialog(false) }}>
+            <Card className='!bg-bg-800 max-h-[90vh] max-w-[85vw] p-6 md:p-8 h-[87vh] rounded-lg !text-neutral-400 flex flex-col items-center relative'>
+            <DialogTitle className='text-xl md:text-2xl font-semibold text-center'>Update Interaction Rules
+              <span className="absolute h-fit cursor-pointer top-10 right-5 md:right-10" onClick={()=>{ setShowPersonalBotDialog(false) }}>
                 <CancelOutlined />
               </span>
             </DialogTitle>
-            <span className="text-lg text-center">Update the rules which your bot needs to follow when others use it.</span>
+            <span className="md:text-lg text-center">Update the rules which your bot needs to follow when others use it.</span>
                 <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
-                    <div className="flex flex-col h-full border-r border-r-gray-200 items-center gap-2 lg:px-6 py-5">
-                        <span className="text-semibold">Tell the bot about yourself (optional)</span>
+                    <div className="flex flex-col h-full items-center md:border-r border-t border-t-neutral-800 md:border-t-0 border-r-gray-200 gap-2 lg:px-6 py-5">
+                        <span className="text-semibold text-center">Tell the bot about yourself (optional)</span>
                         <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
                         {
                             userInfoLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} value={user_info} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
@@ -965,7 +965,7 @@ function ChatArea(props: {
                           Icon={()=> {return updatingUserInfo === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <></>}}
                         />
                     </div>
-                    <div className="flex flex-col h-full items-center  gap-2 px-6 py-5">
+                    <div className="flex flex-col h-full items-center border-t border-t-neutral-800 md:border-t-0 gap-2 px-6 py-5">
                         <span className='text-semibold'>Edit rules manually</span>
                         <span className="text-xs font-light mb-4">Your bot will follow these rules when interacting with others. You can add upto 10 rules.</span>
                         {/* 
@@ -1015,7 +1015,7 @@ function ChatArea(props: {
                         />
                     </div>
                 </div>
-                <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
+                <div className=" flex flex-col items-center gap-1 md:gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
                     <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
                     {/* <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
                         // trainBotRules()
@@ -1030,15 +1030,15 @@ function ChatArea(props: {
 
             {/* Business bot steps etc */}
           <div className={`flex flex-col items-center mt-8 fixed top-0 left-0 z-[1000] h-screen w-screen bg-black bg-opacity-60 justify-center gap-5 ${showBusinessBotDialog === true ? "block" : "hidden"}`}>
-              <Card className='!bg-bg-900 max-h-[90vh] p-8 px-5 max-w-[95vw] rounded-lg !text-neutral-50 flex flex-col relative'>
-                  <DialogTitle className='text-2xl font-semibold text-center'>Update Agent Interaction Rules
+              <Card className='!bg-bg-900 max-h-[85vh] md:max-h-[90vh] p-6 md:p-8 px-5 max-w-[85vw] md:max-w-[95vw] rounded-lg !text-neutral-50 flex flex-col relative'>
+                  <DialogTitle className='text-xl md:text-2xl font-semibold text-center'>Update Agent Interaction Rules
                     <span className="absolute h-fit cursor-pointer top-10 right-10" onClick={()=>{ setShowBusinessBotDialog(false) }}>
                       <CancelOutlined />
                     </span>
                   </DialogTitle>
-                  <span className="text-lg text-center -mt-2">Update the rules which your bot needs to follow when others use it.</span>
+                  <span className="md:text-lg text-center -mt-2">Update the rules which your bot needs to follow when others use it.</span>
                   <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
-                    <div className="flex flex-col h-full items-center gap-2 pxy-8 px-6">
+                    <div className="flex flex-col h-full border-t border-t-neutral-800 md:border-t-0 items-center gap-2 py-8 px-3 md:px-6">
                         <span className="text-semibold mb-4">Edit information about your business or company (optional)</span>
                         {
                             companyDetailsLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Enter role description' rows={5} cols={4} value={companyDetails} onChange={(e)=>{setCompanyDetails(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
@@ -1075,9 +1075,9 @@ function ChatArea(props: {
                             <input type="text" name="" id="" placeholder='https://www.linkedin.com/company/arthlex-limited/' onChange={(e)=>{setCompanyDetails(e.target.value)}} className='self-start text-center text-sm w-full text-white p-3 min-h-fit outline-none border-2 border-[#DDD6D6] rounded-md' /> */}
                         {/* </div> */}
                     </div>
-                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-6 py-8">
-                          <span className='text-semibold -mb-1'>Edit Role Description
-                          <OutlineButton title='Check sample description' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleRoleDescription(true)}} />
+                      <div className="flex flex-col h-full border-t border-t-neutral-800 md:border-t-0 md:border-l md:border-l-neutral-50 items-center gap-2 px-3 md:px-6 py-8">
+                          <span className='text-semibold -mb-1 text-center'>Edit Role Description
+                          <OutlineButton title='Check sample description' buttonStyle='md:ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleRoleDescription(true)}} />
                           </span>
                           {
                               roleDescriptionLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Enter role description' rows={5} cols={4} value={roleDesciption} onChange={(e)=>{setRoleDescription(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
@@ -1108,9 +1108,9 @@ function ChatArea(props: {
                             />
                           {/* </div> */}
                       </div>
-                      <div className="flex flex-col h-full border-l border-l-neutral-50 items-center gap-2 px-8 py-8">
-                          <span className="!text-semibold mb-0">Edit Steps
-                          <OutlineButton title='Check sample Steps' buttonStyle='ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleBusinessSteps(true)}} />
+                      <div className="flex flex-col h-full border-t border-t-neutral-800 md:border-t-0 md:border-l md:border-l-neutral-50 items-center gap-2 px-3 md:px-8 py-8">
+                          <span className="!text-semibold mb-0 text-center">Edit Steps
+                          <OutlineButton title='Check sample Steps' buttonStyle='md:ml-3 mb-3 text-xs !p-1 !px-1.5' onClick={()=>{setShowSampleBusinessSteps(true)}} />
                           </span>
                           {/* {
                               botBusinessSteps.map((step, index) => {
@@ -1160,20 +1160,20 @@ function ChatArea(props: {
                           {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
                       </div>
                   </div>
-                  <div className="grid grid-cols-3 mt-auto justify-between">
-                      <div></div>
+                  <div className="flex flex-col items-center md:grid md:grid-cols-3 mt-auto justify-between">
+                      <div className="hidden md:block"></div>
                         {/* <Link href='/auth/login'> */}
                             {/* <Button title="Submit" buttonStyle='mx-auto font-semibold' onClick={console.log} /> */}
                         {/* </Link> */}
                         <div></div>
-                        <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit ml-auto' onClick={() => {
+                        <OutlineButton title="Continue with normal rules!" buttonStyle='text-sm w-fit md:ml-auto' onClick={() => {
                           setBotBusinessSteps2("Do not use abusive language. Do not spam. Do not use the bot for illegal purposes. Do not use the bot for spreading fake news. Do not use the bot for spreading hate speech.")
                       }} />
                   </div>
               </Card>
           </div>
 
-      <span className="p-2 py-1 text-xs flex md:hidden items-center text-center justify-center bg-teal-600 text-white font-medium mt-2">
+      <span className="p-2 py-1 sticky top-0 text-xs flex md:hidden items-center text-center justify-center bg-teal-600 text-white font-medium mt-2">
         For Full Experience, use the Desktop Version.
       </span>
 

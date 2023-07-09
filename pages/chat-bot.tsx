@@ -1,5 +1,7 @@
 import ChatArea from "@/layouts/chat-bot/ChatArea"
 import LeftPanel from "@/layouts/chat-bot/LeftPanel"
+import { MenuBook, MenuOpenOutlined, MenuSharp } from "@mui/icons-material"
+import { MenuList } from "@mui/material"
 import { Inter } from "next/font/google"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -16,6 +18,8 @@ function ChatBot() {
   const [changeChatTo, setChangeChatTo] = useState<string | null>(null)
   const [changeChatToNotif, setChangeChatToNotif] = useState<string | null>(null)
 
+  const [showSettingsInMobile, setShowSettingsInMobile] = useState<boolean>(false)
+
   const router = useRouter()
 
   useEffect(()=>{
@@ -28,6 +32,8 @@ function ChatBot() {
   }, [])
 
   return (
+    <div className="bg-transparent">
+      <MenuOpenOutlined className="md:hidden w-8 h-8 text-neutral-50 fill-neutral-50 cursor-pointer absolute top-6 z-[10000000] right-7" onClick={()=>{setShowSettingsInMobile(true)}} />
     <div
       className={`flex absolute top-0 left-0 w-screen h-screen -z-10 flex-row ${inter.className}`}
     >
@@ -44,6 +50,8 @@ function ChatBot() {
         setChangeChatTo={setChangeChatTo}
         changeChatToNotif={changeChatToNotif!}
         setChangeChatToNotif={setChangeChatToNotif}
+        showSettingsInMobile={showSettingsInMobile}
+        setShowSettingsInMobile={setShowSettingsInMobile}
       />
 
       <ChatArea
@@ -57,6 +65,7 @@ function ChatBot() {
         setChangeChatTo={setChangeChatTo}
         changeChatToNotif={changeChatToNotif!}
       />
+    </div>
     </div>
   );
 }

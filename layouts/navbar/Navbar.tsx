@@ -8,6 +8,7 @@ import { AlternateEmail, Call, CloseOutlined, MailOutline, MenuOpenOutlined, Per
 import { useEffect, useRef, useState } from 'react'
 import PrimaryButton from '@/components/PrimaryButton'
 import { Chip } from '@mui/material'
+import { setGlobal } from '@/pages/globalStore'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -171,8 +172,9 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
               }
             </div>
           {/* </Link> */}
-          
-            <MenuOpenOutlined className="w-8 h-8 text-white md:!hidden" onClick={openMobileNavbar} />
+            <MenuOpenOutlined className={`w-8 h-8 text-white md:!hidden ${router.pathname.startsWith("/chat-bot") ? "-z-10" : ""}`} onClick={()=>{
+              openMobileNavbar()
+            }} />
         </div>
 
     </div>

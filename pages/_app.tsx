@@ -8,7 +8,6 @@ import { initializeApp } from 'firebase/app';
 
 
 export default function App({ Component, pageProps }: AppProps) {
-
   
   const router = useRouter()
   

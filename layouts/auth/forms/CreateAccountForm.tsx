@@ -656,7 +656,7 @@ function CreateAccountForm(props: any) {
                     </div>
                 </div>
                 <div className=" flex flex-col items-center gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
-                    <OutlineButton title="Show sample rules" buttonStyle='text-sm order-2 md:order-1 inline w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
+                    <OutlineButton title="Show sample rules" buttonStyle='text-sm order-1 md:order-none inline w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
                     <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{
                         if (botRulesWordLimitExceeded || user_infoWordLimitExceeded) {
                             toast.error("Word limit exceeded")

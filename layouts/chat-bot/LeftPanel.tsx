@@ -91,7 +91,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
   return (
     <div className={`flex-col z-[10000] ${showSettingsInMobile ? "" : "hidden"} absolute h-screen md:h-auto md:relative w-screen md:w-64 md:flex justify-between md:z-10 pt-2 md:pt-5 py-5 px-6 pr-3 mt-20 md:max-w-[16rem] ${mode === "day" ? "bg-neutral-100 !text-bg-900" : "bg-bg-900"}`}>
-        <CancelOutlined className="md:hidden text-neutral-50 fill-neutral-50 cursor-pointer absolute top-3 right-5 text-xl" onClick={()=>{setShowSettingsInMobile(false)}} />
+        <CancelOutlined className="block md:!hidden text-neutral-50 fill-neutral-50 cursor-pointer absolute top-3 right-5 text-xl" onClick={()=>{setShowSettingsInMobile(false)}} />
         <div className="flex flex-col gap-8 overflow-y-scroll overflow-x-clip">
 
             <div className="flex flex-col gap-4 min-w-max">

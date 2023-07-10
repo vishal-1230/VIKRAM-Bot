@@ -1173,11 +1173,11 @@ function ChatArea(props: {
               </Card>
           </div>
 
-      <span className="p-2 py-1 sticky top-0 text-xs flex md:hidden items-center text-center justify-center bg-teal-600 text-white font-medium mt-2">
+      <span className="p-2 py-1 text-xs flex md:hidden items-center text-center justify-center bg-teal-600 text-white font-medium mt-2">
         For Full Experience, use the Desktop Version.
       </span>
 
-      <div className={`w-full md:w-full md:mt-2 py-2 flex ${chatCategory === "personal" ? "flex-row" : "flex-col flex-start items-start"} justify-between z-50 backdrop-blur-md`}>
+      <div className={`w-full relative md:mt-2 py-2 flex ${chatCategory === "personal" ? "flex-row" : "flex-col md:flex-row flex-start md:justify-between items-start"} justify-between z-50 backdrop-blur-md`}>
         <Dropdown mode={mode} title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
         {
           chatCategory === "personal" || chatCategory === "personaltraining" || chatCategory === "business" || chatCategory === "initiator" || chatCategory === "business_initiator" && <Tooltip title={descriprions[chatCategory]} placement="right">

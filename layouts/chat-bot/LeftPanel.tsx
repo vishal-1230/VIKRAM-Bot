@@ -42,7 +42,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     async function getNotif() {
         setNotificationsLoading(true)
-        const response = await fetch("https://server.vikrambots.in/get-connections", {
+        const response = await fetch("http://localhost:5000/get-connections", {
             method: "GET",
             headers: {
                 "x-access-token": localStorage.getItem("token")!
@@ -64,11 +64,12 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         const data = await res.json()
         console.log(data)
         if (data.username != data.username_b){
+            getNotif()
             setShowHistory(true)
             setPersonal(true)
-            getNotif()
             getChats()
         } else {
+            getNotif()
             setShowHistory(false)
             setPersonal(false)
         }

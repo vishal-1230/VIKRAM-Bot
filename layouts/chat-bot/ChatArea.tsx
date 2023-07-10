@@ -505,7 +505,7 @@ function ChatArea(props: {
     async function fetchTheirWithMyMessages (toConnectWith: string) {
       if (userDetails !== null) {
       setLoadingThirdMessages(true)
-      const response = await fetch (`https://server.vikrambots.in/chats/${userDetails.username}/${toConnectWith}`)
+      const response = await fetch (`https://server.vikrambots.in/chats/${userDetails.username ? userDetails.username : userDetails.username_b}/${toConnectWith}`)
       const data = await response.json()
       setLoadingThirdMessages(false)
 

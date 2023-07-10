@@ -155,7 +155,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     {
         Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-6 h-6 my-2 self-center" /> : (personal &&
-            <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowPersonalBotDialog(true)}}>
+            <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowPersonalBotDialog(true); setShowSettingsInMobile(false)}}>
                 <SettingsSuggest />
                 Personal Bot Settings
             </span>)
@@ -163,7 +163,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     {
         (Object.keys(userDetails).length != 0 && business) &&
-            <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowBusinessBotDialog(true)}}>
+            <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowBusinessBotDialog(true); setShowSettingsInMobile(false)}}>
                 <SettingsOutlined />
                 Business Bot Settings
             </span>

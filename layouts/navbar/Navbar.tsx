@@ -142,7 +142,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                 }
               }}  />
               {
-              showInfoBox && <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
+              showInfoBox && <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
                 {
                   infoLoading ? <img src="/assets/loading-circle.svg" alt="" className="w-10 mb-8 self-center mt-10" /> :
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 pr-12 items-start justify-center">

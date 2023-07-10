@@ -145,7 +145,7 @@ function ChatArea(props: {
       if(chatCategory === "personal") {
         uri = `https://server.vikrambots.in/general/${message}`
       } else if (chatCategory === "personaltraining") {
-        uri = `https://server.vikrambots.in/test_personal`
+        uri = `http://localhost:5000/test_personal`
       } else if(chatCategory === "business") {
         uri = `https://server.vikrambots.in/training`
       } else if(chatCategory === "initiator") {
@@ -1225,7 +1225,7 @@ function ChatArea(props: {
           (chatCategory === "personaltraining" || chatCategory === "business") && <div className="flex relative align-center md:self-center ml-2 md:ml-0 mt-1.5 mr-5">
             {/* knowledgebase pdf upload dropdown upload */}
             <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 text-sm md:text-base rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
-            <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 rounded-xl mt-2 right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`}>
+            <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 max-w-[90vw] rounded-xl mt-2 md:right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`}>
               <input type="file" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
               {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}

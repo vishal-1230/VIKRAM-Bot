@@ -18,7 +18,7 @@ function ChatList(props: ChatListProps) {
   }, [props.chats]);
 
   return (
-    <div ref={messagesEndRef} className="overflow-y-scroll grow max-h-full w-full px-0 absolute pt-40 pb-48">
+    <div ref={messagesEndRef} className="overflow-y-scroll grow max-h-full w-full px-0 absolute pt-48 md:pt-40 pb-48">
         {
             props.chats.map((chat, index) => {
                 return (

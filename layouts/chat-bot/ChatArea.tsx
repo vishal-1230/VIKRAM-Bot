@@ -1178,7 +1178,7 @@ function ChatArea(props: {
       </span>
 
       <div className={`w-full relative md:mt-2 py-2 flex ${chatCategory === "personal" ? "flex-row" : "flex-col md:flex-row flex-start md:justify-between items-start"} justify-between z-50 backdrop-blur-md`}>
-        <Dropdown mode={mode} title="Select a bot" className="ml-2 md:ml-5 min-w-max" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
+        <Dropdown mode={mode} title="Select a bot" className="ml-2 md:ml-5 min-w-max z-50" list={categories} selectedChatCategory={chatCategory} setSelectedChatCategory={setChatCategory} />
         {
           chatCategory === "personal" || chatCategory === "personaltraining" || chatCategory === "business" || chatCategory === "initiator" || chatCategory === "business_initiator" && <Tooltip title={descriprions[chatCategory]} placement="right">
           <InfoRounded className="w-5 h-5 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 mr-auto self-center mt-2 ml-1" />
@@ -1186,9 +1186,9 @@ function ChatArea(props: {
         }
         {
           (chatCategory === "initiator" || chatCategory === "business_initiator") && 
-        <div className="flex p-1.5 border-b border-b-gray-500 mr-auto ml-3 z-50 self-end">
+        <div className="flex p-1.5 border-b border-b-gray-500 mr-auto mt-2 md:mt-0 ml-3 z-40 self-end">
           <input type="text" className="bg-transparent z-50 outline-none text-sm text-neutral-400 w-fit" placeholder="Enter any VBot ID" value={toConnectWith} onChange={(e)=>{setToConnectWith(e.target.value)}} />
-          <PrimaryButton buttonStyle="ml-5 text-xs" title={connecting ? "Connecting" : (connectedBot===toConnectWith && connectedBot!=null) ? "Connected" : "Connect"} onClick={()=>{return (connectedBot===toConnectWith && connectedBot!=null) ? console.log() : checkBotExists(toConnectWith)}} showIcon Icon={
+          <PrimaryButton buttonStyle="md:ml-5 text-xs" title={connecting ? "Connecting" : (connectedBot===toConnectWith && connectedBot!=null) ? "Connected" : "Connect"} onClick={()=>{return (connectedBot===toConnectWith && connectedBot!=null) ? console.log() : checkBotExists(toConnectWith)}} showIcon Icon={
             ()=>{return connectedBot !== null && (connectedBot===toConnectWith ? <CheckCircle className="w-4 h-4 fill-green-500" /> : <Autorenew className={`w-4 h-4 fill-white ${connecting && "animate-spin"}`} />)}
           } />
         </div>

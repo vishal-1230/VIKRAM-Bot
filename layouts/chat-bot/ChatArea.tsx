@@ -145,7 +145,7 @@ function ChatArea(props: {
       if(chatCategory === "personal") {
         uri = `https://server.vikrambots.in/general/${message}`
       } else if (chatCategory === "personaltraining") {
-        uri = `http://localhost:5000/test_personal`
+        uri = `https://server.vikrambots.in/test_personal`
       } else if(chatCategory === "business") {
         uri = `https://server.vikrambots.in/training`
       } else if(chatCategory === "initiator") {

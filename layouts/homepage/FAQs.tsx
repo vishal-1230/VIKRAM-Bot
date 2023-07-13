@@ -40,15 +40,15 @@ const inter = Inter({ subsets: ['latin'] })
 const faqs = [
   {
     header: "What is VIKRAM and how does it work?",
-    content: "VIKRAM, or Variable Inference Knowledge & Response Augmentation Model, is a unique platform that allows you to create, train, and monetize your own AI-powered bot. The system lets you impart your personal knowledge, skills, and style to your bot, and then allows you to offer the services of your bot to others, potentially creating an additional revenue stream."
+    content: "VIKRAM, or Variable Inference Knowledge & Response Augmentation Model, is a unique platform that allows you to create, and train your own AI-powered bot. The system lets you impart your personal knowledge, skills, and style to your bot, and then allows you to offer the services of your bot to others, potentially creating an additional revenue stream."
   },
   {
     header: "How do I get started with creating my own bot?",
-    content: "You start by registering on the VIKRAM platform and defining the specializations for your bot. After verification, a bot with a unique ID is created for you. You can then use the training tab to define roles, role descriptions, and steps that your bot should follow. After enough interactions and refinements, your bot will be ready to serve others."
+    content: "You start by registering on the VIKRAM platform and defining the specializations for your bot. After verification, a bot with a unique ID is created for you. You can then use the training tab to define roles, role descriptions, and steps that your bot should follow."
   },
   {
-    header: "How can I make money with my VIKRAM bot?",
-    content: "Once you've trained your bot and defined its roles, you can make it available for others to use on the platform. Others will interact with your bot and give it a Thumbs up or Down. You can monetize your bot after 50 Up reviews and can set a fee for the use of your bot's services, which can range from 10 INR to 50 INR. When other users hire your bot to assist them, you receive the fee."
+    header: "Can I make money with my Vikram bot?",
+    content: "We have not yet enabled monetization with Vikram bots but will soon introduce it. In the meantime, you can develop a following using your bot."
   },
   {
     header: "Is my personal data safe with VIKRAM?",
@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     header: "What are the different applications of VIKRAM bots?",
-    content: "The potential applications of VIKRAM bots are vast and depend largely on how they are trained. They can serve as personal assistants, tutors, content creators, career counsellors, customer service representatives, and more. The bot can also integrate with various apps and platforms to handle tasks like managing your email, searching the internet, and interacting with e-commerce portals and job portals."
+    content: "The potential applications of VIKRAM bots are vast and depend largely on how they are trained. They can serve as personal assistants, tutors, content creators, career counsellors, customer service representatives, and more."
   },
   {
     header: "How can I use other people's bots?",

@@ -4,22 +4,23 @@ function UseCases() {
 
     const useCases = {
         "Normal Users": [
-            "If you are a vendor manager and keep getting proposals from sales representatives, you can ask them to reach out to your VBot. Set interaction rules to evaluate the proposals. This will enable your VBot to speak to the sales reps first and shortlist  the most useful ones and set up meetings with you.",
-            "If you are a recruiter and keep getting  CVs from candidates, publish your VBot id and direct all resume's to be sent there. The most relevant CVs will be shortlisted by your VBot and sent to you. You can even have your VBot interview the candidate and provide you with a score for each and send you the best candidates.",
-            "If you are a business leader and wish to mentor young professionals to build your personal brand. Get a Vbot and program it to offer career advice to young professionals.",
+            "You are a business leader and an opinion maker. Young students and professionals look up to you for career advice. Create a bot and upload your career philosophy and professional experiences. Share your bot id and positively influence thousands of young minds  to help choose their career goals.",
+            "You are a young professional looking for a career move. Create a bot and let it speak about your achievements and areas of interest. Extra points for that tech savvy first impression!",
+            "You are the go to guy for people looking for great options for food in the city. Create a pdf with your knowledge about the city's restaurants and upload it to your bot. Send the bot id to your friends and let them use your expertise through your bot.",
+            "You are standing in a local body election. Create a bot and feed it your manifesto. Let the public interact with it and know your views."
         ],
         "Professionals": [
             {
-                title: "Use Case 1: Customized Shopping Assistance",
-                description: ["• If you are a shopping expert, you can create your VBot for personalized shopping assistance.", "• You teach the bots on how to take customer's requirements and suggest the best options by browsing the internet.", "• Customers receive tailored product recommendations.", "• You generate income from their bot's services.*"]
+                title: "Use Case 1: Brand Visibility",
+                description: ["• If you are a new organization, you can create a bot to tell prospective candidates about the organization and improve your visibility. You can also use the bot to engage with offered candidates to keep them engaged."]
             },
             {
-                title: "Use Case 2: Local City Advisor",
-                description: ["• If you are a long time resident of a city, create a VBot and load it with your valuable knowledge about the city.", "• Teach it on how to answer queries regarding the city to new travellers.", "• Travellers get useful tips regarding the city during their stay.", "• You generate income from Bots services.*"]
+                title: "Use Case 2: Career Counselor",
+                description: ["• If you run a coaching centre, you can create a bot to interact with students and give them study tips to pull them to your business."]
             },
             {
-                title: "Use Case 3: Career counselor",
-                description: ["• If you are a financial advisor, you can create a VBot and teach your approach to financial planning and investment.", "• Clients receive financial advice based on the advisor's unique insights.", "• You earn extra revenue from their bot's consultations.*"]
+                title: "Use Case 3: Your Catalogue",
+                description: ["• If you run a restaurant, create a bot and upload your menu to help people know about the delicious food you have."]
             }
         ]
     }

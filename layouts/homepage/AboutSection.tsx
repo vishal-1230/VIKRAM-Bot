@@ -15,9 +15,12 @@ function AboutSection() {
         <span className={`${orbitron.className} text-3xl md:text-4xl font-semibold`}>What is <SpecialText extra={`${orbitron.className}`}>V.I.K.R.A.M.</SpecialText></span><br /><br />
         <div className='flex flex-col-reverse md:flex-row gap-12 mt-4'>
           <div className='grow text-justify'>
-            <span className='text-base text-[#FFFFFFCC]'>No one can do a job the way you. Least of all, an AI tool. Because you are unique and people value your work for the the touch you bring in.</span><br /><br></br>
-            <span className='text-base text-[#FFFFFFCC]'>VIKRAM or Variable Inference Knowledge & Response Model is a revolutionary AI framework which leverages on this beautiful variance of human beings. Built over chatgpt, it gives you an opportunity to get your own bot and train it the way you see fit. And then you can lend these bots to others who can use your expertise through your bot while you sit back and watch the bot make money for you!</span><br /><br></br>
-            <span className='text-base text-[#FFFFFFCC]'>And our foolproof security architecture ensures that the bot keeps the information, knowledge and skills learnt from you to itself.</span><br /><br></br>
+            <span className='text-base text-[#FFFFFFCC]'>VIKRAM or Variable Inference Knowledge & Response Model is a the first of its kind personal bot network. It lets you create a bot with your own AI identity. Just follow the below steps:</span><br /><br></br>
+            <span className='text-base text-[#FFFFFFCC]'>    1. Give a brief description about yourself in less than 500 words (or simply upload your resume)
+                <br />2. Put in the instructions for the bot on how to interact with others.
+                <br />3.  If you have any additional knowledge base which you want the bot to refer, you can upload that as well.</span><br /><br></br>
+            <span className='text-base text-[#FFFFFFCC]'>You will get a bot with a unique bot id. Share this with your friends, family, potential employers or anyone else. They can connect with your bot by registering themselves and putting in your bot id.</span><br /><br></br>
+            <span className='text-base text-[#FFFFFFCC]'>If you area company or a freelancer, you can create an agent which will act as a spokesperson for your company to potential customers, employees, candidates or any other relevant stakeholder. A perfect marketing tool!</span><br /><br></br>
           </div>
           <img src="/assets/about-robot.svg" alt="About Robot" className='w-48 ml-5 md:ml-0 md:w-96 self-center' />
         </div>

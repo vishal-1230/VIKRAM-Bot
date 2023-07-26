@@ -42,6 +42,7 @@ function ChatArea(props: {
     const [token, setToken] = useState<string>("")
 
     const [connectedBot, setConnectedBot] = useState<string | null>(null)
+    const [connectedBotIcon, setConnectedBotIcon] = useState<string | undefined>(undefined)
 
 
     const [categories, setCategories] = useState<{text: string, onClick: any}[]>([
@@ -631,12 +632,28 @@ function ChatArea(props: {
       userDetails?.username ? getAllPersonalInfo() : getAllBusinessInfo()
     }, [showPersonalBotDialog, showBusinessBotDialog])
 
+    async function getIcon () {
+      try {
+        console.log("Checking", connectedBot)
+        const response = await fetch(`https://server.vikrambots.in/get-pic/${connectedBot}`)
+        const data = await response.text()
+        console.log("Got img", data)
+        const newImage = "https://server.vikrambots.in/assets/"+data
+        setConnectedBotIcon(newImage)
+        console.log("Got img", connectedBotIcon)
+      } catch {
+        console.log("Error getting img")
+        setConnectedBotIcon(undefined)
+      }
+    }
+
     useEffect(()=>{
       if (chatCategory === "initiator") {
         fetchMyWithThemMessages()
       } else if (chatCategory === "business_initiator") {
         fetchBothsBusinessMessage()
       }
+      connectedBot != null && connectedBot != undefined && getIcon()
     }, [connectedBot])
 
     useEffect(()=>{
@@ -1237,6 +1254,7 @@ function ChatArea(props: {
       </div>
 
         <ChatList
+          botIcon={chatCategory =="initiator" || chatCategory == "business_initiator" ? connectedBotIcon : undefined}
           chats={ chatCategory != "personal" ? 
           chatCategory != "personaltraining" ? 
           chatCategory != "business" ? 

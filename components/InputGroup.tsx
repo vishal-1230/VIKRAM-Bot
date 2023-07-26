@@ -54,7 +54,21 @@ function InputGroup(props: InputGroupProps) {
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label} {props.required && <span className='text-red-500'>*</span>}</span>
                 <div className="flex relative items-center">
-                    <input type={showPassword ? "text" : "password"} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md grow" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder={props.placeholder}
+                      className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md grow"
+                      value={props.value}
+                      onChange={(e)=>{
+                        props.onChange(e.target.value)
+                      }}
+                      onKeyDown={(e)=>{
+                        if(e.key=="Enter"){
+                          props.onEnter &&
+                          props.onEnter()
+                        }
+                      }}  
+                    />
                     {
                         showPassword ?
                         <RemoveRedEyeOutlined className='cursor-pointer w-5 text-bg-50 absolute right-3 z-10' onClick={() => setShowPassword(!showPassword)} />
@@ -144,7 +158,8 @@ const countryOptions = [
     textareaRows?:number,
     textareaCols?:number,
     radioOptions?:{name:string, title:string, subtext?:string, onClick?:any, onChange?:any, checked?:boolean},
-    required?: boolean
+    required?: boolean,
+    onEnter?: any
   }
   InputGroup.defaultProps = {
     className: '',

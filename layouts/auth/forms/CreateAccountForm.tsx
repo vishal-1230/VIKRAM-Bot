@@ -334,7 +334,7 @@ function CreateAccountForm(props: any) {
                 });
         }
 
-        const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
+        const response = await fetch(`https://server.vikrambots.in/get-otp-with-check/${phone}`)
         const data = await response.json()
         console.log(data)
 
@@ -353,7 +353,7 @@ function CreateAccountForm(props: any) {
             setOtpSent(true)
         } else {
             // toast("Error sending OTP")
-            toast.error('Error sending OTP', {
+            toast.error(data.message, {
                 position: "top-right",
                 autoClose: 2500,
                 hideProgressBar: false,

@@ -5,7 +5,7 @@ import { useState } from "react"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';2
 
-function Message({ children, mode, sender } : {children: string, mode:string, sender: string}) {
+function Message({ children, mode, sender, botIcon } : {children: string, mode:string, sender: string, botIcon?: string}) {
 
   const [liked, setLiked] = useState<boolean>(false)
   const [disliked, setDisliked] = useState<boolean>(false)
@@ -20,7 +20,9 @@ function Message({ children, mode, sender } : {children: string, mode:string, se
             sender === "user" || sender === "User" ? (
                 <AccountCircleOutlined className={`w-9 h-9 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />
             ) : (
-                <Image src={mode === "night" ? "/assets/navlogo1.png" : "/assets/botBlack.png"} alt="VIKRAM Bot" className="duration-200" width={40} height={40} />
+              botIcon ?
+                <img src={botIcon}  alt="VIKRAM Bot" className="duration-200 rounded-full" width={40} height={40} /> :
+                <Image src={ mode === "night" ? "/assets/navlogo1.png" : "/assets/botBlack.png"} alt="VIKRAM Bot" className="duration-200" width={40} height={40} />
             )
         }
         <span className={`duration-200 ${mode === "night" ? "text-neutral-500" : "text-bg-50"} grow`}>

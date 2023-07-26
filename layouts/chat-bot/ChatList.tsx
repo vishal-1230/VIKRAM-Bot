@@ -15,6 +15,7 @@ function ChatList(props: ChatListProps) {
 
   useEffect(() => {
     scrollToBottom()
+    console.log(props.botIcon)
   }, [props.chats]);
 
   return (
@@ -22,7 +23,7 @@ function ChatList(props: ChatListProps) {
         {
             props.chats.map((chat, index) => {
                 return (
-                    <Message mode={props.mode} sender={chat.sender} key={index}>{chat.message}</Message>
+                    <Message mode={props.mode} sender={chat.sender} botIcon={chat.sender=="bot" ? props.botIcon ? props.botIcon : undefined : undefined} key={index}>{chat.message}</Message>
                 )
             })
         }
@@ -33,7 +34,8 @@ function ChatList(props: ChatListProps) {
 interface ChatListProps {
     chats: Chats[],
     mode: string,
-    setMode: any
+    setMode: any,
+    botIcon?: string
 }
 
 interface Chats {

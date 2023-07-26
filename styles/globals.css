@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  overflow-x: hidden;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -22,6 +26,11 @@
 }
 
 /* horizontal scroll width */
+
+*::-webkit-scrollbar {
+  height: 0.5rem;
+  background: #444;
+}
 
 
 *::-webkit-scrollbar-thumb {

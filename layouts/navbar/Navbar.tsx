@@ -164,13 +164,25 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   setShowInfoBox(false)
                 }
               }}>
-              <Image src='/assets/profileIcon.svg' alt='Profile' className=' ' width={30} height={30} priority onClick={()=>{
-                if (loggedIn) {
-                  setShowInfoBox(!showInfoBox)
-                } else {
-                  router.push("/auth/login")
+                {
+                  userDetails?.pic
+                  ?
+                  <img src={`https://server.vikrambots.in/assets/${userDetails?.pic}`} alt="" className="w-10 h-10 rounded-full self-center" onClick={()=>{
+                    if (loggedIn) {
+                      setShowInfoBox(!showInfoBox)
+                    } else {
+                      router.push("/auth/login")
+                    }
+                  }} />
+                  :
+                  <Image src='/assets/profileIcon.svg' alt='Profile' className=' ' width={30} height={30} priority onClick={()=>{
+                    if (loggedIn) {
+                      setShowInfoBox(!showInfoBox)
+                    } else {
+                      router.push("/auth/login")
+                    }
+                  }}  />
                 }
-              }}  />
               {
               showInfoBox && <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
                 {

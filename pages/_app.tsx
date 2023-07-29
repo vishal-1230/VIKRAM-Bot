@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
   <Component {...pageProps} showPersonalEditBox={showPersonalEditBox} setShowPersonalEditBox={setShowPersonalEditBox} showBusinessEditBox={showBusinessEditBox} setShowBusinessEditBox={setShowBusinessEditBox} />
   {
-    !isAuthPage && !router.pathname.startsWith("/chat-bot") && <Footer invertColor={invertColors} />
+    !isAuthPage && (!router.pathname.startsWith("/chat-bot") && !router.pathname.startsWith("/try-vikram-bots")) && <Footer invertColor={invertColors} />
   }
   </div>
 }

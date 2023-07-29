@@ -32,7 +32,7 @@ function LeftPanel(props: {
 
     async function getChats() {
         setHistoryLoading(true)
-        const res = await fetch("http://localhost:5000/history", {
+        const res = await fetch("https://server.vikrambots.in/history", {
             headers: {
                 "x-access-token": localStorage.getItem("token")!
             }
@@ -46,7 +46,7 @@ function LeftPanel(props: {
     }
 
     async function userInfo () {
-        const res = await fetch("http://localhost:5000/ginfo", {
+        const res = await fetch("https://server.vikrambots.in/ginfo", {
             headers: {
                 "x-access-token": localStorage.getItem("token")!
             }
@@ -85,10 +85,10 @@ function LeftPanel(props: {
 
             <div className="flex flex-col gap-4 min-w-max">
                 
-                
             </div>
 
         <div></div>
+                <span>alksjd</span>
         </div>
 
         <div className="flex flex-col gap-3 mt-8 pt-4 border-t-2 border-bg-500 pr-2">

@@ -47,7 +47,7 @@ function ResetPasswordForm() {
                     });
             } else {
                 if (pass === confirmPass) {
-                    const response = await fetch(`http://localhost:5000/change_password/${username}/${pass}`)
+                    const response = await fetch(`https://server.vikrambots.in/change_password/${username}/${pass}`)
                     const data = await response.json()
                     console.log(data)
                     if ("properties" in data) {

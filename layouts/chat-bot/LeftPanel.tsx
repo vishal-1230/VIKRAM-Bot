@@ -27,7 +27,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     async function getChats() {
         setHistoryLoading(true)
-        const res = await fetch("http://localhost:5000/history", {
+        const res = await fetch("https://server.vikrambots.in/history", {
             headers: {
                 "x-access-token": localStorage.getItem("token")!
             }
@@ -42,7 +42,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     async function getNotif() {
         setNotificationsLoading(true)
-        const response = await fetch("http://localhost:5000/get-connections", {
+        const response = await fetch("https://server.vikrambots.in/get-connections", {
             method: "GET",
             headers: {
                 "x-access-token": localStorage.getItem("token")!
@@ -56,7 +56,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     }
 
     async function userInfo () {
-        const res = await fetch("http://localhost:5000/ginfo", {
+        const res = await fetch("https://server.vikrambots.in/ginfo", {
             headers: {
                 "x-access-token": localStorage.getItem("token")!
             }

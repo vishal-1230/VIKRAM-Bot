@@ -38,7 +38,7 @@ function ChatArea(props: {
     const [connectedBotIcon, setConnectedBotIcon] = useState<string | undefined>(undefined)
 
     async function getInfo() {
-      const res = await fetch("http://localhost:5000/ginfo", {
+      const res = await fetch("https://server.vikrambots.in/ginfo", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }
@@ -100,7 +100,7 @@ function ChatArea(props: {
 
       let uri = ""
       
-      uri = `http://localhost:5000/connect-personal/${props.usernameToConnect}/${message}`
+      uri = `https://server.vikrambots.in/connect-personal/${props.usernameToConnect}/${message}`
       console.log("URI=>", uri)
 
       if (plugin === "none") {
@@ -184,7 +184,7 @@ function ChatArea(props: {
             });
         }
       } else if (plugin === "News") {
-        fetch(`http://localhost:5000/news/${message}`, {
+        fetch(`https://server.vikrambots.in/news/${message}`, {
             headers: {
                 "x-access-token": localStorage.getItem("token")!
             }
@@ -211,7 +211,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "Weather") {
-        fetch(`http://localhost:5000/weather/${message}`, {
+        fetch(`https://server.vikrambots.in/weather/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -238,7 +238,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "IMDB") {
-        fetch(`http://localhost:5000/imdb/${message}`, {
+        fetch(`https://server.vikrambots.in/imdb/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -265,7 +265,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`http://localhost:5000/google/${message}`, {
+        fetch(`https://server.vikrambots.in/google/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -292,7 +292,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "YouTube") {
-        fetch(`http://localhost:5000/yt/${message}`, {
+        fetch(`https://server.vikrambots.in/yt/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -327,7 +327,7 @@ function ChatArea(props: {
 
 
       try{
-        const response = await fetch(`http://localhost:5000/check-username-exists/${ toConnectWith}`, {
+        const response = await fetch(`https://server.vikrambots.in/check-username-exists/${ toConnectWith}`, {
           headers: {
             "x-access-token": localStorage.getItem("token")!,
           }
@@ -352,7 +352,7 @@ function ChatArea(props: {
     }
 
     // async function pastConnections () {
-    //   const response = await fetch("http://localhost:5000/get-connections", {
+    //   const response = await fetch("https://server.vikrambots.in/get-connections", {
     //     headers: {
     //       "x-access-token": localStorage.getItem("token")!,
     //     }
@@ -364,7 +364,7 @@ function ChatArea(props: {
     async function fetchMyWithThemMessages () {
       alert(props.usernameToConnect)
       setLoadingThirdMessages(true)
-      const response = await fetch (`http://localhost:5000/thirdChats/${props.usernameToConnect}/${userDetails.username}`)
+      const response = await fetch (`https://server.vikrambots.in/thirdChats/${props.usernameToConnect}/${userDetails.username}`)
       const data = await response.json()
       setLoadingThirdMessages(false)
 
@@ -381,7 +381,7 @@ function ChatArea(props: {
     async function fetchTheirWithMyMessages (toConnectWith: string) {
       if (userDetails !== null) {
       setLoadingThirdMessages(true)
-      const response = await fetch (`http://localhost:5000/thirdChats/${userDetails.username ? userDetails.username : userDetails.username_b}/${toConnectWith}`)
+      const response = await fetch (`https://server.vikrambots.in/thirdChats/${userDetails.username ? userDetails.username : userDetails.username_b}/${toConnectWith}`)
       const data = await response.json()
       setLoadingThirdMessages(false)
 
@@ -435,10 +435,10 @@ function ChatArea(props: {
     async function getIcon () {
       try {
         console.log("Checking", connectedBot)
-        const response = await fetch(`http://localhost:5000/get-pic/${connectedBot}`)
+        const response = await fetch(`https://server.vikrambots.in/get-pic/${connectedBot}`)
         const data = await response.text()
         console.log("Got img", data)
-        const newImage = "http://localhost:5000/assets/"+data
+        const newImage = "https://server.vikrambots.in/assets/"+data
         setConnectedBotIcon(newImage)
         console.log("Got img", connectedBotIcon)
       } catch {

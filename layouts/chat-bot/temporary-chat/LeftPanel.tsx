@@ -1,5 +1,7 @@
+import Button from "@/components/SpecialButton"
 import { BookmarkBorderOutlined, CancelOutlined, DarkModeOutlined, LaunchOutlined, LightModeOutlined, LogoutOutlined, Menu, MenuOpenOutlined, Notifications, NotificationsOutlined, PersonOutlineOutlined, Settings, SettingsApplications, SettingsOutlined, SettingsRounded, SettingsSuggest, UpdateOutlined } from "@mui/icons-material"
 import { Tooltip } from "@mui/material"
+import {BsRobot} from'react-icons/bs'
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -31,24 +33,35 @@ function LeftPanel(props: {
     const [showSettingsInMobile, setShowSettingsInMobile] = [props.showSettingsInMobile, props.setShowSettingsInMobile]
 
     async function getChats() {
+        const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+        console.log("Getting chats history for", token)
         setHistoryLoading(true)
         const res = await fetch("https://server.vikrambots.in/history", {
             headers: {
-                "x-access-token": localStorage.getItem("token")!
+                "x-access-token": token!
             }
         })
         const data = await res.json()
+        console.log("Got data", data)
+        setHistoryLoading(data.message)
         setHistoryLoading(false)
         console.log("Data", data)
-        if (data.success) {
+        console.log("Changed history to", history)
+        if (data.success.toString()=="true") {
             setHistory(data.message)
+            setHistoryLoading(false)
+        } else {
+            setHistoryLoading(false)
+            console.log("failed")
         }
     }
 
     async function userInfo () {
+        const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+        console.log("Getting chats history for", token)
         const res = await fetch("https://server.vikrambots.in/ginfo", {
             headers: {
-                "x-access-token": localStorage.getItem("token")!
+                "x-access-token": token!
             }
         })
         const data = await res.json()
@@ -71,8 +84,9 @@ function LeftPanel(props: {
     // const [showSettingsInMobile, setShowSettingsInMobile] =  [showSettings().showSettingsMenu, showSettings().setShowSettingsMenu]
 
     useEffect(()=>{
-        if (localStorage.getItem("token")) {
-            userInfo()
+        if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
+            // userInfo()
+            getChats()
         } else {
             router.replace("/auth/login")
         }  
@@ -83,16 +97,53 @@ function LeftPanel(props: {
         <CancelOutlined className="block md:!hidden text-neutral-50 fill-neutral-50 cursor-pointer absolute top-3 right-5 text-xl" onClick={()=>{setShowSettingsInMobile(false)}} />
         <div className="flex flex-col gap-8 overflow-y-scroll overflow-x-clip">
 
-            <div className="flex flex-col gap-4 min-w-max">
-                
-            </div>
+        {
+            Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-8 h-8 self-center" /> : showHistory &&
+            <div className="flex flex-col gap-4">
+                <span className={`text-sm font-semibold ${mode === "day" ? "text-bg-900" :"text-white"} flex gap-2.5 flex-row items-center mb-1`}>
+                    <UpdateOutlined />
+                    Your Chats History
+                </span>
+                LaunchOutlined
+                {
+                    historyLoading ? (
+                        <img src="/assets/loading-circle.svg" alt="" className="w-6 h-6 animate-spin self-center" />
+                    ) : (
+                        history.length === 0 ? (
+                            <span className={`text-sm ${mode === "day" ? "text-bg-900" :"text-neutral-300"} flex-wrap`}>No chats history</span>
+                        ) : (
+                            history.map((chat, index) => {
+                                return (
+                                    <span
+                                        key={index}
+                                        className={`text-sm ml-2 text-transparent bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`}
+                                        onClick={()=>{
+                                            // props.setChangeChatTo(chat);
+                                            setShowSettingsInMobile(false)
+                                        }}
+                                    >
+                                        {chat}
+                                    </span>
+                                )
+                            })
+                        )
+                    )
+                }
 
-        <div></div>
-                <span>alksjd</span>
+                {/* <span className="text-sm text-transparent cursor-default bg-clip-text bg-gradient-to-r from-white via-white to-transparent min-w-max overflow-clip">Can you prepare a writeup for my presentation</span> */}
+
+            </div>
+        }
+        {/* <Button title="Explore more Bots" buttonStyle="mr-auto mb-2" /> */}
         </div>
 
         <div className="flex flex-col gap-3 mt-8 pt-4 border-t-2 border-bg-500 pr-2">
             
+            <Link href="/#faqs" className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5`}>
+                <BsRobot className="text-xl ml-[0.2rem] my-1" />
+                Create your own Bot
+            </Link>
+
             <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{setMode(mode === "day" ? "night" : "day")}}>
                 {
                     mode === "day" ? ( <DarkModeOutlined /> ) : (<LightModeOutlined />)
@@ -109,7 +160,7 @@ function LeftPanel(props: {
                 FAQs
             </Link>
 
-            <span className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex cursor-pointer items-center gap-2.5`} onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}}>
+            <span className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex cursor-pointer items-center gap-2.5`} onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("temptoken");localStorage.removeItem("user"); window.location.href = "/"}}>
                 <LogoutOutlined />
                 Logout
             </span>

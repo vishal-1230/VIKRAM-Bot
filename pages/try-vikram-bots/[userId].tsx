@@ -22,18 +22,18 @@ function ChatBot() {
   const [showSettingsInMobile, setShowSettingsInMobile] = useState<boolean>(false)
 
   const router = useRouter()
-  let userId = undefined
+  let userId: string = ''
 
   if (router.query.userId) {
     userId = router.query.userId as string
   }
 
   useEffect(()=>{
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
       console.log("token found")
     } else {
       console.log("token not found")
-      router.replace("auth/login")
+      router.replace(`/${userId}`)
     }
   }, [])
 

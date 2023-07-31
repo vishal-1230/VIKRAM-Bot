@@ -15,6 +15,7 @@ function TempRegister(props: {userId: string}) {
     // username from queries
     // const usernameToConnect = router.query.user
 
+    const [name, setName] = React.useState<string>('')
     const [phone, setPhone] = React.useState<number>()
     const [otp, setOtp] = React.useState<number>()
 
@@ -83,7 +84,6 @@ function TempRegister(props: {userId: string}) {
                 toast.success("OTP verified successfully")
                 setOtpVerified(true)
                 setOtpSent(false)
-                localStorage.setItem("token", data.token)
                 // router.push('/temporary-chat')
             } else {
                 toast.error("Invalid OTP")
@@ -103,7 +103,7 @@ function TempRegister(props: {userId: string}) {
         setCreating(false)
         if (data.success === true) {
             toast.success("User created successfully")
-            localStorage.setItem("token", data.token)
+            localStorage.setItem("temptoken", data.token)
             router.push(`/try-vikram-bots/${props.userId}`)
         } else {
             toast.error("Error creating user")
@@ -123,12 +123,21 @@ function TempRegister(props: {userId: string}) {
         </Dialog>
 
         <InputGroup
+            label='Full Name'
+            placeholder='Your Name'
+            type='text'
+            value={name}
+            onChange={setName}
+            className='md:w-[400px] !mt-16'
+        />
+
+        <InputGroup
             label='Phone Number'
             placeholder='98XXXXXXXX21'
             type='number'
             value={phone?.toString()}
             onChange={setPhone}
-            className='md:w-[400px] !mt-16'
+            className='md:w-[400px]'
             hintAccessory={()=>{return <span
                     className='text-xs text-blue-500 cursor-pointer font-semibold'
                     onClick={sendOtp}

@@ -4,11 +4,12 @@ import NavLink from '@/components/NavLink'
 import OutlineButton from '@/components/OutlineButton'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { AlternateEmail, BorderColor, Call, CloseOutlined, CloudUpload, Edit, EditOutlined, MailOutline, MenuOpenOutlined, ModeEdit, Person, Person2, Person2Outlined, UploadFile } from '@mui/icons-material'
+import { AlternateEmail, BorderColor, Call, CloseOutlined, CloudUpload, ContentCopy, Edit, EditOutlined, MailOutline, MenuOpenOutlined, ModeEdit, Person, Person2, Person2Outlined, UploadFile } from '@mui/icons-material'
 import { useEffect, useRef, useState } from 'react'
 import PrimaryButton from '@/components/PrimaryButton'
-import { Chip, Dialog } from '@mui/material'
+import { Chip, Dialog, Tooltip } from '@mui/material'
 import { toast } from 'react-toastify'
+import Button from '@/components/SpecialButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -73,10 +74,11 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
     setUpdatingProfile(true)
     const formData = new FormData()
     formData.append("file", newProfile!)
+    const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
     const res = await fetch(userDetails?.pic ? "https://server.vikrambots.in/edit-pic" : "https://server.vikrambots.in/add-pic", {
       method: "POST",
       headers: {
-        "x-access-token": localStorage.getItem("token")!
+        "x-access-token": token!
       },
       body: formData
     })
@@ -92,9 +94,10 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
 
   async function getInfo() {
     setInfoLoading(true)
+    const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
     const res = await fetch("https://server.vikrambots.in/ginfo", {
       headers: {
-        "x-access-token": localStorage.getItem("token")!
+        "x-access-token": token!
       }
     })
     const data = await res.json()
@@ -105,7 +108,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
   }
 
   useEffect(()=>{
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
       setLoggedIn(true)
       getInfo()
     } else {
@@ -169,7 +172,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                 {
                   userDetails?.pic
                   ?
-                  <img src={`https://server.vikrambots.in/assets/${userDetails?.pic}`} alt="" className="w-10 h-10 rounded-full self-center" onClick={()=>{
+                  <img src={`https://server.vikrambots.in/assets/${userDetails?.pic}`} alt="" className="w-10 h-10 rounded-full self-center object-cover" onClick={()=>{
                     if (loggedIn) {
                       setShowInfoBox(!showInfoBox)
                     } else {
@@ -186,7 +189,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   }}  />
                 }
               {
-              showInfoBox && vikramTry ? <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
+              showInfoBox && (!vikramTry ? <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
                 {
                   infoLoading ? <img src="/assets/loading-circle.svg" alt="" className="w-10 mb-8 self-center mt-10" /> :
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
@@ -210,7 +213,22 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                     }
                   </div>
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name}</span>
-                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><AlternateEmail /> {userDetails?.username}</span>
+                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12" onClick={()=>{
+                    // clipboard cpoy
+                    navigator.clipboard.writeText(`http://localhost:3000/${userDetails?.username}`)
+                    toast.success("Bot Link Copied to clipboard", {
+                      position: "bottom-right",
+                      autoClose: 1000
+                    })
+                  }}>
+                    <AlternateEmail /> 
+                    {userDetails?.username}
+                    &nbsp;
+                    <Tooltip title="Copy to your bot link" placement="top" arrow>
+                    <ContentCopy
+                    className="w-5 h-5 text-neutral-50 fill-neutral-50 cursor-pointer ml-auto" />
+                    </Tooltip>
+                  </span>
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><MailOutline /> {userDetails?.email_id || userDetails?.email}</span>
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone}</span>
                   {
@@ -236,8 +254,17 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                       userDetails?.username_b && <OutlineButton buttonStyle='text-sm p-1 self-end mr-5' title="Agent Settings" onClick={() => {setShowBusinessEditBox(!showBusinessEditBox)}} />
                     } */}
                   
-                  <PrimaryButton buttonStyle='text-sm p-3 self-end mr-5 bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}} />
-              </div> : <div></div>
+                  <PrimaryButton buttonStyle='text-sm p-3 self-end mr-5 bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
+              </div> : <div className='bg-bg-500 absolute top-[35px] min-w-[14rem] pt-3 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col' ref={wrapperRef}>
+                <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
+                    <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar.jpg"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
+                    <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name ? userDetails?.name : "Your Name"}</span>
+                    <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone ? userDetails?.phone : "+91 8373958829"}</span>
+                  <Button title="Explore More Bots" buttonStyle='mt-4 font-medium' /> 
+                  {/* <PrimaryButton buttonStyle='text-sm p-3 self-end mt-2' title="Create Your own Bot" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} /> */}
+                  <PrimaryButton buttonStyle='text-sm p-3 self-end bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
+                </div>
+              </div>)
               }
                     <Dialog open={showImageEditDialog} onClose={()=>setShowImageEditDialog(false)}>
                       <div className="flex flex-col gap-8 p-6 items-center justify-center bg-white rounded-xl">

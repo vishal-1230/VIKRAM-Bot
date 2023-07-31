@@ -38,9 +38,10 @@ function ChatArea(props: {
     const [connectedBotIcon, setConnectedBotIcon] = useState<string | undefined>(undefined)
 
     async function getInfo() {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
       const res = await fetch("https://server.vikrambots.in/ginfo", {
         headers: {
-          "x-access-token": localStorage.getItem("token")!
+          "x-access-token": token!
         }
       })
       const data = await res.json()
@@ -81,12 +82,13 @@ function ChatArea(props: {
       localStorage.setItem("user", JSON.stringify(userDetails))
 
       if (userDetails.username){
-        setChatCategory("personal")
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      setChatCategory("personal")
         if (userDetails.username_b) {
-          localStorage.getItem("token")
+          token
         }
       } else if (userDetails.username_b) {
-        localStorage.getItem("token")
+        token
       }
 
     }
@@ -104,10 +106,11 @@ function ChatArea(props: {
       console.log("URI=>", uri)
 
       if (plugin === "none") {
-        if (chatCategory === "personal" || chatCategory === "initiator" || chatCategory === "business_initiator") {
+        let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      if (chatCategory === "personal" || chatCategory === "initiator" || chatCategory === "business_initiator") {
           fetch(uri, {
             headers: {
-              "x-access-token": localStorage.getItem("token")!,
+              "x-access-token": token!,
             }
           })
             .then((response) => response.json())
@@ -135,10 +138,11 @@ function ChatArea(props: {
           const formData = new FormData()
           formData.append("typeOfFile", "text")
           formData.append("userinput", message)
-          fetch(uri, {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      fetch(uri, {
             method: "POST",
             headers: {
-              "x-access-token": localStorage.getItem("token")!,
+              "x-access-token": token!,
             },
             body: formData
           })
@@ -184,9 +188,10 @@ function ChatArea(props: {
             });
         }
       } else if (plugin === "News") {
-        fetch(`https://server.vikrambots.in/news/${message}`, {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      fetch(`https://server.vikrambots.in/news/${message}`, {
             headers: {
-                "x-access-token": localStorage.getItem("token")!
+                "x-access-token": token!
             }
         })
           .then((response) => response.json())
@@ -211,9 +216,10 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "Weather") {
-        fetch(`https://server.vikrambots.in/weather/${message}`, {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      fetch(`https://server.vikrambots.in/weather/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": token!
           }
       })
           .then((response) => response.json())
@@ -238,9 +244,10 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "IMDB") {
-        fetch(`https://server.vikrambots.in/imdb/${message}`, {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      fetch(`https://server.vikrambots.in/imdb/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": token!
           }
       })
           .then((response) => response.json())
@@ -265,9 +272,10 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`https://server.vikrambots.in/google/${message}`, {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      fetch(`https://server.vikrambots.in/google/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": token!
           }
       })
           .then((response) => response.json())
@@ -292,9 +300,10 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "YouTube") {
-        fetch(`https://server.vikrambots.in/yt/${message}`, {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      fetch(`https://server.vikrambots.in/yt/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": token!
           }
       })
           .then((response) => response.json())
@@ -327,9 +336,10 @@ function ChatArea(props: {
 
 
       try{
-        const response = await fetch(`https://server.vikrambots.in/check-username-exists/${ toConnectWith}`, {
+      let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+      const response = await fetch(`https://server.vikrambots.in/check-username-exists/${ toConnectWith}`, {
           headers: {
-            "x-access-token": localStorage.getItem("token")!,
+            "x-access-token": token!,
           }
         })
         const data = await response.json()
@@ -415,6 +425,9 @@ function ChatArea(props: {
       
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token") as string)
+        getInfo()
+      } else if (localStorage.getItem("temptoken")){
+        setToken(localStorage.getItem("temptoken") as string)
         getInfo()
       } else {
         toast.error("You are not logged in. Please login to continue.", {

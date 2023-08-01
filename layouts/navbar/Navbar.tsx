@@ -10,6 +10,8 @@ import PrimaryButton from '@/components/PrimaryButton'
 import { Chip, Dialog, Tooltip } from '@mui/material'
 import { toast } from 'react-toastify'
 import Button from '@/components/SpecialButton'
+import { BsClipboard } from 'react-icons/bs'
+import {HiClipboardCopy} from "react-icons/hi"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -215,7 +217,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name}</span>
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12" onClick={()=>{
                     // clipboard cpoy
-                    navigator.clipboard.writeText(`http://localhost:3000/${userDetails?.username}`)
+                    navigator.clipboard.writeText(`https://dev-vikram.vercel.app/${userDetails?.username}`)
                     toast.success("Bot Link Copied to clipboard", {
                       position: "bottom-right",
                       autoClose: 1000
@@ -224,9 +226,9 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                     <AlternateEmail /> 
                     {userDetails?.username}
                     &nbsp;
-                    <Tooltip title="Copy to your bot link" placement="top" arrow>
+                    <Tooltip title="Copy your bot link" placement="top" arrow>
                     <ContentCopy
-                    className="w-5 h-5 text-neutral-50 fill-neutral-50 cursor-pointer ml-auto" />
+                    className="w-5 h-5 text-neutral-50 mb-1 fill-neutral-50 cursor-pointer ml-auto" />
                     </Tooltip>
                   </span>
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><MailOutline /> {userDetails?.email_id || userDetails?.email}</span>
@@ -254,7 +256,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                       userDetails?.username_b && <OutlineButton buttonStyle='text-sm p-1 self-end mr-5' title="Agent Settings" onClick={() => {setShowBusinessEditBox(!showBusinessEditBox)}} />
                     } */}
                   
-                  <PrimaryButton buttonStyle='text-sm p-3 self-end mr-5 bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
+                  <PrimaryButton buttonStyle='text-sm z-50 p-3 self-end mr-5 bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
               </div> : <div className='bg-bg-500 absolute top-[35px] min-w-[14rem] pt-3 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col' ref={wrapperRef}>
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
                     <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar.jpg"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
@@ -267,8 +269,8 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
               </div>)
               }
                     <Dialog open={showImageEditDialog} onClose={()=>setShowImageEditDialog(false)}>
-                      <div className="flex flex-col gap-8 p-6 items-center justify-center bg-white rounded-xl">
-                        <span className="font-medium text-lg">Change Profile Picture</span>
+                      <div className={`flex flex-col gap-8 p-6 items-center justify-center bg-white rounded-xl ${inter.className}`}>
+                        <span className="font-semibold text-lg">Change Profile Picture</span>
                         <div className="flex flex-row gap-5">
                           
                           <img src={(newProfile!=null && !vikramTry) ? URL.createObjectURL(newProfile) : userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar.jpg"} alt="" className="w-24 h-24 object-cover rounded-full" />

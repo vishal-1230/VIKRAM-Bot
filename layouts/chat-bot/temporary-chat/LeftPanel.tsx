@@ -25,7 +25,7 @@ function LeftPanel(props: {
 
     const [showHistory, setShowHistory] = useState<boolean>(false)
     const [historyLoading, setHistoryLoading] = useState<boolean>(false)
-    const [history, setHistory] = useState<string[]>([])
+    const [history, setHistory] = useState<string[]>()
 
     const [personal, setPersonal] = useState<boolean>(false)
     const [business, setBusiness] = useState<boolean>(false)
@@ -98,13 +98,12 @@ function LeftPanel(props: {
         <div className="flex flex-col gap-8 overflow-y-scroll overflow-x-clip">
 
         {
-            Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-8 h-8 self-center" /> : showHistory &&
+            !history ? <img src="/assets/loading-circle.svg" className="w-8 h-8 self-center" /> :
             <div className="flex flex-col gap-4">
                 <span className={`text-sm font-semibold ${mode === "day" ? "text-bg-900" :"text-white"} flex gap-2.5 flex-row items-center mb-1`}>
                     <UpdateOutlined />
                     Your Chats History
                 </span>
-                LaunchOutlined
                 {
                     historyLoading ? (
                         <img src="/assets/loading-circle.svg" alt="" className="w-6 h-6 animate-spin self-center" />

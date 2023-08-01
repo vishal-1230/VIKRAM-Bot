@@ -9,6 +9,9 @@ import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import OutlineButton from "@/components/OutlineButton"
 import Button from "@/components/SpecialButton"
+import { Inter } from "next/font/google"
+
+const inter = Inter({subsets: ['latin']})
 
 function ChatArea(props: {
   changeChatToNotif: string, mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any
@@ -629,7 +632,7 @@ function ChatArea(props: {
     }, [])
     
     useEffect(()=>{
-      userDetails?.username ? getAllPersonalInfo() : getAllBusinessInfo()
+      userDetails?.username ? getAllPersonalInfo() : userDetails?.username_b ? getAllBusinessInfo() : null
     }, [showPersonalBotDialog, showBusinessBotDialog])
 
     async function getIcon () {

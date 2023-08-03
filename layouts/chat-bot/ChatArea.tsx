@@ -950,8 +950,8 @@ function ChatArea(props: {
             <span className="md:text-lg text-center">Update the rules which your bot needs to follow when others use it.</span>
                 <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
                     <div className="flex flex-col h-full items-center md:border-r border-t border-t-neutral-800 md:border-t-0 border-r-gray-200 gap-2 lg:px-6 py-5">
-                        <span className="text-semibold text-center">Tell the bot about yourself (optional)</span>
-                        <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
+                        <span className="text-semibold text-center">Enter a Role description</span>
+                        <span className="text-xs font-light mb-4">Your bot will interact with others with this Persona.</span>
                         {
                             userInfoLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." /> : <textarea placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...' rows={4} cols={4} value={user_info} onChange={(e)=>{setUser_info(e.target.value)}} className="text-sm text-neutral-50 bg-transparent p-2 py-1 outline-none border-[1px] border-[#DDD6D6] rounded-md w-full h-full" />
                         }

@@ -629,8 +629,8 @@ function CreateAccountForm(props: any) {
             <span className="text-base md:text-lg -mt-2 md:mt-0 text-center">Set the rules which your bot needs to follow when others use it.</span>
                 <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
                     <div className="flex flex-col h-full md:border-r md:border-r-gray-200 items-center gap-2 px-2 md:px-6 py-5 border-t border-t-neutral-800 md:border-t-0">
-                        <span className="text-semibold">Tell the bot about yourself (optional)</span>
-                        <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
+                        <span className="text-semibold">Enter a Role description</span>
+                        <span className="text-xs font-light mb-4">Your bot will interact with others with this Persona.</span>
                         <textarea
                             placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...'
                             rows={4}

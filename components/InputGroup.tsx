@@ -12,7 +12,7 @@ function InputGroup(props: InputGroupProps) {
             // Normal Text Input
             <div className={`flex flex-col mt-4 gap-1 ${props.className}`}>
                 <span className="font-medium text-bg-50">{props.label} {props.required && <span className='text-red-500'>*</span>}</span>
-                <input type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
+                <input disabled={props.disabled ? props.disabled : false} type={props.type} placeholder={props.placeholder} className="text-sm text-black p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md" value={props.value} onChange={(e)=>props.onChange(e.target.value)} />
                 <span className="text-xs font-medium text-red-500">
                   {props?.hintAccessory!=undefined && props?.hintAccessory()}
                 </span>
@@ -159,7 +159,8 @@ const countryOptions = [
     textareaCols?:number,
     radioOptions?:{name:string, title:string, subtext?:string, onClick?:any, onChange?:any, checked?:boolean},
     required?: boolean,
-    onEnter?: any
+    onEnter?: any,
+    disabled?: boolean
   }
   InputGroup.defaultProps = {
     className: '',

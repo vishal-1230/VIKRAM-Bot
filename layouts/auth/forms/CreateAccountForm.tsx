@@ -1,7 +1,7 @@
-import { Orbitron } from 'next/font/google'
+import { Inter, Orbitron } from 'next/font/google'
 import React, { useEffect } from 'react'
-import { Card, Dialog, DialogTitle, Icon } from '@mui/material'
-import { AddCircleRounded, CancelRounded, RemoveCircleRounded, RemoveRedEyeOutlined } from '@mui/icons-material'
+import { Card, Dialog, DialogTitle, Icon, Tooltip } from '@mui/material'
+import { AddCircleRounded, CancelOutlined, CancelRounded, RemoveCircleRounded, RemoveRedEyeOutlined } from '@mui/icons-material'
 import Link from 'next/link'
 import PrimaryButton from '@/components/PrimaryButton'
 import InputGroup from '@/components/InputGroup'
@@ -14,9 +14,12 @@ import { Router, useRouter } from 'next/router'
 import OtpInput from 'react-otp-input';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { BsClipboard, BsClipboard2, BsClipboardCheck, BsFacebook, BsInstagram, BsSnapchat, BsTelegram, BsTwitter, BsWhatsapp } from 'react-icons/bs'
+import { RiWhatsappFill } from 'react-icons/ri'
 // import firebase from '../../../config/firebase'
 
 const orbitron = Orbitron({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] })
 
 declare global {
     interface Window {
@@ -229,7 +232,8 @@ function CreateAccountForm(props: any) {
             } else {
                 setAccountCreated(false)
                 setShowPersonalBotDialog(true)
-                router.replace("/chat-bot")
+                setShowShareBotLink(true)
+                // router.replace("/chat-bot")
             }
 
         } else {
@@ -273,6 +277,9 @@ function CreateAccountForm(props: any) {
     const [showSampleRoleDescription, setShowSampleRoleDescription] = React.useState(false)
     const [showSampleBusinessSteps, setShowSampleBusinessSteps] = React.useState(false)
 
+    // Share bot link
+    const [showShareBotLink, setShowShareBotLink] = React.useState(false)
+
     async function trainBusinessBot () {
             
             setLoading(true)
@@ -305,7 +312,8 @@ function CreateAccountForm(props: any) {
                 if (data2.success === true) {
                     toast.success("Rules stored successfully")
                     setShowBusinessBotDialog(false)
-                    router.replace("/chat-bot")
+                    // router.replace("/chat-bot")
+                    setShowShareBotLink(true)
                 } else {
                     toast.error(data2.message)
                 }
@@ -437,6 +445,7 @@ function CreateAccountForm(props: any) {
         }
     }
 
+    const [botLinkCopied, setBotLinkCopied] = React.useState(false)
 
   return (
     <RightAuthContainer title='Create Account'>
@@ -447,6 +456,70 @@ function CreateAccountForm(props: any) {
             <div className="flex flex-col gap-2 p-6 items-center justify-center">
                 <span className="font-medium text-lg">Creating your account...</span>
                 <img src="/assets/loading1.svg" alt="" className="w-20 h-20" />
+            </div>
+        </Dialog>
+
+        {/* Bot created now share your bot link with others */}
+        <Dialog open={showShareBotLink} onClose={()=>{setShowShareBotLink(false)}}>
+            <DialogTitle className='text-2xl font-semibold text-center p-6 md:p-8 flex gap-3'>
+                <span>
+                Congrats! Your Bot is ready to share it with others!
+                </span>
+                {/* <CancelOutlined className='cursor-pointer w-6 h-6 top-5 right-6 hover:text-black text-gray-700' onClick={()=>{router.replace("/chat-bot")}} /> */}
+            </DialogTitle>
+            <div className={`flex flex-col gap-2 p-6 pt-0 items-center justify-center ${inter.className}`}>
+
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-5 items-center">
+                <a target="_blank" href={`whatsapp://send?text=Hey, see my new Personalized AI VIKRAM Bot trained by me! at https://vikrambots.in/${username}`} data-action="share/whatsapp/share" className='bg-gray-100 hover:bg-green-100 rounded-full p-[18px] text-green-600 hover:text-green-700'>
+                    <BsWhatsapp className="w-[30px] h-[30px] cursor-pointer" />
+                </a>
+                <a target="_blank" href={`tg://msg?text=Hey, see my new Personalized AI VIKRAM Bot trained by me! at https://vikrambots.in/${username}`} data-action="share/whatsapp/share" className='bg-gray-100 hover:bg-blue-100 rounded-full p-[18px] text-blue-400 hover:text-blue-500'>
+                    <BsTelegram className="w-[30px] h-[30px] cursor-pointer" />
+                </a>
+                <a target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=https://vikrambots.in&t=Hey, see my new Personalized AI VIKRAM Bot trained by me! at https://vikrambots.in/${username}`} data-action="share/whatsapp/share" className='bg-gray-100 hover:bg-blue-200 rounded-full p-[18px] text-blue-600 hover:text-blue-700'>
+                    <BsFacebook className="w-[30px] h-[30px] cursor-pointer" />
+                </a>
+                <a target="_blank" href={`whatsapp://send?text=Hey, see my new Personalized AI VIKRAM Bot trained by me! at https://vikrambots.in/${username}`} data-action="share/whatsapp/share" className='bg-gray-100 hover:bg-pink-100 rounded-full p-[18px] text-gradient-pink hover:text-pink-500'>
+                    <BsInstagram className="w-[30px] h-[30px] cursor-pointer" />
+                </a>
+                <a target="_blank" href={`http://twitter.com/share?text=Hey, see my new Personalized AI VIKRAM Bot trained by me! at https://vikrambots.in/${username}`} data-action="share/whatsapp/share" className='bg-gray-100 hover:bg-gray-300 active:bg-gray-400 rounded-full p-[18px]'>
+                    <BsTwitter className="w-[30px] h-[30px] cursor-pointer text-blue-500" />
+                </a>
+                {/* <a href={`whatsapp://send?text=https://vikrambots.in/${username}`} data-action="share/whatsapp/share" className='bg-gray-200 hover:bg-gray-300 active:bg-gray-400 rounded-full p-5'>
+                    <BsSnapchat className="w-7 h-7 cursor-pointer text-gray-900" />
+                </a> */}
+                </div>
+
+                <div className="flex flex-col items-start gap-2 self-start mt-6 p-2.5 md:p-4 md:w-full">
+                    <span className="text-sm font-bold">You Bot link is</span>
+                    <div className="flex flex-row items-center gap-2 bg-gray-3 rounded-lg md:w-full">
+                        <input type="text" contentEditable={false} value={`https://vikrambots.in/${username}`} className="p-3 px-4 bg-gray-3 grow rounded-l-lg font-medium border-r mr-2 border-r-gray-300 w-[95%] md:w-full overflow-x-auto" />
+                        <Tooltip title="Copy bot link to clipboard" placement="top">
+                            {
+                                botLinkCopied ? <BsClipboardCheck className="w-6 h-6 cursor-pointer mr-3 stroke-[0.1] hover:stroke-[0.3]" onClick={()=>{
+                                    navigator.clipboard.writeText(`https://vikrambots.in/${username}`)
+                                    toast.success("Copied to clipboard", {
+                                        position: "bottom-right",
+                                        autoClose: 1000,
+                                    })
+                                } } />
+                                :
+                        <BsClipboard className="w-6 h-6 cursor-pointer mr-3 stroke-[0.1] hover:stroke-[0.3]" onClick={()=>{
+                            navigator.clipboard.writeText(`https://vikrambots.in/${username}`)
+                            setBotLinkCopied(true)
+                            toast.success("Copied to clipboard", {
+                                position: "bottom-right",
+                                autoClose: 1000,
+                            })
+                        }} />
+                            }
+                        </Tooltip>
+                    </div>
+
+                </div>
+                <Link href="/chat-bot">
+                    <Button title="Start playing" buttonStyle='mt-4 mb-2 font-medium' />
+                </Link>
             </div>
         </Dialog>
 
@@ -556,8 +629,8 @@ function CreateAccountForm(props: any) {
             <span className="text-base md:text-lg -mt-2 md:mt-0 text-center">Set the rules which your bot needs to follow when others use it.</span>
                 <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
                     <div className="flex flex-col h-full md:border-r md:border-r-gray-200 items-center gap-2 px-2 md:px-6 py-5 border-t border-t-neutral-800 md:border-t-0">
-                        <span className="text-semibold">Tell the bot about yourself (optional)</span>
-                        <span className="text-xs font-light mb-4">Your bot will speak about you to potential employers and customers. Give the best and authentic details about yourself.</span>
+                        <span className="text-semibold">Enter a Role description</span>
+                        <span className="text-xs font-light mb-4">Your bot will interact with others with this Persona.</span>
                         <textarea
                             placeholder='Amit is a software developer with 5 years of exprerience. His areasof expertise are...'
                             rows={4}
@@ -815,7 +888,7 @@ function CreateAccountForm(props: any) {
           </div>
 
         <InputGroup value={name} required onChange={setName} hintAccessory={()=>{return validate("name", name)}} label='Full Name' placeholder='Your Full Name' type="text" className='!mt-10' />
-        
+
         {/* <InputGroup value={username} onChange={setUsername} hintAccessory={()=>{validate("username", username)}} label='Username' placeholder='Your Username to be used for loggin in' type="username" /> */}
 
         <InputGroup value={email} required onChange={setEmail} label='Email Address' hintAccessory={()=>{return validate("email", email)}} placeholder='Your Email Address' type="text" />

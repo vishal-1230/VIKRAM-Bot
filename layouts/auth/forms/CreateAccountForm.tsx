@@ -14,7 +14,7 @@ import { Router, useRouter } from 'next/router'
 import OtpInput from 'react-otp-input';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { BsClipboard, BsClipboard2, BsFacebook, BsInstagram, BsSnapchat, BsTelegram, BsTwitter, BsWhatsapp } from 'react-icons/bs'
+import { BsClipboard, BsClipboard2, BsClipboardCheck, BsFacebook, BsInstagram, BsSnapchat, BsTelegram, BsTwitter, BsWhatsapp } from 'react-icons/bs'
 import { RiWhatsappFill } from 'react-icons/ri'
 // import firebase from '../../../config/firebase'
 
@@ -445,6 +445,7 @@ function CreateAccountForm(props: any) {
         }
     }
 
+    const [botLinkCopied, setBotLinkCopied] = React.useState(false)
 
   return (
     <RightAuthContainer title='Create Account'>
@@ -462,7 +463,7 @@ function CreateAccountForm(props: any) {
         <Dialog open={showShareBotLink} onClose={()=>{setShowShareBotLink(false)}}>
             <DialogTitle className='text-2xl font-semibold text-center p-6 md:p-8 flex gap-3'>
                 <span>
-                Congrats! Your Bot is ready to share it with friends!
+                Congrats! Your Bot is ready to share it with others!
                 </span>
                 {/* <CancelOutlined className='cursor-pointer w-6 h-6 top-5 right-6 hover:text-black text-gray-700' onClick={()=>{router.replace("/chat-bot")}} /> */}
             </DialogTitle>
@@ -494,13 +495,24 @@ function CreateAccountForm(props: any) {
                     <div className="flex flex-row items-center gap-2 bg-gray-3 rounded-lg md:w-full">
                         <input type="text" contentEditable={false} value={`https://vikrambots.in/${username}`} className="p-3 px-4 bg-gray-3 grow rounded-l-lg font-medium border-r mr-2 border-r-gray-300 w-[95%] md:w-full overflow-x-auto" />
                         <Tooltip title="Copy bot link to clipboard" placement="top">
+                            {
+                                botLinkCopied ? <BsClipboardCheck className="w-6 h-6 cursor-pointer mr-3 stroke-[0.1] hover:stroke-[0.3]" onClick={()=>{
+                                    navigator.clipboard.writeText(`https://vikrambots.in/${username}`)
+                                    toast.success("Copied to clipboard", {
+                                        position: "bottom-right",
+                                        autoClose: 1000,
+                                    })
+                                } } />
+                                :
                         <BsClipboard className="w-6 h-6 cursor-pointer mr-3 stroke-[0.1] hover:stroke-[0.3]" onClick={()=>{
                             navigator.clipboard.writeText(`https://vikrambots.in/${username}`)
+                            setBotLinkCopied(true)
                             toast.success("Copied to clipboard", {
                                 position: "bottom-right",
                                 autoClose: 1000,
                             })
                         }} />
+                            }
                         </Tooltip>
                     </div>
 

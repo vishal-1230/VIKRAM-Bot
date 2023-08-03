@@ -448,7 +448,7 @@ function ChatArea(props: {
     async function getIcon () {
       try {
         console.log("Checking", connectedBot)
-        const response = await fetch(`https://server.vikrambots.in/get-pic/${connectedBot}`)
+        const response = await fetch(`https://server.vikrambots.in/get-pic/${props.usernameToConnect}`)
         const data = await response.text()
         console.log("Got img", data)
         const newImage = "https://server.vikrambots.in/assets/"+data

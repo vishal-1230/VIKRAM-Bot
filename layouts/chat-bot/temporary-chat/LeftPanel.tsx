@@ -138,7 +138,7 @@ function LeftPanel(props: {
 
         <div className="flex flex-col gap-3 mt-8 pt-4 border-t-2 border-bg-500 pr-2">
             
-            <Link href="/#faqs" className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5`}>
+            <Link href="/auth/create-account" className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5`}>
                 <BsRobot className="text-xl ml-[0.2rem] my-1" />
                 Create your own Bot
             </Link>

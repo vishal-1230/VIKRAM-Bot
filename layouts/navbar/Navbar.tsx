@@ -112,7 +112,11 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
   useEffect(()=>{
     if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
       setLoggedIn(true)
-      getInfo()
+      try{ 
+        getInfo()
+      } catch (err) {
+        console.log(err)
+      }
     } else {
       setLoggedIn(false)
     }
@@ -246,23 +250,19 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   {/* </div> */}
                 </div>
                 }
-
-
-                    {/* {
-                      userDetails?.username && <OutlineButton buttonStyle='text-sm p-1 self-end mr-5 min-w-max mb-1.5 ml-8' title="Personal Settings" onClick={() => {setShowPersonalEditBox(!setShowPersonalEditBox)}} />
-                    }
-
-                    {
-                      userDetails?.username_b && <OutlineButton buttonStyle='text-sm p-1 self-end mr-5' title="Agent Settings" onClick={() => {setShowBusinessEditBox(!showBusinessEditBox)}} />
-                    } */}
-                  
                   <PrimaryButton buttonStyle='text-sm z-50 p-3 self-end mr-5 bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
-              </div> : <div className='bg-bg-500 absolute top-[35px] min-w-[14rem] pt-3 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col' ref={wrapperRef}>
+              </div>
+              :
+              <div className='bg-bg-500 absolute top-[35px] min-w-[14rem] pt-3 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col' ref={wrapperRef}>
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
                     <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar.jpg"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
                     <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name ? userDetails?.name : "Your Name"}</span>
                     <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone ? userDetails?.phone : "+91 8373958829"}</span>
-                  <Button title="Explore More Bots" buttonStyle='mt-4 font-medium' /> 
+                  <Link href="/explore-bots" onClick={()=>{
+                    setShowInfoBox(false)
+                  }}>
+                    <Button title="Explore More Bots" buttonStyle='mt-4 font-medium' /> 
+                  </Link>
                   {/* <PrimaryButton buttonStyle='text-sm p-3 self-end mt-2' title="Create Your own Bot" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} /> */}
                   <PrimaryButton buttonStyle='text-sm p-3 self-end bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
                 </div>

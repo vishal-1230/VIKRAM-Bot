@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import OutlineButton from "@/components/OutlineButton"
 import Button from "@/components/SpecialButton"
 import { Inter } from "next/font/google"
+import axiosInstance from "@/utils/axiosInstance"
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 
 const inter = Inter({subsets: ['latin']})
 
@@ -99,7 +101,7 @@ function ChatArea(props: {
       localStorage.setItem("user", JSON.stringify(userDetails))
 
       if (userDetails.username){
-        setChatCategory("personal")
+        setChatCategory("personaltraining")
         if (userDetails.username_b) {
           setCategories([
             {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
@@ -883,15 +885,58 @@ function ChatArea(props: {
     const [knowledgebaseFile, setKnowledgebaseFile] = useState<File | string>("")
     const [knowledgebaseLoading, setKnowledgebaseLoading] = useState(false)
 
+    // old fetch method
+    // async function uploadKnowledgebase () {
+    //   setShowFileUploadDialog(true)
+    //   setKnowledgebaseLoading(true)
+
+    //   let uri = ""
+    //   if (chatCategory === "personaltraining") {
+    //     uri = `https://server.vikrambots.in/test_personal`
+    //   } else if(chatCategory === "business") {
+    //     uri = `https://server.vikrambots.in/training`
+    //   }
+
+    //   if (knowledgebaseFile === "") {
+    //     toast.error("Please select a file to upload.")
+    //   } else {
+    //     const formData = new FormData()
+    //     formData.append("typeOfFile", "file")
+    //     formData.append("file", knowledgebaseFile)
+    //     const response = await fetch(uri, {
+    //       method: "POST",
+    //       headers: {
+    //         "x-access-token": localStorage.getItem("token")!,
+    //       },
+    //       body: formData
+    //     })
+    //     const data = await response.json()
+    //     setKnowledgebaseLoading(false)
+    //     console.log("UPLOAD", data)
+    //     if (data.success === true) {
+    //       setShowFileUploadDialog(false)
+    //       toast.success("Knowledgebase uploaded successfully!")
+    //     } else {
+    //       toast.error("Something went wrong. Please try again.")
+    //     }
+    //   }
+    // }
+
+    const [progress, setProgress] = useState(0)
+
+    useEffect(()=>{
+      console.log("Progress", progress)
+    }, [progress])
+
     async function uploadKnowledgebase () {
       setShowFileUploadDialog(true)
       setKnowledgebaseLoading(true)
 
       let uri = ""
       if (chatCategory === "personaltraining") {
-        uri = `https://server.vikrambots.in/test_personal`
+        uri = `/test_personal`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training`
+        uri = `/training`
       }
 
       if (knowledgebaseFile === "") {
@@ -900,22 +945,47 @@ function ChatArea(props: {
         const formData = new FormData()
         formData.append("typeOfFile", "file")
         formData.append("file", knowledgebaseFile)
-        const response = await fetch(uri, {
-          method: "POST",
+        // const response = await fetch(uri, {
+        //   method: "POST",
+        //   headers: {
+        //     "x-access-token": localStorage.getItem("token")!,
+        //   },
+        //   body: formData
+        // })
+        // const data = await response.json()
+        axiosInstance.post(uri, formData, {
           headers: {
             "x-access-token": localStorage.getItem("token")!,
           },
-          body: formData
-        })
-        const data = await response.json()
-        setKnowledgebaseLoading(false)
-        console.log("UPLOAD", data)
-        if (data.success === true) {
-          setShowFileUploadDialog(false)
-          toast.success("Knowledgebase uploaded successfully!")
-        } else {
+          onUploadProgress: data => {
+            //Set the progress value to show the progress bar
+            setProgress(Math.round((100 * data.loaded) / data.total!))
+            // console.log("Progress", progress)
+          }
+        }).then((data)=>{
+          setKnowledgebaseLoading(false)
+          setProgress(0)
+          console.log("UPLOAD", data)
+          if (data.data.success === true) {
+            setShowFileUploadDialog(false)
+            toast.success("Knowledgebase uploaded successfully!")
+          } else {
+            toast.error("Something went wrong. Please try again.")
+          }
+        }).catch((err)=>{
+          console.log(err)
+          setKnowledgebaseLoading(false)
+          setProgress(0)
           toast.error("Something went wrong. Please try again.")
-        }
+        })
+        // setKnowledgebaseLoading(false)
+        // console.log("UPLOAD", data)
+        // if (data.success === true) {
+        //   setShowFileUploadDialog(false)
+        //   toast.success("Knowledgebase uploaded successfully!")
+        // } else {
+        //   toast.error("Something went wrong. Please try again.")
+        // }
       }
     }
 
@@ -1250,7 +1320,45 @@ function ChatArea(props: {
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
               {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}
               <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
-              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} Icon={()=>{ return knowledgebaseLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <ArrowOutwardOutlined className="w-5 h-5 self-center ml-1" /> }} />
+              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} Icon={()=>{
+                return knowledgebaseLoading === true
+                ?
+                // <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" />
+                progress != 100 ?
+                <div className="h-5 ml-2 flex flex-row items-center gap-1">
+                  <CircularProgressbar
+                    strokeWidth={50}
+                    className="text-white fill-white w-5" value={progress} text={`${progress}%`}
+                    styles={buildStyles({
+                      // Rotation of path and trail, in number of turns (0-1)
+                      rotation: 0,
+                  
+                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                      strokeLinecap: 'butt',
+                  
+                      // Text size
+                      textSize: '0px',
+                  
+                      // How long animation takes to go from one percentage to another, in seconds
+                      pathTransitionDuration: 0.5,
+                  
+                      // Can specify path transition in more detail, or remove it entirely
+                      // pathTransition: 'none',
+                  
+                      // Colors
+                      pathColor: `#474589`,
+                      textColor: '#fff',
+                      trailColor: '#d6d6d6',
+                      backgroundColor: '#3e98c7',
+                    })}
+                  />
+                  <span className="text-white text-[10px]">{progress}%</span>
+                </div>
+                :
+                <CheckCircle className="w-5 h-5 self-center ml-2 fill-green-500 text-green-500" />
+                :
+                <ArrowOutwardOutlined className="w-5 h-5 self-center ml-1" />
+              }} />
             </div>
           </div>
         }

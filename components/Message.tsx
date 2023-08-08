@@ -18,10 +18,10 @@ function Message({ children, mode, sender, botIcon } : {children: string, mode:s
       {/* <ToastContainer autoClose={1000} position="bottom-right" /> */}
         {
             sender === "user" || sender === "User" ? (
-                <AccountCircleOutlined className={`w-9 h-9 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />
+                <AccountCircleOutlined className={`w-9 h-9 min-w-9 min-h-9 duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-bg-50"}`} />
             ) : (
               botIcon ?
-                <img src={botIcon}  alt="VIKRAM Bot" className="duration-200 rounded-full" width={40} height={40} /> :
+                <img src={botIcon}  alt="VIKRAM Bot" className="duration-200 rounded-full object-cover" width={40} height={40} /> :
                 <Image src={ mode === "night" ? "/assets/navlogo1.png" : "/assets/botBlack.png"} alt="VIKRAM Bot" className="duration-200" width={40} height={40} />
             )
         }

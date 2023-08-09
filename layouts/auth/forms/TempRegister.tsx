@@ -97,7 +97,7 @@ function TempRegister(props: {userId: string}) {
     async function createTempUser() {
         setCreating(true)
         console.log("Creating acc for", phone)
-        const response = await fetch(`https://server.vikrambots.in/temp-register/${phone}`)
+        const response = await fetch(`https://server.vikrambots.in/temp-register/${name}/${phone}`)
         const data = await response.json()
         console.log(data)
         setCreating(false)

@@ -10,7 +10,7 @@ import PrimaryButton from '@/components/PrimaryButton'
 import { Chip, Dialog, Tooltip } from '@mui/material'
 import { toast } from 'react-toastify'
 import Button from '@/components/SpecialButton'
-import { BsClipboard } from 'react-icons/bs'
+import { BsArrowLeft, BsClipboard } from 'react-icons/bs'
 import {HiClipboardCopy} from "react-icons/hi"
 
 const inter = Inter({ subsets: ['latin'] })
@@ -129,9 +129,20 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
   
 
   return (
-    <div className={`bg-bg-900 flex flex-row duration-200 justify-between ${(router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) ? "px-5 md:px-32" : "px-6 md:px-48"} items-center w-screen h-20 px-0 py-8 z-50 ${inter.className}`} style={{boxShadow: "0px 20px 24px -4px rgba(3, 5, 12, 0.08), 0px 8px 8px -4px rgba(3, 5, 12, 0.03)"}}>
+    <div className={`bg-bg-900 flex flex-row duration-200 justify-between ${(router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) ? "px-5 md:px-32 md:pl-8" : "px-6 md:px-48"} items-center w-screen h-20 px-0 py-8 z-50 ${inter.className}`} style={{boxShadow: "0px 20px 24px -4px rgba(3, 5, 12, 0.08), 0px 8px 8px -4px rgba(3, 5, 12, 0.03)"}}>
         
-        <Link href="/" className='navbar-logo cursor-pointer relative'>
+        {
+          (router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) ? (
+            <Link href="/explore-bots" className='mr-4'>
+              <span className="py-2 px-5 rounded-full bg-gradient-to-r from-gradient-dull-pink to-gradient-blue opacity-80 hover:opacity-100 hover:from-gradient-blue hover:to-gradient-pink duration-200 cursor-pointer flex gap-2">
+                <BsArrowLeft className="w-5 h-5 text-white" />
+                <span className="text-white font-medium text-sm">Explore Other Bots</span>
+              </span>
+            </Link>
+          ) : null
+        }
+        
+        <Link href="/" className={`navbar-logo cursor-pointer relative ${router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots") ? "mr-auto" : ""}`}>
             <Image src='/assets/navlogo1.png' alt='VIKRAM Logo' width={55} height={34} priority />
             <span className="absolute bottom-0 -right-2 text-white font-bold text-[0.6rem] p-0.5 px-1 rounded-md bg-warning-500">BETA</span>
         </Link>
@@ -258,11 +269,11 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                     <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar.jpg"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
                     <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name ? userDetails?.name : "Your Name"}</span>
                     <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone ? userDetails?.phone : "+91 8373958829"}</span>
-                  <Link href="/explore-bots" onClick={()=>{
+                  {/* <Link href="/explore-bots" onClick={()=>{
                     setShowInfoBox(false)
                   }}>
                     <Button title="Explore More Bots" buttonStyle='mt-4 font-medium' /> 
-                  </Link>
+                  </Link> */}
                   {/* <PrimaryButton buttonStyle='text-sm p-3 self-end mt-2' title="Create Your own Bot" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} /> */}
                   <PrimaryButton buttonStyle='text-sm p-3 self-end bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
                 </div>

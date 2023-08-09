@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react"
 import ChatList from "./ChatList"
-import { ArrowOutward, ArrowOutwardOutlined, Autorenew, CancelOutlined, CheckCircle, Delete, InfoRounded, MenuOpenOutlined, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
+import { ArrowOutward, ArrowOutwardOutlined, Attachment, Autorenew, CancelOutlined, CancelRounded, CheckCircle, Delete, InfoRounded, MenuOpenOutlined, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useRouter } from "next/router"
@@ -10,6 +10,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import OutlineButton from "@/components/OutlineButton"
 import Button from "@/components/SpecialButton"
 import { Inter } from "next/font/google"
+import axiosInstance from "@/utils/axiosInstance"
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
+import {ImAttachment} from "react-icons/im"
+import { RiDeleteBin2Line } from "react-icons/ri"
 
 const inter = Inter({subsets: ['latin']})
 
@@ -70,6 +74,7 @@ function ChatArea(props: {
       //   })
       //   // router.replace("/auth/login")
       // }
+      setOneLiner(data.desc)
       let userDetails: {username?: string, username_b?: string, email: string, name: string, phone: number} = {
         username: "",
         username_b: "",
@@ -698,6 +703,8 @@ function ChatArea(props: {
     const [botRules2, setBotRules2] = useState<string>("")
     const [botRulesFile, setBotRulesFile] = useState<File | string>("")
 
+    const [oneLiner, setOneLiner] = useState<string>("")
+
     const [showSampleRules, setShowSampleRules] = useState(false)
     
     const [disableSubmit, setDisableSubmit] = useState(true)
@@ -720,12 +727,14 @@ function ChatArea(props: {
     const [companyDetailsLoading, setCompanyDetailsLoading] = useState(false)
     const [roleDescriptionLoading, setRoleDescriptionLoading] = useState(false)
     const [botBusinessStepsLoading, setBotBusinessStepsLoading] = useState(false)
+    const [oneLinerLoading, setOneLinerLoading] = useState(false)
 
 
     async function getAllPersonalInfo () {
       // 2 functions, user info, rules
       setUserInfoLoading(true)
       setBotRulesLoading(true)
+      setOneLinerLoading(true)
       const response1 = await fetch("https://server.vikrambots.in/load_user_info", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
@@ -740,8 +749,11 @@ function ChatArea(props: {
       })
       const data2 = await reponse2.json()
 
+      getInfo()
+
       setUserInfoLoading(false)
       setBotRulesLoading(false)
+      setOneLinerLoading(false)
 
       console.log(data1, data2)
       if (data1.success === true){
@@ -762,6 +774,7 @@ function ChatArea(props: {
       setCompanyDetailsLoading(true)
       setRoleDescriptionLoading(true)
       setBotBusinessStepsLoading(true)
+      setOneLinerLoading(true)
       console.log("Getting all business info")
       const response3 = await fetch("https://server.vikrambots.in/cinfo", {
         headers: {
@@ -784,9 +797,12 @@ function ChatArea(props: {
       })
       const data5 = await response5.json()
 
+      getInfo()
+
       setCompanyDetailsLoading(false)
       setRoleDescriptionLoading(false)
       setBotBusinessStepsLoading(false)
+      setOneLinerLoading(false)
 
       console.log(data3, data4, data5)
       if (data3.success === true){
@@ -883,15 +899,78 @@ function ChatArea(props: {
     const [knowledgebaseFile, setKnowledgebaseFile] = useState<File | string>("")
     const [knowledgebaseLoading, setKnowledgebaseLoading] = useState(false)
 
+    // old fetch method
+    // async function uploadKnowledgebase () {
+    //   setShowFileUploadDialog(true)
+    //   setKnowledgebaseLoading(true)
+
+    //   let uri = ""
+    //   if (chatCategory === "personaltraining") {
+    //     uri = `https://server.vikrambots.in/test_personal`
+    //   } else if(chatCategory === "business") {
+    //     uri = `https://server.vikrambots.in/training`
+    //   }
+
+    //   if (knowledgebaseFile === "") {
+    //     toast.error("Please select a file to upload.")
+    //   } else {
+    //     const formData = new FormData()
+    //     formData.append("typeOfFile", "file")
+    //     formData.append("file", knowledgebaseFile)
+    //     const response = await fetch(uri, {
+    //       method: "POST",
+    //       headers: {
+    //         "x-access-token": localStorage.getItem("token")!,
+    //       },
+    //       body: formData
+    //     })
+    //     const data = await response.json()
+    //     setKnowledgebaseLoading(false)
+    //     console.log("UPLOAD", data)
+    //     if (data.success === true) {
+    //       setShowFileUploadDialog(false)
+    //       toast.success("Knowledgebase uploaded successfully!")
+    //     } else {
+    //       toast.error("Something went wrong. Please try again.")
+    //     }
+    //   }
+    // }
+
+    async function updateDesc() {
+      setOneLinerLoading(true)
+      const response = await fetch("https://server.vikrambots.in/edit_desc", {
+        method: "POST",
+        headers: {
+          "x-access-token": localStorage.getItem("token")!,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({description: oneLiner})
+      })
+      const data = await response.json()
+      setOneLinerLoading(false)
+      console.log(data)
+      if (data.success === true) {
+        toast.success("Role description updated successfully!")
+      } else {
+        toast.error("Something went wrong. Please try again.")
+      }
+    }
+
+    const [progress, setProgress] = useState(0)
+
+    useEffect(()=>{
+      console.log("Progress", progress)
+    }, [progress])
+
     async function uploadKnowledgebase () {
       setShowFileUploadDialog(true)
       setKnowledgebaseLoading(true)
 
       let uri = ""
       if (chatCategory === "personaltraining") {
-        uri = `https://server.vikrambots.in/test_personal`
+        uri = `/test_personal`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training`
+        uri = `/training`
       }
 
       if (knowledgebaseFile === "") {
@@ -900,24 +979,51 @@ function ChatArea(props: {
         const formData = new FormData()
         formData.append("typeOfFile", "file")
         formData.append("file", knowledgebaseFile)
-        const response = await fetch(uri, {
-          method: "POST",
+        // const response = await fetch(uri, {
+        //   method: "POST",
+        //   headers: {
+        //     "x-access-token": localStorage.getItem("token")!,
+        //   },
+        //   body: formData
+        // })
+        // const data = await response.json()
+        axiosInstance.post(uri, formData, {
           headers: {
             "x-access-token": localStorage.getItem("token")!,
           },
-          body: formData
-        })
-        const data = await response.json()
-        setKnowledgebaseLoading(false)
-        console.log("UPLOAD", data)
-        if (data.success === true) {
-          setShowFileUploadDialog(false)
-          toast.success("Knowledgebase uploaded successfully!")
-        } else {
+          onUploadProgress: data => {
+            //Set the progress value to show the progress bar
+            setProgress(Math.round((100 * data.loaded) / data.total!))
+            // console.log("Progress", progress)
+          }
+        }).then((data)=>{
+          setKnowledgebaseLoading(false)
+          setProgress(0)
+          console.log("UPLOAD", data)
+          if (data.data.success === true) {
+            setShowFileUploadDialog(false)
+            toast.success("Knowledgebase uploaded successfully!")
+          } else {
+            toast.error("Something went wrong. Please try again.")
+          }
+        }).catch((err)=>{
+          console.log(err)
+          setKnowledgebaseLoading(false)
+          setProgress(0)
           toast.error("Something went wrong. Please try again.")
-        }
+        })
+        // setKnowledgebaseLoading(false)
+        // console.log("UPLOAD", data)
+        // if (data.success === true) {
+        //   setShowFileUploadDialog(false)
+        //   toast.success("Knowledgebase uploaded successfully!")
+        // } else {
+        //   toast.error("Something went wrong. Please try again.")
+        // }
       }
     }
+
+    const [fileToSend, setFileToSend] = useState<any>("")
 
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-neutral-300 text-bg-500" : "bg-bg-700 text-white"}`}>
@@ -948,7 +1054,8 @@ function ChatArea(props: {
               </span>
             </DialogTitle>
             <span className="md:text-lg text-center">Update the rules which your bot needs to follow when others use it.</span>
-                <div className="grid lg:grid-cols-2 overflow-y-auto gap-3 mt-3">
+              <div className="flex flex-col mt-3 w-full gap-5 overflow-y-auto">
+                <div className="grid lg:grid-cols-2 gap-3">
                     <div className="flex flex-col h-full items-center md:border-r border-t border-t-neutral-800 md:border-t-0 border-r-gray-200 gap-2 lg:px-6 py-5">
                         <span className="text-semibold text-center">Enter a Role description</span>
                         <span className="text-xs font-light mb-4">Your bot will interact with others with this Persona.</span>
@@ -1035,6 +1142,19 @@ function ChatArea(props: {
                         />
                     </div>
                 </div>
+
+                <div className="flex flex-col items-center gap-2 my-2 mb-8">
+                  <span className="text-semibold text-center">Edit your One Liner Description</span>
+                  <span className="text-xs font-light mb-4">This Short Description is shown wherever your bot gets a chance to be previewed to audience.</span>
+                  <textarea placeholder='Enter one liner description' rows={1} cols={4} value={oneLiner} onChange={(e)=>{setOneLiner(e.target.value)}} className="text-sm text-white py-2 text-center mx-2 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%] h-full" />
+                  <Button
+                    title="Update description"
+                    buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto'
+                    onClick={updateDesc}
+                    Icon={()=> {return oneLinerLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
+                  />
+                </div>
+              </div>
                 <div className=" flex flex-col items-center gap-1 md:gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
                     <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
                     {/* <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
@@ -1057,6 +1177,7 @@ function ChatArea(props: {
                     </span>
                   </DialogTitle>
                   <span className="md:text-lg text-center -mt-2">Update the rules which your bot needs to follow when others use it.</span>
+                <div className="flex flex-col mt-3 w-full gap-5 overflow-y-auto">
                   <div className="grid overflow-y-auto grid-cols-1 lg:grid-cols-3 gap-3 mt-3 mb-4">
                     <div className="flex flex-col h-full border-t border-t-neutral-800 md:border-t-0 items-center gap-2 py-8 px-3 md:px-6">
                         <span className="text-semibold mb-4">Edit information about your business or company (optional)</span>
@@ -1180,6 +1301,19 @@ function ChatArea(props: {
                           {/* <input type="file" name="" id="" className='self-center text-center text-sm text-bg-dark-blue p-3 outline-none border-2 border-bg-dark-blue rounded-md' /> */}
                       </div>
                   </div>
+
+                  <div className="flex flex-col items-center gap-2 my-2 mb-8">
+                  <span className="text-semibold text-center">Edit your One Liner Description</span>
+                  <span className="text-xs font-light mb-4">This Short Description is shown wherever your bot gets a chance to be previewed to audience.</span>
+                  <textarea placeholder='Enter one liner description' rows={1} cols={4} value={oneLiner} onChange={(e)=>{setOneLiner(e.target.value)}} className="text-sm text-white py-2 text-center mx-2 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%] h-full" />
+                  <Button
+                    title="Update description"
+                    buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto'
+                    onClick={updateDesc}
+                    Icon={()=> {return oneLinerLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
+                  />
+                </div>
+                </div>
                   <div className="flex flex-col items-center md:grid md:grid-cols-3 mt-auto justify-between">
                       <div className="hidden md:block"></div>
                         {/* <Link href='/auth/login'> */}
@@ -1250,7 +1384,58 @@ function ChatArea(props: {
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
               {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}
               <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
-              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} Icon={()=>{ return knowledgebaseLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" /> : <ArrowOutwardOutlined className="w-5 h-5 self-center ml-1" /> }} />
+              <Button title="Upload" buttonStyle="w-full" onClick={uploadKnowledgebase} Icon={()=>{
+                return knowledgebaseLoading === true
+                ?
+                // <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2" />
+                progress != 100 ?
+                <div className="h-5 ml-2 flex flex-row items-center gap-1">
+                  <CircularProgressbar
+                    strokeWidth={50}
+                    className="text-white fill-white w-5" value={progress} text={`${progress}%`}
+                    styles={buildStyles({
+                      // Rotation of path and trail, in number of turns (0-1)
+                      rotation: 0,
+                  
+                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                      strokeLinecap: 'butt',
+                  
+                      // Text size
+                      textSize: '0px',
+                  
+                      // How long animation takes to go from one percentage to another, in seconds
+                      pathTransitionDuration: 0.5,
+                  
+                      // Can specify path transition in more detail, or remove it entirely
+                      // pathTransition: 'none',
+                  
+                      // Colors
+                      pathColor: `#474589`,
+                      textColor: '#fff',
+                      trailColor: '#d6d6d6',
+                      backgroundColor: '#3e98c7',
+                    })}
+                  />
+                  <span className="text-white text-[10px]">{progress}%</span>
+                </div>
+                :
+                <CheckCircle className="w-5 h-5 self-center ml-2 fill-green-500 text-green-500" />
+                :
+                <ArrowOutwardOutlined className="w-5 h-5 self-center ml-1" />
+              }} />
+              <div className="flex flex-col gap-2 mt-3 max-h-48 overflow-y-auto">
+                <span className="text-sm font-medium">Uploaded files:</span>
+                <div className="flex flex-row gap-2 items-center">
+                  <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
+                  <span className="text-sm font-medium grow">Knowledgebase.pdf</span>
+                  <RiDeleteBin2Line className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500" onClick={()=>{  }} />
+                </div>
+                <div className="flex flex-row gap-2 items-center">
+                  <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
+                  <span className="text-sm font-medium grow">SEBI Regulations.pdf</span>
+                  <RiDeleteBin2Line className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500" onClick={()=>{  }} />
+                </div>
+              </div>
             </div>
           </div>
         }
@@ -1282,6 +1467,23 @@ function ChatArea(props: {
 
           {/* <span className={`${mode === "day" ? "text-bg-50" : "text-neutral-500"} duration-200 text-sm font-medium`}>Current search category: Ticket booking</span> */}
 
+          <div className="flex flex-col gap-3 w-full">
+            {
+              fileToSend != "" && <div className="flex flex-row gap-2 items-end">
+                <span className="text-sm font-medium min-w-max">File to send:</span>
+                <div className="flex flex-col gap-1">
+                <img
+                  src={typeof fileToSend === "object" ? URL.createObjectURL(fileToSend) : fileToSend.toString()}
+                  alt="file to send"
+                  className="w-fit h-14 rounded-md"
+                />
+                <span className="text-sm text-neutral-500">{fileToSend?.name!}</span>
+                </div>
+                <CancelRounded className='cursor-pointer w-5 text-red-400 self-center' onClick={() => {
+                  setFileToSend("")
+                }} />
+              </div>
+            }
           <div className={`flex flex-row justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
             <input
               type="text"
@@ -1298,11 +1500,23 @@ function ChatArea(props: {
               }}
             />
             <div className="icons flex gap-5">
-              {/* <MicNoneOutlined className="w-5 h-5 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" /> */}
+              <input
+                type="file"
+                className="hidden w-0 h-0"
+                id="send-img"
+                // allowed only image
+                accept="image/*"
+                // value={typeof fileToSend === "object" ? fileToSend?.name! : fileToSend}
+                onChange={(e)=>{
+                  e?.target?.files && setFileToSend(e?.target?.files[0])
+                }} />
+              <ImAttachment className="w-5 h-5 text-bg-50 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" onClick={()=>{
+                document.getElementById("send-img")?.click()
+              }} />
               <SendOutlined onClick={()=> {console.log(chats); (chats.length>0 && chats[chats?.length-1]?.message==="Loading...") ? console.log('l') : sendMessage()}} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
             </div>
           </div>
-
+          </div>
         </div>
 
     </div>

@@ -29,25 +29,26 @@ body {
 
 *::-webkit-scrollbar {
   height: 0.5rem;
-  background: #ccc;
+  background: #141824;
+  border-radius: 0.5rem;
 }
 
 
 *::-webkit-scrollbar-thumb {
-  background-color: #888;
+  background-color: #777;
   border-radius: 0.5rem;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #666;
+  background-color: #aaa;
 }
 
 *::-webkit-scrollbar-thumb:active {
-  background-color: #444;
+  background-color: #ccc;
 }
 
 ::selection {
-  background-color: #555;
+  background-color: #999;
 }
 
 @media (prefers-color-scheme: dark) {

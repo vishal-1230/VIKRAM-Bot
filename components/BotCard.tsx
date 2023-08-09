@@ -11,10 +11,23 @@ function BotCard(props: BotCardProps) {
 
   async function likeBot(botId: string) {
     const res = await fetch(`https://server.vikrambots.in/add-fav/${botId}`, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "token": localStorage.getItem("token") || ""
+        "x-access-token": localStorage.getItem("token")!
+      }
+    })
+    const data = await res.json()
+    console.log(data)
+  }
+
+  async function unlikeBot(botId: string) {
+    console.log("unliking")
+    const res = await fetch(`https://server.vikrambots.in/remove-fav/${botId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token")!
       }
     })
     const data = await res.json()
@@ -27,7 +40,7 @@ function BotCard(props: BotCardProps) {
     <Link href={`https://vikrambots.ai/try-vikram-bots/${props.userName}`}>
     <div className="flex flex-col items-center p-6 pb-3 w-[195px] min-w-[195px] h-full max-w-fit bg-neutral-300 hover:bg-neutral-200 shadow-bg-300 cursor-pointer select-none hover:shadow-2xl hover:shadow-bg-300 hover:scale-105 drop-shadow-lg rounded-lg shadow-lg">
       {
-        liked ? <BsHeartFill className="text-red-500 text-lg self-end cursor-pointer" onClick={() => setLiked(!liked)} /> : <BsHeart className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); likeBot(props.userName)}} />
+        liked ? <BsHeartFill className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); unlikeBot(props.userName)}} /> : <BsHeart className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); likeBot(props.userName)}} />
       }
       {/* <BsHeart className="text-red-500 text-lg self-end cursor-pointer" /> */}
       <img src={!props.logo.endsWith("undefined") ? props.logo : "/assets/avatar.jpg"} alt="Bot Logo" className="rounded-full self-center object-cover aspect-square w-[90%]" />

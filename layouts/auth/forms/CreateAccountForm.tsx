@@ -490,7 +490,7 @@ function CreateAccountForm(props: any) {
                 <a target="_blank" href={`http://twitter.com/share?text=Hey, see my new Personalized AI VIKRAM Bot trained by me! at https://vikrambots.ai/${username}`} data-action="share/whatsapp/share" className='bg-gray-100 hover:bg-gray-300 active:bg-gray-400 rounded-full p-[18px]'>
                     <BsTwitter className="w-[30px] h-[30px] cursor-pointer text-blue-500" />
                 </a>
-                {/* <a href={`whatsapp://send?text=https://vikrambots.in/${username}`} data-action="share/whatsapp/share" className='bg-gray-200 hover:bg-gray-300 active:bg-gray-400 rounded-full p-5'>
+                {/* <a href={`whatsapp://send?text=https://vikrambots.ai/${username}`} data-action="share/whatsapp/share" className='bg-gray-200 hover:bg-gray-300 active:bg-gray-400 rounded-full p-5'>
                     <BsSnapchat className="w-7 h-7 cursor-pointer text-gray-900" />
                 </a> */}
                 </div>

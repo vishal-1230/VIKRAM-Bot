@@ -33,7 +33,7 @@ function ChatBot() {
 
   return (
     <div className="bg-transparent">
-      <MenuOpenOutlined className="block md:hidden w-8 h-8 text-neutral-50 fill-neutral-50 cursor-pointer absolute top-6 z-[10000000] right-7" onClick={()=>{setShowSettingsInMobile(true)}} />
+      <MenuOpenOutlined className="block md:!hidden w-8 h-8 text-neutral-50 fill-neutral-50 cursor-pointer absolute top-6 z-[10000000] right-7" onClick={()=>{setShowSettingsInMobile(true)}} />
     <div
       className={`flex absolute top-0 left-0 w-screen h-screen -z-10 flex-row ${inter.className}`}
     >

@@ -53,7 +53,7 @@ function ChatArea(props: {
       //   })
       //   // router.replace("/auth/login")
       // }
-      let userDetails: {username?: string, username_b?: string, email: string, name: string, phone: number} = {
+      let userDetailsTemp: {username?: string, username_b?: string, email: string, name: string, phone: number} = {
         username: "",
         username_b: "",
         name: "",
@@ -61,7 +61,7 @@ function ChatArea(props: {
         email: ""
       }
       if (data.username === data.username_b) {
-        userDetails = {
+        userDetailsTemp = {
           username_b: data.username,
           name: data.name,
           phone: data.phone,
@@ -69,7 +69,7 @@ function ChatArea(props: {
         }
         // localStorage.setItem("user", JSON.stringify({username_b: data.username, name: data.name, phone: data.phone, email: data.email}))
       } else if (data.username_b === "None") {
-        userDetails = {
+        userDetailsTemp = {
           username: data.username,
           name: data.name,
           phone: data.phone,
@@ -77,17 +77,25 @@ function ChatArea(props: {
         }
         // localStorage.setItem("user", JSON.stringify({username: data.username, name: data.name, phone: data.phone, email: data.email}))
       } else {
-        userDetails = data
+        userDetailsTemp = data
       }
       localStorage.setItem("user", JSON.stringify(userDetails))
+      console.log("User data setting to", userDetailsTemp)
+      setUserDetails({...userDetailsTemp})
+      console.log("User details", userDetails)
+      try {
+        fetchMyWithThemMessages(data.username)
+      } catch {
+        console.log("No messages")
+      }
 
-      if (userDetails.username){
+      if (data.username){
       let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
       setChatCategory("personal")
-        if (userDetails.username_b) {
+        if (data.username_b) {
           token
         }
-      } else if (userDetails.username_b) {
+      } else if (data.username_b) {
         token
       }
 
@@ -334,7 +342,6 @@ function ChatArea(props: {
 
       console.log("Testing", toConnectWith)
 
-
       try{
       let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
       const response = await fetch(`https://server.vikrambots.in/check-username-exists/${ toConnectWith}`, {
@@ -343,15 +350,15 @@ function ChatArea(props: {
           }
         })
         const data = await response.json()
-        console.log(data)
+        console.log("Got data", data)
   
         if (data.success == true) {
-          toast.success("Connected to "+toConnectWith+" successfully!")
+          // toast.success("Connected to "+toConnectWith+" successfully!")
           setConnectedBot(toConnectWith)
           setConnecting(false)
         } else {
-          toast.error("The VBot ID you entered does not exist. Please try again.")
-          router.replace("/")
+          // toast.error("The VBot ID you entered does not exist. Please try again.")
+          router.replace("/404")
           setConnecting(false)
         }
       } catch (err) {
@@ -371,10 +378,9 @@ function ChatArea(props: {
     //   console.log("CONNxns", data)
     // }
 
-    async function fetchMyWithThemMessages () {
-      alert(props.usernameToConnect)
+    async function fetchMyWithThemMessages (thisUser: string) {
       setLoadingThirdMessages(true)
-      const response = await fetch (`https://server.vikrambots.in/thirdChats/${props.usernameToConnect}/${userDetails.username}`)
+      const response = await fetch (`https://server.vikrambots.in/chats/${props.usernameToConnect}/${thisUser}`)
       const data = await response.json()
       setLoadingThirdMessages(false)
 
@@ -406,22 +412,9 @@ function ChatArea(props: {
     }
     }
 
-    // const descriprions = {
-    //   "personal": "Use this window like a regular ChatGPT interface for the same output. Your intelligence in getting the best response won't be available to ChatGPT. You don't want to make ChatGPT smarter at your expense!",
-    //   "personaltraining": "",
-    //   "business": "You are using your own agent. Use the below window to simulate how your bot is using the Role Description & Steps you have set to answer others. Go Back to the role description and steps and edit if you don't like what you see.",
-    //   "initiator": "You are connecting to someone's personal bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see.",
-    //   "business_initiator": "You are connecting to some business's bot. You can use this window to chat with them. You can also use the below window to simulate how their bot is using the Role Description & Steps they have set to answer others. Go Back to the role description and steps and edit if you don't like what you see."
-    // }
-
-    // useEffect(()=>{
-    //   console.log("third", thirdChats)
-    //   checkBotExists(props.usernameToConnect)
-    // }, [])
-
     useEffect(()=>{
-      // delete this calling
-    //   pastConnections()
+
+      checkBotExists(props.usernameToConnect)
       
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token") as string)

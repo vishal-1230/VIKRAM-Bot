@@ -3,6 +3,7 @@ import { Tooltip } from "@mui/material"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { RiChatHistoryLine } from "react-icons/ri"
 
 function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any, changeChatToNotif: string | null, setChangeChatToNotif: any, showSettingsInMobile: boolean, setShowSettingsInMobile: any}) {
 
@@ -91,15 +92,15 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
       }, [])
 
   return (
-    <div className={`flex-col z-[10000] ${showSettingsInMobile ? "" : "hidden"} absolute h-screen md:h-auto md:relative w-screen md:w-64 md:flex justify-between md:z-10 pt-2 md:pt-5 py-5 px-6 pr-3 mt-20 md:max-w-[16rem] ${mode === "day" ? "bg-neutral-100 !text-bg-900" : "bg-bg-900"}`}>
+    <div className={`flex-col z-[10000] ${showSettingsInMobile ? "" : "hidden"} absolute h-screen md:h-auto md:relative w-screen md:w-64 md:flex justify-between duration-150 md:z-10 pt-2 md:pt-5 py-5 px-6 pr-3 mt-20 md:max-w-[16rem] ${mode === "day" ? "bg-neutral-100 !text-bg-900" : "bg-bg-900"}`}>
         <CancelOutlined className="block md:!hidden text-neutral-50 fill-neutral-50 cursor-pointer absolute top-3 right-5 text-xl" onClick={()=>{setShowSettingsInMobile(false)}} />
         <div className="flex flex-col gap-8 overflow-y-auto overflow-x-clip">
 
             <div className="flex flex-col gap-4 min-w-max">
                 
                 <span className={`text-sm font-semibold ${mode === "day" ? "text-bg-900" :"text-white"} flex gap-2.5 flex-row items-center mb-1`}>
-                    <NotificationsOutlined />
-                    Your Notifications
+                    <RiChatHistoryLine className="text-2xl" />
+                    People Talked to Your Bot
                 </span>
                 {
                     notificationsLoading ? (
@@ -109,7 +110,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                     ) : (
                         notifications.map((notification, index) => {
                             return (
-                                <span key={index} className={`text-sm ml-2 text-transparent bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`} onClick={()=>{props.setChangeChatToNotif(notification); setShowSettingsInMobile(false)}}>
+                                <span key={index} className={`text-sm ml-2 text-transparent bg-clip-text cursor-pointer ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`} onClick={()=>{props.setChangeChatToNotif(notification); setShowSettingsInMobile(false)}}>
                                     {notification}
                                 </span>
                             )
@@ -137,7 +138,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                         ) : (
                             history.map((chat, index) => {
                                 return (
-                                    <span key={index} className={`text-sm ml-2 text-transparent bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`} onClick={()=>{props.setChangeChatTo(chat); setShowSettingsInMobile(false)}}>
+                                    <span key={index} className={`text-sm ml-2 cursor-pointer text-transparent bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`} onClick={()=>{props.setChangeChatTo(chat); setShowSettingsInMobile(false)}}>
                                         {chat}
                                     </span>
                                 )

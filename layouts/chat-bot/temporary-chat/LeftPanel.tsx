@@ -113,9 +113,10 @@ function LeftPanel(props: {
                         ) : (
                             history.map((chat, index) => {
                                 return (
+                                    <Link href={`https://vikrambots.ai/try-vikram-bots/${chat}`}>
                                     <span
                                         key={index}
-                                        className={`text-sm ml-2 text-transparent bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`}
+                                        className={`text-sm ml-2 text-transparent cursor-pointer bg-clip-text ${mode === "day" ? "bg-bg-900" : "bg-gradient-to-r from-white via-white to-[#aaa]"} flex-wrap`}
                                         onClick={()=>{
                                             // props.setChangeChatTo(chat);
                                             setShowSettingsInMobile(false)
@@ -123,6 +124,7 @@ function LeftPanel(props: {
                                     >
                                         {chat}
                                     </span>
+                                    </Link>
                                 )
                             })
                         )

@@ -52,11 +52,16 @@ function ChatBot() {
         setShowSettingsInMobile={setShowSettingsInMobile}
       />
 
-      <ChatArea
-        mode={mode}
-        setMode={setMode}
-        usernameToConnect={userId ? userId : "Vishal2"}
-      />
+      {
+        userId ? 
+        <ChatArea
+          mode={mode}
+          setMode={setMode}
+          usernameToConnect={userId}
+        />
+        :
+        null
+      }
     </div>
     </div>
   );

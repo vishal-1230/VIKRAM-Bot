@@ -1,11 +1,18 @@
 import { KeyboardArrowDownOutlined } from '@mui/icons-material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useOutsideAlerter } from '@/layouts/navbar/Navbar'
 
 function Dropdown(props: {title?: string, list: {text: string, icon?:React.ReactDOM, onClick?:any}[], className?: string, selectedChatCategory: string, setSelectedChatCategory?: any, mode?: string, setMode?: any}) {
 
     const [open, setOpen] = React.useState(false)
 
     const toggle = () => setOpen(!open)
+
+    const wrapperRef = useRef(null)
+    useOutsideAlerter(wrapperRef, ()=>{
+        setOpen(false)
+    })
+
 
     const cats: {[cat: string]: string} =  {
         "personal": "My Personal Bot",
@@ -38,7 +45,7 @@ function Dropdown(props: {title?: string, list: {text: string, icon?:React.React
                 <KeyboardArrowDownOutlined className="-mr-1 ml-2 #000 w-5 h-5 stroke-2" aria-hidden="true" />
             </button>   
         </div>
-                <div className={`mt-2 w-full min-w-max rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${open ? "absolute" : "hidden"}`}>
+                <div className={`mt-2 w-full min-w-max rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${open ? "absolute" : "hidden"}`} ref={wrapperRef}>
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         {
                             props.list.map((item, index) => {

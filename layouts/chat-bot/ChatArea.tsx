@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext, useRef } from "react"
 import ChatList from "./ChatList"
 import { ArrowOutward, ArrowOutwardOutlined, Attachment, Autorenew, CancelOutlined, CancelRounded, CheckCircle, Delete, InfoRounded, MenuOpenOutlined, MicNoneOutlined, RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
@@ -13,7 +13,8 @@ import { Inter } from "next/font/google"
 import axiosInstance from "@/utils/axiosInstance"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import {ImAttachment} from "react-icons/im"
-import { RiDeleteBin2Line } from "react-icons/ri"
+import { RiDeleteBin2Line, RiLoader4Line } from "react-icons/ri"
+import { useOutsideAlerter } from "../navbar/Navbar"
 
 const inter = Inter({subsets: ['latin']})
 
@@ -677,7 +678,7 @@ function ChatArea(props: {
         setChatCategory("initiator")
         setToConnectWith(changeChatTo)
         checkBotExists(changeChatTo)
-        fetchMyWithThemMessages()
+        "username" in userDetails && (toConnectWith!="" && toConnectWith!=undefined) ? fetchMyWithThemMessages() : null
       }
     }, [props.changeChatTo])
 
@@ -936,6 +937,11 @@ function ChatArea(props: {
     //   }
     // }
 
+    const knowledgebaseRef = useRef(null)
+    useOutsideAlerter(knowledgebaseRef, () => {
+      setShowFileUploadDialog(false)
+    })
+
     async function updateDesc() {
       setOneLinerLoading(true)
       const response = await fetch("https://server.vikrambots.in/edit_desc", {
@@ -1149,7 +1155,7 @@ function ChatArea(props: {
                   <textarea placeholder='Enter one liner description' rows={1} cols={4} value={oneLiner} onChange={(e)=>{setOneLiner(e.target.value)}} className="text-sm text-white py-2 text-center mx-2 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%] h-full" />
                   <Button
                     title="Update description"
-                    buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto'
+                    buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto mt-4'
                     onClick={updateDesc}
                     Icon={()=> {return oneLinerLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
                   />
@@ -1379,7 +1385,7 @@ function ChatArea(props: {
           (chatCategory === "personaltraining" || chatCategory === "business") && <div className="flex relative align-center md:self-center ml-2 md:ml-0 mt-1.5 mr-5">
             {/* knowledgebase pdf upload dropdown upload */}
             <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 text-sm md:text-base rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
-            <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 max-w-[90vw] rounded-xl mt-2 md:right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`}>
+            <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 max-w-[90vw] rounded-xl mt-2 md:right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`} ref={knowledgebaseRef}>
               <input type="file" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
               {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}
@@ -1423,7 +1429,8 @@ function ChatArea(props: {
                 :
                 <ArrowOutwardOutlined className="w-5 h-5 self-center ml-1" />
               }} />
-              <div className="flex flex-col gap-2 mt-3 max-h-48 overflow-y-auto">
+              {/* ============UPLOADED FILES============== */}
+              {/* <div className="flex flex-col gap-2 mt-3 max-h-48 overflow-y-auto">
                 <span className="text-sm font-medium">Uploaded files:</span>
                 <div className="flex flex-row gap-2 items-center">
                   <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
@@ -1435,7 +1442,7 @@ function ChatArea(props: {
                   <span className="text-sm font-medium grow">SEBI Regulations.pdf</span>
                   <RiDeleteBin2Line className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500" onClick={()=>{  }} />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         }
@@ -1469,20 +1476,21 @@ function ChatArea(props: {
 
           <div className="flex flex-col gap-3 w-full">
             {
-              fileToSend != "" && <div className="flex flex-row gap-2 items-end">
-                <span className="text-sm font-medium min-w-max">File to send:</span>
-                <div className="flex flex-col gap-1">
-                <img
-                  src={typeof fileToSend === "object" ? URL.createObjectURL(fileToSend) : fileToSend.toString()}
-                  alt="file to send"
-                  className="w-fit h-14 rounded-md"
-                />
-                <span className="text-sm text-neutral-500">{fileToSend?.name!}</span>
-                </div>
-                <CancelRounded className='cursor-pointer w-5 text-red-400 self-center' onClick={() => {
-                  setFileToSend("")
-                }} />
-              </div>
+              // ==================SELECTED FILE PREVIEW=======================
+              // fileToSend != "" && <div className="flex flex-row gap-2 items-end">
+              //   <span className="text-sm font-medium min-w-max">File to send:</span>
+              //   <div className="flex flex-col gap-1">
+              //   <img
+              //     src={typeof fileToSend === "object" ? URL.createObjectURL(fileToSend) : fileToSend.toString()}
+              //     alt="file to send"
+              //     className="w-fit h-14 rounded-md"
+              //   />
+              //   <span className="text-sm text-neutral-500">{fileToSend?.name!}</span>
+              //   </div>
+              //   <CancelRounded className='cursor-pointer w-5 text-red-400 self-center' onClick={() => {
+              //     setFileToSend("")
+              //   }} />
+              // </div>
             }
           <div className={`flex flex-row justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
             <input
@@ -1500,7 +1508,7 @@ function ChatArea(props: {
               }}
             />
             <div className="icons flex gap-5">
-              <input
+              {/* <input
                 type="file"
                 className="hidden w-0 h-0"
                 id="send-img"
@@ -1512,9 +1520,15 @@ function ChatArea(props: {
                 }} />
               <ImAttachment className="w-5 h-5 text-bg-50 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" onClick={()=>{
                 document.getElementById("send-img")?.click()
-              }} />
-              <SendOutlined onClick={()=> {console.log(chats); (chats.length>0 && chats[chats?.length-1]?.message==="Loading...") ? console.log('l') : sendMessage()}} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
-            </div>
+              }} /> */}
+              {
+                chats.length>0 && chats[chats?.length-1]?.message==="Loading..."
+                ?
+                <RiLoader4Line className="w-5 h-5 fill-bg-100 animate-spin" />
+                :
+                <SendOutlined onClick={()=> {console.log(chats); (chats.length>0 && chats[chats?.length-1]?.message==="Loading...") ? console.log('l') : sendMessage()}} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
+              }
+              </div>
           </div>
           </div>
         </div>

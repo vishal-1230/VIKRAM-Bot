@@ -12,10 +12,11 @@ import { toast } from 'react-toastify'
 import Button from '@/components/SpecialButton'
 import { BsArrowLeft, BsClipboard } from 'react-icons/bs'
 import {HiClipboardCopy} from "react-icons/hi"
+import { RiLoader4Fill } from 'react-icons/ri'
 
 const inter = Inter({ subsets: ['latin'] })
 
-function useOutsideAlerter(ref: any, onBlur?: any) {
+export function useOutsideAlerter(ref: any, onBlur?: any) {
   useEffect(() => {
     /**
      * Alert if clicked on outside of element
@@ -97,6 +98,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
   async function getInfo() {
     setInfoLoading(true)
     const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
+    console.log("Checking ginfo for", token)
     const res = await fetch("https://server.vikrambots.in/ginfo", {
       headers: {
         "x-access-token": token!
@@ -107,6 +109,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
     setInfoLoading(false)
 
     setUserDetails(data)
+    console.log("New data", userDetails)
   }
 
   useEffect(()=>{
@@ -181,7 +184,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
             {
               (router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) && (infoLoading ? <img src="/assets/loading-circle.svg" className='w-6 h-6 ml-4' /> : <span className="text-white hidden md:block ml-4">{userDetails?.name}</span>)
             }
-            <div className="relative" onBlur={()=>{
+            <div className="relative z-50" onBlur={()=>{
                 if (loggedIn) {
                   setShowInfoBox(false)
                 }
@@ -265,6 +268,9 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
               </div>
               :
               <div className='bg-bg-500 absolute top-[35px] min-w-[14rem] pt-3 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col' ref={wrapperRef}>
+                {
+                  infoLoading ? <RiLoader4Fill className="animate-spin w-10 mb-8 self-center mt-10" />
+                  :
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
                     <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar.jpg"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
                     <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name ? userDetails?.name : "Your Name"}</span>
@@ -277,6 +283,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   {/* <PrimaryButton buttonStyle='text-sm p-3 self-end mt-2' title="Create Your own Bot" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} /> */}
                   <PrimaryButton buttonStyle='text-sm p-3 self-end bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
                 </div>
+                }
               </div>)
               }
                     <Dialog open={showImageEditDialog} onClose={()=>setShowImageEditDialog(false)}>

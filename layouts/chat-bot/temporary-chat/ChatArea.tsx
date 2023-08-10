@@ -481,7 +481,7 @@ function ChatArea(props: {
         For Full Experience, use the Desktop Version.
       </span>
 
-      <div className={`w-full  relative md:mt-2 py-2 flex "flex-row" justify-between z-50 backdrop-blur-md`}>
+      {/* <div className={`w-full  relative md:mt-2 py-2 flex "flex-row" justify-between z-50 backdrop-blur-md`}>
         <Dropdown mode={mode} title="Plugin" className="mr-2 md:mr-5 ml-auto" list={[
           {
             text: "None",
@@ -508,7 +508,7 @@ function ChatArea(props: {
             onClick: () => { setPlugin("YouTube") }
           }          
         ]} selectedChatCategory={plugin} />
-      </div>
+      </div> */}
 
         <ChatList
           botIcon={connectedBotIcon ? connectedBotIcon : undefined}

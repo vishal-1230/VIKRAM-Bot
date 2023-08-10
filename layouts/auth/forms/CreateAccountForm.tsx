@@ -452,6 +452,16 @@ function CreateAccountForm(props: any) {
     const [botLinkCopied, setBotLinkCopied] = React.useState(false)
     const [showDescriptionInput, setShowDescriptionInput] = React.useState(false)
 
+    useEffect(()=>{
+        if (username || b_username) {
+            setShowDescriptionInput(true)
+        } else if (username==="" && b_username==="") {
+            setShowDescriptionInput(false)
+        } else {
+            setShowDescriptionInput(false)
+        }
+    }, [username, b_username])
+
   return (
     <RightAuthContainer title='Create Account'>
 
@@ -914,19 +924,19 @@ function CreateAccountForm(props: any) {
                     <label htmlFor="purpose1" className='text-neutral-900 text-sm font-medium ml-2'>Monetize my skill (Personal + Business)</label>
                 </div>
             </div> */}
-            <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal", subtext: "Your bot will interact with others your behalf. it will talk about you and present your case to prospective recruiters and customers. Conversely, It will help you in shortlisting vendors, candidates and other parties who seek to meet or interact with you. Ideal for students, professionals as well as CXOS, VPs and other leaders.",  checked: (purpose === "personal"), onChange:()=>{setPurpose("personal"); console.log(`purpose changed to ${purpose}`)}}} />
-            <InputGroup type="options" radioOptions={{name: "purpose", title: "Agent", subtext: "You will teach your bot certain skills and it will render its services on your behalf. You may consider monetizing this bot in the future ideal for freelancers, consultants and businesses",  checked: (purpose === "business"), onChange:()=>{setPurpose("business"); console.log(`purpose changed to ${purpose}`)}}} />
+            <div className="flex flex-col md:flex-row gap-x-10 mt-2 gap-y-4">
+            <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal", subtext: "If you're an Individual",  checked: (purpose === "personal"), onChange:()=>{setPurpose("personal"); console.log(`purpose changed to ${purpose}`)}}} />
+            <InputGroup type="options" radioOptions={{name: "purpose", title: "Agent", subtext: "If you're a Business",  checked: (purpose === "business"), onChange:()=>{setPurpose("business"); console.log(`purpose changed to ${purpose}`)}}} />
+            </div>
             {/* <InputGroup type="options" radioOptions={{name: "purpose", title: "Personal & Agent", subtext: "You will get 2 separate ids. One for personal and another for agent.",  checked: (purpose === "personalandbusiness"), onChange:()=>{setPurpose("personalandbusiness"); console.log(`purpose changed to ${purpose}`)}}} /> */}
             
             <InputGroup label='Personal VBot ID' required value={username} onChange={setUsername} placeholder="MyAccount101" type="username" className={`${purpose === "personal" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className='text-xs font-medium text-red-500'>{validate("username", username)}</span>}} />
             <InputGroup label='Agent Bot ID' required value={b_username} onChange={setB_username} placeholder="Username_b that people will see as your business ID" type="username" className={`${purpose === "business" || purpose === "personalandbusiness" ? "block" : "hidden"}`} hintAccessory={()=>{return<span className={`text-xs ${validate("username", b_username)===true ? "text-gray-600" : "text-red-500"}`}>{b_username && validate("username", b_username)===true ? `Your username will look like ${b_username}_b` : validate("username", b_username)}</span>}} />
             {
-                // if username or b_username is changed
-                
-                // ? 
-                // null
-                // :
-                <InputGroup label="One Liner Description of your Bot" value={oneLiner} onChange={setOneLiner} placeholder="A bot that will help me in your job search" type="text" />
+                showDescriptionInput ?
+                <InputGroup className='!mt-0' label="One Liner Description of your Bot" value={oneLiner} onChange={setOneLiner} placeholder="A bot that Evaluates your Resume" type="text" />
+                :
+                null
             }
         </div>
 

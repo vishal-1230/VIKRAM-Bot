@@ -28,7 +28,7 @@ function Profile() {
         {/* </Link> */}
 
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-12 justify-start items-stretch p-0 lg:p-4 lg:pl-6 pt-8 md:pt-2">
-            <img src="/assets/avatar.jpg" alt="" className="w-[95vw] lg:w-96 aspect-square lg:h-96 object-cover rounded-none lg:rounded-full" />
+            <img src="/assets/avatar4.png" alt="" className="w-[95vw] lg:w-96 aspect-square lg:h-96 object-cover rounded-none lg:rounded-full" />
 
             <div className="flex flex-col justify-between gap-1 py-2 px-1 md:px-0">
                 <SpecialText extra="text-4xl lg:text-5xl font-bold py-1">Vikram Singh</SpecialText>

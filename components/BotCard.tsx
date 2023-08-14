@@ -36,6 +36,8 @@ function BotCard(props: BotCardProps) {
 
   console.log("image", props)
 
+  const avatars = ["/assets/avatar4.png", "/assets/avatar5.png", "/assets/avatar4Orange.png"]
+
   return (
     <Link href={`https://vikrambots.ai/try-vikram-bots/${props.userName}`}>
     <div className="flex flex-col items-center p-6 pb-3 w-[195px] min-w-[195px] h-full max-w-fit bg-neutral-400 hover:bg-neutral-100 shadow-bg-300 cursor-pointer select-none hover:shadow-2xl hover:shadow-bg-300 hover:scale-105 drop-shadow-lg rounded-lg shadow-lg">
@@ -43,7 +45,10 @@ function BotCard(props: BotCardProps) {
         liked ? <BsHeartFill className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); unlikeBot(props.userName)}} /> : <BsHeart className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); likeBot(props.userName)}} />
       }
       {/* <BsHeart className="text-red-500 text-lg self-end cursor-pointer" /> */}
-      <img src={!props.logo.endsWith("undefined") ? props.logo : "/assets/avatar3.png"} alt="Bot Logo" className="rounded-full self-center object-cover aspect-square w-[90%]" />
+      <img
+        src={!props.logo.endsWith("undefined") ? props.logo : avatars[Math.floor(Math.random() * avatars.length)]}
+        alt="Bot Logo"
+        className="rounded-full self-center object-cover aspect-square w-[90%]" />
       <span className="text-bg-900 text-lg font-semibold mt-3 text-center">
         {props.name}
       </span>
@@ -74,7 +79,7 @@ interface BotCardProps {
 }
 
 BotCard.defaultProps = {
-    logo: "/assets/avatar3.png",
+    logo: "/assets/avatar4.png",
     name: "Bot Name",
     userName: "Vishal2",
     description: "This is a one-liner bot description",

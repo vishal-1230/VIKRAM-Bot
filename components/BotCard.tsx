@@ -10,7 +10,7 @@ function BotCard(props: BotCardProps) {
   const [liked, setLiked] = React.useState(props.liked || false)
 
   async function likeBot(botId: string) {
-    const res = await fetch(`https://server.vikrambots.in/add-fav/${botId}`, {
+    const res = await fetch(`http://localhost:5000/add-fav/${botId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ function BotCard(props: BotCardProps) {
 
   async function unlikeBot(botId: string) {
     console.log("unliking")
-    const res = await fetch(`https://server.vikrambots.in/remove-fav/${botId}`, {
+    const res = await fetch(`http://localhost:5000/remove-fav/${botId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

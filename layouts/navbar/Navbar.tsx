@@ -80,7 +80,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
     const formData = new FormData()
     formData.append("file", newProfile!)
     const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
-    const res = await fetch(userDetails?.pic ? "https://server.vikrambots.in/edit-pic" : "https://server.vikrambots.in/add-pic", {
+    const res = await fetch(userDetails?.pic ? "http://localhost:5000/edit-pic" : "http://localhost:5000/add-pic", {
       method: "POST",
       headers: {
         "x-access-token": token!
@@ -101,7 +101,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
     setInfoLoading(true)
     const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
     console.log("Checking ginfo for", token)
-    const res = await fetch("https://server.vikrambots.in/ginfo", {
+    const res = await fetch("http://localhost:5000/ginfo", {
       headers: {
         "x-access-token": token!
       }
@@ -206,7 +206,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                 {
                   userDetails?.pic
                   ?
-                  <img src={`https://server.vikrambots.in/assets/${userDetails?.pic}`} alt="" className="w-10 h-10 rounded-full self-center object-cover" onClick={()=>{
+                  <img src={`http://localhost:5000/assets/${userDetails?.pic}`} alt="" className="w-10 h-10 rounded-full self-center object-cover" onClick={()=>{
                     if (loggedIn) {
                       setShowInfoBox(!showInfoBox)
                     } else {
@@ -234,7 +234,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   }} onMouseLeave={()=>{
                     setShowImageEditPencil(false)
                   }}>
-                    <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover rounded-full" />
+                    <img src={userDetails?.pic ? `http://localhost:5000/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover rounded-full" />
                     {
                       showImageEditPencil ? 
                     <div className="absolute w-full h-full top-0 left-0 bg-[rgba(0,0,0,0.45)] rounded-full flex flex-col items-center justify-center" onClick={()=>{
@@ -286,7 +286,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   infoLoading ? <RiLoader4Fill className="animate-spin w-10 mb-8 self-center mt-10" />
                   :
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
-                    <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
+                    <img src={userDetails?.pic ? `http://localhost:5000/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
                     <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name ? userDetails?.name : "Your Name"}</span>
                     <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone ? userDetails?.phone : "+91 8373958829"}</span>
                   {/* <Link href="/explore-bots" onClick={()=>{
@@ -305,7 +305,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                         <span className="font-semibold text-lg">Change Profile Picture</span>
                         <div className="flex flex-row gap-5">
                           
-                          <img src={(newProfile!=null && !vikramTry) ? URL.createObjectURL(newProfile) : userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover rounded-full" />
+                          <img src={(newProfile!=null && !vikramTry) ? URL.createObjectURL(newProfile) : userDetails?.pic ? `http://localhost:5000/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover rounded-full" />
 
                           <div className="flex flex-col gap-2">
                             <span className="font-medium text-sm flex flex-row items-center gap-2 self-center text-black fill-black">Upload a new picture <CloudUpload  /> </span>

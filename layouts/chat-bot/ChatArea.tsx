@@ -62,7 +62,7 @@ function ChatArea(props: {
     ])
 
     async function getInfo() {
-      const res = await fetch("https://server.vikrambots.in/ginfo", {
+      const res = await fetch("http://localhost:5000/ginfo", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }
@@ -157,22 +157,22 @@ function ChatArea(props: {
 
       let uri = ""
       if(chatCategory === "personal") {
-        uri = `https://server.vikrambots.in/general/${message}`
+        uri = `http://localhost:5000/general/${message}`
       } else if (chatCategory === "personaltraining") {
-        uri = `https://server.vikrambots.in/test_personal`
+        uri = `http://localhost:5000/test_personal`
       } else if(chatCategory === "business") {
-        uri = `https://server.vikrambots.in/training`
+        uri = `http://localhost:5000/training`
       } else if(chatCategory === "initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          uri = `https://server.vikrambots.in/connect-personal/${toConnectWith}/${message}`
+          uri = `http://localhost:5000/connect-personal/${toConnectWith}/${message}`
         }
       } else if(chatCategory === "business_initiator") {
         if (toConnectWith === "") {
           toast.error("Please enter a VBot ID to connect to.")
         } else {
-          uri = `https://server.vikrambots.in/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
+          uri = `http://localhost:5000/connect-business/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${message}`
         }
       }
       console.log("URI=>", uri)
@@ -293,7 +293,7 @@ function ChatArea(props: {
             });
         }
       } else if (plugin === "News") {
-        fetch(`https://server.vikrambots.in/news/${message}`, {
+        fetch(`http://localhost:5000/news/${message}`, {
             headers: {
                 "x-access-token": localStorage.getItem("token")!
             }
@@ -320,7 +320,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "Weather") {
-        fetch(`https://server.vikrambots.in/weather/${message}`, {
+        fetch(`http://localhost:5000/weather/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -347,7 +347,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "IMDB") {
-        fetch(`https://server.vikrambots.in/imdb/${message}`, {
+        fetch(`http://localhost:5000/imdb/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -374,7 +374,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "Google") {
-        fetch(`https://server.vikrambots.in/google/${message}`, {
+        fetch(`http://localhost:5000/google/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -401,7 +401,7 @@ function ChatArea(props: {
             ]);
           });
       } else if (plugin === "YouTube") {
-        fetch(`https://server.vikrambots.in/yt/${message}`, {
+        fetch(`http://localhost:5000/yt/${message}`, {
           headers: {
               "x-access-token": localStorage.getItem("token")!
           }
@@ -439,7 +439,7 @@ function ChatArea(props: {
 
 
       try{
-        const response = await fetch(`https://server.vikrambots.in/check-username-exists/${ chatCategory==="initiator" ? toConnectWith : toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}`, {
+        const response = await fetch(`http://localhost:5000/check-username-exists/${ chatCategory==="initiator" ? toConnectWith : toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}`, {
           headers: {
             "x-access-token": localStorage.getItem("token")!,
           }
@@ -468,7 +468,7 @@ function ChatArea(props: {
 
       setUserDetails(userDetails)
       console.log("Details", userDetails)
-      const response = await fetch(`https://server.vikrambots.in/gchats`, {
+      const response = await fetch(`http://localhost:5000/gchats`, {
         headers: {
           "x-access-token": localStorage.getItem("token")!,
         }
@@ -491,7 +491,7 @@ function ChatArea(props: {
     }
 
     async function pastConnections () {
-      const response = await fetch("https://server.vikrambots.in/get-connections", {
+      const response = await fetch("http://localhost:5000/get-connections", {
         headers: {
           "x-access-token": localStorage.getItem("token")!,
         }
@@ -502,7 +502,7 @@ function ChatArea(props: {
 
     async function fetchMyWithThemMessages () {
       setLoadingThirdMessages(true)
-      const response = await fetch (`https://server.vikrambots.in/chats/${toConnectWith}/${userDetails.username}`)
+      const response = await fetch (`http://localhost:5000/chats/${toConnectWith}/${userDetails.username}`)
       const data = await response.json()
       setLoadingThirdMessages(false)
 
@@ -519,7 +519,7 @@ function ChatArea(props: {
     async function fetchTheirWithMyMessages (toConnectWith: string) {
       if (userDetails !== null) {
       setLoadingThirdMessages(true)
-      const response = await fetch (`https://server.vikrambots.in/chats/${userDetails.username ? userDetails.username : userDetails.username_b}/${toConnectWith}`)
+      const response = await fetch (`http://localhost:5000/chats/${userDetails.username ? userDetails.username : userDetails.username_b}/${toConnectWith}`)
       const data = await response.json()
       setLoadingThirdMessages(false)
 
@@ -536,7 +536,7 @@ function ChatArea(props: {
 
     async function fetchBothsBusinessMessage () {
       setLoadingThirdBusinessMessages(true)
-      const response = await fetch(`https://server.vikrambots.in/chats/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${userDetails.username}`)
+      const response = await fetch(`http://localhost:5000/chats/${toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}/${userDetails.username}`)
       const data = await response.json()
       setLoadingThirdBusinessMessages(false)
 
@@ -556,7 +556,7 @@ function ChatArea(props: {
       const userDetails = JSON.parse(userTemp ? userTemp : "{}")
 
       setUserDetails(userDetails)
-      const response = await fetch(`https://server.vikrambots.in/gchats`, {
+      const response = await fetch(`http://localhost:5000/gchats`, {
         headers: {
           "x-access-token": localStorage.getItem("token")!,
         }
@@ -648,10 +648,10 @@ function ChatArea(props: {
     async function getIcon () {
       try {
         console.log("Checking", connectedBot)
-        const response = await fetch(`https://server.vikrambots.in/get-pic/${connectedBot}`)
+        const response = await fetch(`http://localhost:5000/get-pic/${connectedBot}`)
         const data = await response.text()
         console.log("Got img", data)
-        const newImage = "https://server.vikrambots.in/assets/"+data
+        const newImage = "http://localhost:5000/assets/"+data
         setConnectedBotIcon(newImage)
         console.log("Got img", connectedBotIcon)
       } catch {
@@ -740,14 +740,14 @@ function ChatArea(props: {
       setUserInfoLoading(true)
       setBotRulesLoading(true)
       setOneLinerLoading(true)
-      const response1 = await fetch("https://server.vikrambots.in/load_user_info", {
+      const response1 = await fetch("http://localhost:5000/load_user_info", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }
       })
       const data1 = await response1.json()
 
-      const reponse2 = await fetch("https://server.vikrambots.in/load_rules", {
+      const reponse2 = await fetch("http://localhost:5000/load_rules", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }
@@ -781,21 +781,21 @@ function ChatArea(props: {
       setBotBusinessStepsLoading(true)
       setOneLinerLoading(true)
       console.log("Getting all business info")
-      const response3 = await fetch("https://server.vikrambots.in/cinfo", {
+      const response3 = await fetch("http://localhost:5000/cinfo", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }
       })
       const data3 = await response3.json()
 
-      const response4 = await fetch("https://server.vikrambots.in/load_botrole", {
+      const response4 = await fetch("http://localhost:5000/load_botrole", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }
       })
       const data4 = await response4.json()
 
-      const response5 = await fetch("https://server.vikrambots.in/load_steps", {
+      const response5 = await fetch("http://localhost:5000/load_steps", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }
@@ -844,31 +844,31 @@ function ChatArea(props: {
       switch (type) {
         case "user_info":
           title = "User Info"
-          uri = "https://server.vikrambots.in/edit_user_info"
+          uri = "http://localhost:5000/edit_user_info"
           body = {info: user_info}
           setUpdatingUserInfo(true)
           break;
         case "rules":
           title = "Rules"
-          uri = "https://server.vikrambots.in/edit_rules"
+          uri = "http://localhost:5000/edit_rules"
           body = {rules: botRules2}
           setUpdatingRules(true)
           break;
         case "company_details":
           title = "Company Details"
-          uri = "https://server.vikrambots.in/edit_company_info"
+          uri = "http://localhost:5000/edit_company_info"
           body = {company_details: companyDetails}
           setUpdatingCompanyDetails(true)
           break;
         case "role_description":
           title = "Role Description"
-          uri = "https://server.vikrambots.in/edit_botrole"
+          uri = "http://localhost:5000/edit_botrole"
           body = {role_description: roleDesciption}
           setUpdatingRoleDescription(true)
           break;
         case "steps":
           title = "Steps"
-          uri = "https://server.vikrambots.in/edit_steps"
+          uri = "http://localhost:5000/edit_steps"
           body = {new_steps: botBusinessSteps2}
           setUpdatingSteps(true)
           break;
@@ -911,9 +911,9 @@ function ChatArea(props: {
 
     //   let uri = ""
     //   if (chatCategory === "personaltraining") {
-    //     uri = `https://server.vikrambots.in/test_personal`
+    //     uri = `http://localhost:5000/test_personal`
     //   } else if(chatCategory === "business") {
-    //     uri = `https://server.vikrambots.in/training`
+    //     uri = `http://localhost:5000/training`
     //   }
 
     //   if (knowledgebaseFile === "") {
@@ -948,7 +948,7 @@ function ChatArea(props: {
 
     async function updateDesc() {
       setOneLinerLoading(true)
-      const response = await fetch("https://server.vikrambots.in/edit_desc", {
+      const response = await fetch("http://localhost:5000/edit_desc", {
         method: "POST",
         headers: {
           "x-access-token": localStorage.getItem("token")!,
@@ -1041,7 +1041,7 @@ function ChatArea(props: {
       setDeletingKnowledgebase(true)
       setPdfIdToDelete(pdfId)
       try {
-        const response = await fetch(`https://server.vikrambots.in/delete-pdf/${pdfId}`, {
+        const response = await fetch(`http://localhost:5000/delete-pdf/${pdfId}`, {
           method: "DELETE",
           headers: {
             "x-access-token": localStorage.getItem("token")!,
@@ -1442,7 +1442,23 @@ function ChatArea(props: {
             {/* knowledgebase pdf upload dropdown upload */}
             <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 text-sm md:text-base rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
             <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 max-w-[90vw] rounded-xl mt-2 md:right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`} ref={knowledgebaseRef}>
-              <input type="file" accept="application/pdf" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
+              <input
+                type="file"
+                accept="application/pdf"
+                name="file"
+                id=""
+                placeholder="File"
+                onChange={(e)=>{
+                  if (e.target.files![0].size > 10485760) {
+                    toast.error("File size should be less than 10MB")
+                    return
+                  } else if (e.target.files![0].type !== "application/pdf") {
+                    toast.error("File type should be PDF")
+                    return
+                  } else {
+                    setKnowledgebaseFile(e.target.files![0])
+                  }
+                }} />
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
               {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}
               <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
@@ -1494,13 +1510,13 @@ function ChatArea(props: {
                       knowledgebases.map((pdf: any, index: number)=>{
                         return <div className="flex flex-row gap-2 items-center">
                           <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
-                          <span className="text-sm font-medium grow">{pdf.title}.pdf</span>
+                          <a href={`http://localhost:5000/assets/${pdf.title+".pdf"}`} target="_blank" className="text-sm font-medium grow cursor-pointer hover:text-blue-300 break-all">{pdf.title}.pdf</a>
                           {
                             pdfIdToDelete === pdf.id && deletingKnowledgebase ?
                             <RiLoader4Line className="w-5 h-5 animate-spin text-red-500" />
                             :
                             <RiDeleteBin2Line
-                              className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500"
+                              className="w-5 min-w-[20px] h-5 min-h-[20px] cursor-pointer text-neutral-50 hover:text-red-500"
                               onClick={()=>{ deleteKnowledgebase(pdf.id) }} />
                           }
                         </div>

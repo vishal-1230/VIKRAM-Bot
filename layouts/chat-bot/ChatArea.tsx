@@ -1008,7 +1008,7 @@ function ChatArea(props: {
           console.log("UPLOAD", data)
           if (data.data.success === true) {
             setShowFileUploadDialog(false)
-            toast.success("Knowledgebase uploaded successfully!")
+            toast.success("Knowledgebase analyzed successfully!")
           } else {
             toast.error("Something went wrong. Please try again.")
           }
@@ -1030,6 +1030,44 @@ function ChatArea(props: {
     }
 
     const [fileToSend, setFileToSend] = useState<any>("")
+
+    interface MessageRefType extends HTMLTextAreaElement {
+      style: CSSStyleDeclaration;
+      scrollHeight: number;
+    }
+
+    const messageRef = useRef<MessageRefType | null>(null)
+    // useEffect(() => {
+    //   if (messageRef && "style" in messageRef && "scrollHeight" in messageRef ) {
+    //     // We need to reset the height momentarily to get the correct scrollHeight for the textarea
+    //     if (messageRef.style) {
+    //       if (messageRef.style.height) {
+    //         // property height does not exist on type {}
+    //         messageRef.style.height = "0px"; // property height does not exist on type {}
+    //         const scrollHeight = messageRef.scrollHeight;
+    //         // We then set the height directly, outside of the render loop
+    //         // Trying to set this with state or a ref will product an incorrect value.
+    //         messageRef.style.height = scrollHeight + "px";
+    //       }
+    //     }
+    //   }
+    // }, [messageRef, userMessage]);
+    useEffect(() => {
+      if (messageRef.current) {
+        // We need to reset the height momentarily to get the correct scrollHeight for the textarea
+        // if (messageRef.current.style) {
+          // if (messageRef.current.style.height) {
+            messageRef.current.style.height = "0px";
+            const scrollHeight = messageRef.current.scrollHeight;
+            // We then set the height directly, outside of the render loop
+            // Trying to set this with state or a ref will produce an incorrect value.
+            messageRef.current.style.height = scrollHeight + "px";
+          // }
+        // }
+      } else {
+        console.log(null)
+      }
+    }, [messageRef, userMessage]);
 
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-neutral-300 text-bg-500" : "bg-bg-700 text-white"}`}>
@@ -1386,7 +1424,7 @@ function ChatArea(props: {
             {/* knowledgebase pdf upload dropdown upload */}
             <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 text-sm md:text-base rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
             <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 max-w-[90vw] rounded-xl mt-2 md:right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`} ref={knowledgebaseRef}>
-              <input type="file" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
+              <input type="file" accept="application/pdf" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
               {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}
               <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
@@ -1492,14 +1530,20 @@ function ChatArea(props: {
               //   }} />
               // </div>
             }
-          <div className={`flex flex-row justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
-            <input
-              type="text"
-              className={`bg-transparent grow text-sm border-none outline-none ${mode === "day" ? "text-bg-50" : "text-neutral-500"}}`}
+          <div className={`flex flex-row items-center justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
+            <textarea
+              // type="text"
+              ref={messageRef}
+              className={`bg-transparent grow text-sm border-none overflow-y-auto pr-2 pl-1 resize-none h-fit max-h-[120px] break-all outline-none ${mode === "day" ? "text-bg-50" : "text-neutral-500"}}`}
               placeholder="Text area"
               value={userMessage}
+              id="userMessage"
               onKeyUp={(e) => {
-                if (e.key === "Enter") {
+                if (e.key === "Enter" && e.shiftKey) {
+                  // add next line
+                  e.preventDefault()
+                  setUserMessage(userMessage + "\n")
+                } else if (e.key === "Enter") {
                   sendMessage()
                 }
               }}
@@ -1522,7 +1566,7 @@ function ChatArea(props: {
                 document.getElementById("send-img")?.click()
               }} /> */}
               {
-                chats.length>0 && chats[chats?.length-1]?.message==="Loading..."
+                (chats.length>0 && chats[chats?.length-1]?.message==="Loading..." || thirdChats.length>0 && thirdChats[thirdChats?.length-1]?.message==="Loading..." || thirdBusinessChats.length>0 && thirdBusinessChats[thirdBusinessChats?.length-1]?.message==="Loading..." || trainingChats.length>0 && trainingChats[trainingChats?.length-1]?.message==="Loading..." || personalTrainingChats.length>0 && personalTrainingChats[personalTrainingChats?.length-1]?.message==="Loading...")
                 ?
                 <RiLoader4Line className="w-5 h-5 fill-bg-100 animate-spin" />
                 :

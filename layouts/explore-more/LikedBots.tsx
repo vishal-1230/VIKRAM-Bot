@@ -32,10 +32,10 @@ function LikedBots() {
 
   return (
     <div className='flex flex-col gap-5 px-2'>
-      <SpecialText extra='text-[42px] font-semibold'>Your Liked Bots</SpecialText>
+      <SpecialText extra='text-[32px] lg:text-[42px] font-semibold'>Your Liked Bots</SpecialText>
 
       {
-        bots.length === 0 ? <span className="font-medium text-lg text-neutral-800 ml-2 mt-4">
+        bots.length === 0 ? <span className="font-medium text-base lg:text-lg text-neutral-800 ml-2 mt-4">
           You haven't liked any bots yet!
         </span>
         : null

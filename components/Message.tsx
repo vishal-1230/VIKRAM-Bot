@@ -1,14 +1,21 @@
 import { AccountCircleOutlined, BookmarkBorderOutlined, BorderColorOutlined, ContentCopyRounded, Person2Outlined, ThumbDownAltOutlined, ThumbDownAltSharp, ThumbUpAlt, ThumbUpAltOutlined, ThumbUpAltSharp, ThumbUpOffAlt } from "@mui/icons-material"
 import dynamic from "next/dynamic"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ToastContainer, toast } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';2
+import 'react-toastify/dist/ReactToastify.css';
+import Parser from "html-react-parser"
 
 function Message({ children, mode, sender, botIcon } : {children: string, mode:string, sender: string, botIcon?: string}) {
 
   const [liked, setLiked] = useState<boolean>(false)
   const [disliked, setDisliked] = useState<boolean>(false)
+
+  useEffect(()=>{
+    console.log("message rendered", children)
+    // document.getElementById("messagespan")?.innerHTML = Parser(children)
+    // document.getElementById("messagespan")?.scrollIntoView({behavior: "smooth"})
+  }, [children])
 
   // const CC = dynamic(() => import("react-copy-to-clipboard").then(mod => mod.CopyToClipboard), { ssr: false })
 
@@ -25,11 +32,11 @@ function Message({ children, mode, sender, botIcon } : {children: string, mode:s
                 <Image src={ mode === "night" ? "/assets/navlogo1.png" : "/assets/botBlack.png"} alt="VIKRAM Bot" className="duration-200" width={40} height={40} />
             )
         }
-        <span className={`duration-200 ${mode === "night" ? "text-neutral-500" : "text-bg-50"} grow`}>
+        <div className={`duration-200 ${mode === "night" ? "text-neutral-500" : "text-bg-50"} grow`}>
           {
-            children != "Loading..." ? children : <img src="/assets/chatLoading2.svg" alt="" className="w-10 h-10 self-center" />
+            children != "Loading..." ? <div dangerouslySetInnerHTML={{ __html: children}} className="whitespace-pre-wrap"></div> : <img src="/assets/chatLoading2.svg" alt="" className="w-10 h-10 self-center" />
           }
-        </span>
+        </div>
 
         <div className="flex gap-2">
           {

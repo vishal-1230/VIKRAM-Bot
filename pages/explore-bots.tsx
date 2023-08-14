@@ -16,7 +16,7 @@ function ExploreBots() {
         <ToastContainer autoClose={1000} position="bottom-right" />
 
       <Link href="/chat-bot">
-        <span className="py-2 px-5 rounded-full flex items-center gap-1.5 w-fit bg-bg-300 bg-opacity-50 hover:bg-opacity-75 active:opacity-95 text-neutral-50 -mb-4 cursor-pointer">
+        <span className="py-2 px-5 rounded-full flex items-center gap-1.5 w-fit bg-bg-300 bg-opacity-50 hover:bg-opacity-75 active:opacity-95 text-neutral-50 -mb-6 lg:-mb-4 cursor-pointer">
           <ArrowLeft className="inline-block" />
           Go Back to your Bot
         </span>

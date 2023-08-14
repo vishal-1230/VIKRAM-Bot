@@ -36,7 +36,7 @@ function LeftPanel(props: {
         const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
         console.log("Getting chats history for", token)
         setHistoryLoading(true)
-        const res = await fetch("http://localhost:5000/history", {
+        const res = await fetch("https://server.vikrambots.in/history", {
             headers: {
                 "x-access-token": token!
             }
@@ -59,7 +59,7 @@ function LeftPanel(props: {
     async function userInfo () {
         const token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
         console.log("Getting chats history for", token)
-        const res = await fetch("http://localhost:5000/ginfo", {
+        const res = await fetch("https://server.vikrambots.in/ginfo", {
             headers: {
                 "x-access-token": token!
             }

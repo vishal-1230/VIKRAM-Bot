@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext, useRef } from "react"
 import ChatList from "../ChatList"
 import { RefreshOutlined, SendOutlined } from "@mui/icons-material"
 import Dropdown from "@/components/Dropdown"
@@ -456,6 +456,30 @@ function ChatArea(props: {
     const mode = props.mode
     const setMode = props.setMode
 
+    interface MessageRefType extends HTMLTextAreaElement {
+      style: CSSStyleDeclaration;
+      scrollHeight: number;
+    }
+
+    const messageRef = useRef<MessageRefType | null>(null)
+
+    useEffect(() => {
+      if (messageRef.current) {
+        // We need to reset the height momentarily to get the correct scrollHeight for the textarea
+        // if (messageRef.current.style) {
+          // if (messageRef.current.style.height) {
+            messageRef.current.style.height = "0px";
+            const scrollHeight = messageRef.current.scrollHeight;
+            // We then set the height directly, outside of the render loop
+            // Trying to set this with state or a ref will produce an incorrect value.
+            messageRef.current.style.height = scrollHeight + "px";
+          // }
+        // }
+      } else {
+        console.log(null)
+      }
+    }, [messageRef, userMessage]);
+
   return (
     <div className={`flex flex-col h-screen pb-64 grow relative duration-200 ${mode == "day" ? "bg-neutral-300 text-bg-500" : "bg-bg-700 text-white"}`}>
         <ToastContainer position="bottom-right" autoClose={2500} />
@@ -527,14 +551,20 @@ function ChatArea(props: {
           {/* <span className={`${mode === "day" ? "text-bg-50" : "text-neutral-500"} duration-200 text-sm font-medium`}>Current search category: Ticket booking</span> */}
 
           <div className={`flex flex-row justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
-            <input
-              type="text"
-              className={`bg-transparent grow text-sm border-none outline-none ${mode === "day" ? "text-bg-50" : "text-neutral-500"}}`}
+          <textarea
+              // type="text"
+              ref={messageRef}
+              className={`bg-transparent grow text-sm border-none overflow-y-auto pr-2 pl-1 resize-none h-fit max-h-[120px] break-all outline-none ${mode === "day" ? "text-bg-50" : "text-neutral-500"}}`}
               placeholder="Text area"
               value={userMessage}
+              id="userMessage"
               onKeyUp={(e) => {
-                if (e.key === "Enter") {
-                    (thirdChats.length>0 && thirdChats[thirdChats?.length-1]?.message==="Loading...") ? console.log('l') : sendMessage()
+                if (e.key === "Enter" && e.shiftKey) {
+                  // add next line
+                  e.preventDefault()
+                  setUserMessage(userMessage + "\n")
+                } else if (e.key === "Enter") {
+                  sendMessage()
                 }
               }}
               onChange={(e) => {

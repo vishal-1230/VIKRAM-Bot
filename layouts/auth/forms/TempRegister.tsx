@@ -41,7 +41,7 @@ function TempRegister(props: {userId: string}) {
                 });
         }
 
-        const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
+        const response = await fetch(`http://localhost:5000/get-otp/${phone}`)
         const data = await response.json()
         console.log(data)
 
@@ -76,7 +76,7 @@ function TempRegister(props: {userId: string}) {
 
     function verifyOtp () {
 
-        fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
+        fetch(`http://localhost:5000/verify-otp/${phone}/${otp}`)
         .then(response => response.json())
         .then(data => {
             console.log(data)
@@ -97,7 +97,7 @@ function TempRegister(props: {userId: string}) {
     async function createTempUser() {
         setCreating(true)
         console.log("Creating acc for", phone)
-        const response = await fetch(`https://server.vikrambots.in/temp-register/${name}/${phone}`)
+        const response = await fetch(`http://localhost:5000/temp-register/${name}/${phone}`)
         const data = await response.json()
         console.log(data)
         setCreating(false)

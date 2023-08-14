@@ -10,7 +10,7 @@ function BotCard(props: BotCardProps) {
   const [liked, setLiked] = React.useState(props.liked || false)
 
   async function likeBot(botId: string) {
-    const res = await fetch(`https://server.vikrambots.in/add-fav/${botId}`, {
+    const res = await fetch(`http://localhost:5000/add-fav/${botId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ function BotCard(props: BotCardProps) {
 
   async function unlikeBot(botId: string) {
     console.log("unliking")
-    const res = await fetch(`https://server.vikrambots.in/remove-fav/${botId}`, {
+    const res = await fetch(`http://localhost:5000/remove-fav/${botId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function BotCard(props: BotCardProps) {
         liked ? <BsHeartFill className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); unlikeBot(props.userName)}} /> : <BsHeart className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); likeBot(props.userName)}} />
       }
       {/* <BsHeart className="text-red-500 text-lg self-end cursor-pointer" /> */}
-      <img src={!props.logo.endsWith("undefined") ? props.logo : "/assets/avatar.jpg"} alt="Bot Logo" className="rounded-full self-center object-cover aspect-square w-[90%]" />
+      <img src={!props.logo.endsWith("undefined") ? props.logo : "/assets/avatar3.png"} alt="Bot Logo" className="rounded-full self-center object-cover aspect-square w-[90%]" />
       <span className="text-bg-900 text-lg font-semibold mt-3 text-center">
         {props.name}
       </span>
@@ -74,7 +74,7 @@ interface BotCardProps {
 }
 
 BotCard.defaultProps = {
-    logo: "/assets/avatar.jpg",
+    logo: "/assets/avatar3.png",
     name: "Bot Name",
     userName: "Vishal2",
     description: "This is a one-liner bot description",

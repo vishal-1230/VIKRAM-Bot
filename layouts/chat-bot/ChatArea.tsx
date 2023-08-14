@@ -1538,12 +1538,14 @@ function ChatArea(props: {
               placeholder="Text area"
               value={userMessage}
               id="userMessage"
-              onKeyUp={(e) => {
-                if (e.key === "Enter" && e.shiftKey) {
-                  // add next line
+              onKeyDown={(e)=>{
+                if(e.shiftKey){
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    setUserMessage(userMessage + "\n")
+                  }
+                } else if(e.key === "Enter"){
                   e.preventDefault()
-                  setUserMessage(userMessage + "\n")
-                } else if (e.key === "Enter") {
                   sendMessage()
                 }
               }}

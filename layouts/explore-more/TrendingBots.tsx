@@ -8,7 +8,7 @@ function TrendingBots({title, className, textClassName}: {title?: string, classN
   const [bots, setBots] = React.useState<any[]>([])
 
   async function getBots() {
-    const res = await fetch("http://localhost:5000/get-bots")
+    const res = await fetch("https://server.vikrambots.in/get-bots")
     const data = await res.json()
     console.log(data)
 
@@ -35,7 +35,7 @@ function TrendingBots({title, className, textClassName}: {title?: string, classN
       <div className="flex flex-row gap-5 overflow-x-auto p-4 pb-6">
         {
           bots.map((bot, index) => {
-            return <BotCard key={index} name={bot.name} userName={bot.username} interactions={bot.interactions} logo={`http://localhost:5000/assets/${bot.pic}`} description={bot.description} />
+            return <BotCard key={index} name={bot.name} userName={bot.username} interactions={bot.interactions} logo={`https://server.vikrambots.in/assets/${bot.pic}`} description={bot.description} />
           })
         }
       </div>

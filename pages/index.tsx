@@ -20,7 +20,7 @@ export default function Home() {
     if (localStorage.getItem("token") === null) {
       return null
     } else {
-      const res = await fetch("http://localhost:5000/ginfo", {
+      const res = await fetch("https://server.vikrambots.in/ginfo", {
         headers: {
           "x-access-token": localStorage.getItem("token")!
         }

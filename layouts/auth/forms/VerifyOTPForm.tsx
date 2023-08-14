@@ -33,8 +33,8 @@ function VerifyOTPForm() {
     }
 
     console.log(phone)
-    console.log("CALLING", `http://localhost:5000/get-otp/${phone}`)
-    const response = await fetch(`http://localhost:5000/get-otp/${phone}`)
+    console.log("CALLING", `https://server.vikrambots.in/get-otp/${phone}`)
+    const response = await fetch(`https://server.vikrambots.in/get-otp/${phone}`)
     const data = await response.json()
     console.log(data)
 
@@ -57,7 +57,7 @@ function VerifyOTPForm() {
 
     const phone = router.query.phoneNumber
 
-        fetch(`http://localhost:5000/verify-otp/${phone}/${otp}`)
+        fetch(`https://server.vikrambots.in/verify-otp/${phone}/${otp}`)
         .then(response => response.json())
         .then(data => {
             console.log(data)

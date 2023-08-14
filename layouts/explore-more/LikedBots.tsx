@@ -9,7 +9,7 @@ function LikedBots() {
 
   async function getLikedBots() {
     console.log("Getting liked for", localStorage.getItem("token"))
-    const response = await fetch("http://localhost:5000/get-fav", {
+    const response = await fetch("https://server.vikrambots.in/get-fav", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function LikedBots() {
       <div className="flex flex-row overflow-auto gap-5 p-4 pb-6">
         {
           bots.map((bot, index) => {
-            return <BotCard liked key={index} name={bot.name} userName={bot.username} interactions={bot.interactions} logo={`http://localhost:5000/assets/${bot.pic}`} description={bot.description} />
+            return <BotCard liked key={index} name={bot.name} userName={bot.username} interactions={bot.interactions} logo={`https://server.vikrambots.in/assets/${bot.pic}`} description={bot.description} />
           })
         }
       </div>

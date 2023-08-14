@@ -25,6 +25,7 @@ function ChatArea(props: {
   const router = useRouter()
 
   const [userDetails, setUserDetails] = useState<any>(null)
+  const [knowledgebases, setKnowledgebases] = useState<{id: string, title: string}[] | null>(null)
 
   const [chatCategory, setChatCategory] = useState<"personal" | "personaltraining" | "business" | "business_initiator" | "initiator" | string>("personal")
 
@@ -76,6 +77,9 @@ function ChatArea(props: {
       //   // router.replace("/auth/login")
       // }
       setOneLiner(data.desc)
+      if (data.pdf) {
+        setKnowledgebases(data.pdf)
+      }
       let userDetails: {username?: string, username_b?: string, email: string, name: string, phone: number} = {
         username: "",
         username_b: "",
@@ -1009,6 +1013,7 @@ function ChatArea(props: {
           if (data.data.success === true) {
             setShowFileUploadDialog(false)
             toast.success("Knowledgebase analyzed successfully!")
+            getInfo()
           } else {
             toast.error("Something went wrong. Please try again.")
           }
@@ -1029,6 +1034,40 @@ function ChatArea(props: {
       }
     }
 
+    const [deletingKnowledgebase, setDeletingKnowledgebase] = useState(false)
+    const [pdfIdToDelete, setPdfIdToDelete] = useState("")
+    async function deleteKnowledgebase (pdfId: string) {
+
+      setDeletingKnowledgebase(true)
+      setPdfIdToDelete(pdfId)
+      try {
+        const response = await fetch(`https://server.vikrambots.in/delete-pdf/${pdfId}`, {
+          method: "DELETE",
+          headers: {
+            "x-access-token": localStorage.getItem("token")!,
+          }
+        })
+        const data = await response.json()
+        console.log(data)
+        if (data.success === true) {
+          toast.success("Knowledgebase deleted successfully!", {
+            autoClose: 1000
+          })
+          getInfo()
+        } else {
+          toast.error(data.message, {
+            autoClose: 1500
+          })
+        }
+      } catch {
+        toast.error("Something went wrong. Please try again.", {
+          autoClose: 1500
+        })
+      }
+      setPdfIdToDelete("")
+      setDeletingKnowledgebase(false)
+    }
+
     const [fileToSend, setFileToSend] = useState<any>("")
 
     interface MessageRefType extends HTMLTextAreaElement {
@@ -1036,34 +1075,13 @@ function ChatArea(props: {
       scrollHeight: number;
     }
 
-    const messageRef = useRef<MessageRefType | null>(null)
-    // useEffect(() => {
-    //   if (messageRef && "style" in messageRef && "scrollHeight" in messageRef ) {
-    //     // We need to reset the height momentarily to get the correct scrollHeight for the textarea
-    //     if (messageRef.style) {
-    //       if (messageRef.style.height) {
-    //         // property height does not exist on type {}
-    //         messageRef.style.height = "0px"; // property height does not exist on type {}
-    //         const scrollHeight = messageRef.scrollHeight;
-    //         // We then set the height directly, outside of the render loop
-    //         // Trying to set this with state or a ref will product an incorrect value.
-    //         messageRef.style.height = scrollHeight + "px";
-    //       }
-    //     }
-    //   }
-    // }, [messageRef, userMessage]);
+    const messageRef = useRef<MessageRefType | null>(null);
+
     useEffect(() => {
       if (messageRef.current) {
-        // We need to reset the height momentarily to get the correct scrollHeight for the textarea
-        // if (messageRef.current.style) {
-          // if (messageRef.current.style.height) {
             messageRef.current.style.height = "0px";
             const scrollHeight = messageRef.current.scrollHeight;
-            // We then set the height directly, outside of the render loop
-            // Trying to set this with state or a ref will produce an incorrect value.
             messageRef.current.style.height = scrollHeight + "px";
-          // }
-        // }
       } else {
         console.log(null)
       }
@@ -1468,19 +1486,30 @@ function ChatArea(props: {
                 <ArrowOutwardOutlined className="w-5 h-5 self-center ml-1" />
               }} />
               {/* ============UPLOADED FILES============== */}
-              {/* <div className="flex flex-col gap-2 mt-3 max-h-48 overflow-y-auto">
-                <span className="text-sm font-medium">Uploaded files:</span>
-                <div className="flex flex-row gap-2 items-center">
-                  <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
-                  <span className="text-sm font-medium grow">Knowledgebase.pdf</span>
-                  <RiDeleteBin2Line className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500" onClick={()=>{  }} />
-                </div>
-                <div className="flex flex-row gap-2 items-center">
-                  <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
-                  <span className="text-sm font-medium grow">SEBI Regulations.pdf</span>
-                  <RiDeleteBin2Line className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500" onClick={()=>{  }} />
-                </div>
-              </div> */}
+              {
+                knowledgebases ? knowledgebases.length > 0 ? 
+                  <div className="flex flex-col gap-2 mt-3 max-h-48 overflow-y-auto">
+                    <span className="text-sm font-medium">Uploaded files:</span>
+                    {
+                      knowledgebases.map((pdf: any, index: number)=>{
+                        return <div className="flex flex-row gap-2 items-center">
+                          <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
+                          <span className="text-sm font-medium grow">{pdf.title}.pdf</span>
+                          {
+                            pdfIdToDelete === pdf.id && deletingKnowledgebase ?
+                            <RiLoader4Line className="w-5 h-5 animate-spin text-red-500" />
+                            :
+                            <RiDeleteBin2Line
+                              className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500"
+                              onClick={()=>{ deleteKnowledgebase(pdf.id) }} />
+                          }
+                        </div>
+                      })
+                    }
+                  </div>
+                : null
+                : null
+              }
             </div>
           </div>
         }

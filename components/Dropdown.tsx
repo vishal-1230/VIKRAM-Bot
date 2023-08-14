@@ -40,7 +40,7 @@ function Dropdown(props: {title?: string, list: {text: string, icon?:React.React
             props.title && <span className={`${props.mode==="day" ? "text-bg-900" : "text-white"} font-semibold text-sm`}>{props?.title}:</span>
         }
         <div className={props.title && "mt-1.5"}>
-            <button type="button" onClick={()=>{setOpen(!open)}} className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium duration-200 text-gray-700 hover:bg-bg-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-bg-700">
+            <button type="button" onClick={()=>{setOpen(!open)}} className="inline-flex justify-center items-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium duration-200 text-gray-700 hover:bg-bg-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-bg-700">
                 {cats[props.selectedChatCategory] === undefined ? props.selectedChatCategory : cats[props.selectedChatCategory]}
                 <KeyboardArrowDownOutlined className="-mr-1 ml-2 #000 w-5 h-5 stroke-2" aria-hidden="true" />
             </button>   

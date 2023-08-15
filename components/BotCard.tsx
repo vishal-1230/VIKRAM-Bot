@@ -39,7 +39,7 @@ function BotCard(props: BotCardProps) {
   const avatars = ["/assets/avatar4.png", "/assets/avatar5.png", "/assets/avatar4Orange.png"]
 
   return (
-    <Link href={`https://vikrambots.ai/try-vikram-bots/${props.userName}`}>
+    <Link href={`https://vikrambots.ai/${props.userName}`}>
     <div className="flex flex-col items-center p-6 pb-3 w-[195px] min-w-[195px] h-full max-w-fit bg-neutral-400 hover:bg-neutral-100 shadow-bg-300 cursor-pointer select-none hover:shadow-2xl hover:shadow-bg-300 hover:scale-105 drop-shadow-lg rounded-lg shadow-lg">
       {
         liked ? <BsHeartFill className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); unlikeBot(props.userName)}} /> : <BsHeart className="text-red-500 text-lg self-end cursor-pointer" onClick={() => {setLiked(!liked); likeBot(props.userName)}} />

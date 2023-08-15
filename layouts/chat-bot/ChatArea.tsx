@@ -13,7 +13,7 @@ import { Inter } from "next/font/google"
 import axiosInstance from "@/utils/axiosInstance"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import {ImAttachment} from "react-icons/im"
-import { RiDeleteBin2Line, RiLoader4Line } from "react-icons/ri"
+import { RiDeleteBin2Line, RiInstagramFill, RiLinkedinBoxFill, RiLoader4Line, RiWhatsappFill } from "react-icons/ri"
 import { useOutsideAlerter } from "../navbar/Navbar"
 
 const inter = Inter({subsets: ['latin']})
@@ -127,6 +127,7 @@ function ChatArea(props: {
             {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
           ])
         }
+        getOtherInfo(userDetails.username)
       } else if (userDetails.username_b) {
         setChatCategory("business")
         setCategories([
@@ -135,6 +136,7 @@ function ChatArea(props: {
           // {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
         ])
         localStorage.getItem("token") && fetchTrainingMessage()
+        getOtherInfo(userDetails.username_b)
       }
 
     }
@@ -640,9 +642,99 @@ function ChatArea(props: {
       setUserDetails(userDetails)
       
     }, [])
+
+    const [botInfo, setBotInfo] = useState<{description: string, long_description: string | undefined | null, socials: {social: string, link: string}[] | undefined | null} | null>(null)
+    const [botInfoLoading, setBotInfoLoading] = useState(false)
+    const [botInfoUpdating, setBotInfoUpdating] = useState(false)
+
+    async function getOtherInfo (userId: string) {
+      setBotInfoLoading(true)
+      const response = await fetch(`https://server.vikrambots.in/gprofile/${userId}`, {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token")!,
+        }
+      })
+      const data = await response.json()
+      console.log("Other info", data)
+      if (data.success == true) {
+        setBotInfo(data)
+      }
+      setBotInfoLoading(false)
+    }
+
+    async function updateDesc() {
+      setOneLinerLoading(true)
+      const response = await fetch("https://server.vikrambots.in/edit_desc", {
+        method: "POST",
+        headers: {
+          "x-access-token": localStorage.getItem("token")!,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({description: oneLiner})
+      })
+      const data = await response.json()
+      setOneLinerLoading(false)
+      console.log(data)
+      if (data.success === true) {
+        toast.success("Role description updated successfully!")
+      } else {
+        toast.error("Something went wrong. Please try again.")
+      }
+    }
+
+    async function updateSocials() {
+      setBotInfoUpdating(true)
+      console.log("Sending socials", botInfo?.socials)
+      const response = await fetch("https://server.vikrambots.in/edit_socials", {
+        method: "POST",
+        headers: {
+          "x-access-token": localStorage.getItem("token")!,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({socials: botInfo!.socials})
+      })
+      const data = await response.json()
+      console.log(data)
+      if (data.success === true) {
+        toast.success("Socials updated successfully!")
+      } else {
+        toast.error("Something went wrong. Please try again.")
+      }
+      setBotInfoUpdating(false)
+    }
+
+    async function updateLongDesc() {
+      setBotInfoUpdating(true)
+      const response = await fetch("https://server.vikrambots.in/edit_long_desc", {
+        method: "POST",
+        headers: {
+          "x-access-token": localStorage.getItem("token")!,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({long_desc: botInfo!.long_description})
+      })
+      const data = await response.json()
+      console.log(data)
+      if (data.success === true) {
+        toast.success("Long description updated successfully!")
+      } else {
+        toast.error("Something went wrong. Please try again.")
+      }
+      setBotInfoUpdating(false)
+    }
     
     useEffect(()=>{
-      userDetails?.username ? getAllPersonalInfo() : userDetails?.username_b ? getAllBusinessInfo() : null
+      userDetails?.username
+      ?
+      getAllPersonalInfo()
+      :
+      userDetails?.username_b
+      ?
+      getAllBusinessInfo()
+      :
+      null;
+      // getOtherInfo()
     }, [showPersonalBotDialog, showBusinessBotDialog])
 
     async function getIcon () {
@@ -904,68 +996,13 @@ function ChatArea(props: {
     const [knowledgebaseFile, setKnowledgebaseFile] = useState<File | string>("")
     const [knowledgebaseLoading, setKnowledgebaseLoading] = useState(false)
 
-    // old fetch method
-    // async function uploadKnowledgebase () {
-    //   setShowFileUploadDialog(true)
-    //   setKnowledgebaseLoading(true)
-
-    //   let uri = ""
-    //   if (chatCategory === "personaltraining") {
-    //     uri = `https://server.vikrambots.in/test_personal`
-    //   } else if(chatCategory === "business") {
-    //     uri = `https://server.vikrambots.in/training`
-    //   }
-
-    //   if (knowledgebaseFile === "") {
-    //     toast.error("Please select a file to upload.")
-    //   } else {
-    //     const formData = new FormData()
-    //     formData.append("typeOfFile", "file")
-    //     formData.append("file", knowledgebaseFile)
-    //     const response = await fetch(uri, {
-    //       method: "POST",
-    //       headers: {
-    //         "x-access-token": localStorage.getItem("token")!,
-    //       },
-    //       body: formData
-    //     })
-    //     const data = await response.json()
-    //     setKnowledgebaseLoading(false)
-    //     console.log("UPLOAD", data)
-    //     if (data.success === true) {
-    //       setShowFileUploadDialog(false)
-    //       toast.success("Knowledgebase uploaded successfully!")
-    //     } else {
-    //       toast.error("Something went wrong. Please try again.")
-    //     }
-    //   }
-    // }
-
+    // const [progress, setProgress] = useState(0)
     const knowledgebaseRef = useRef(null)
     useOutsideAlerter(knowledgebaseRef, () => {
       setShowFileUploadDialog(false)
     })
 
-    async function updateDesc() {
-      setOneLinerLoading(true)
-      const response = await fetch("https://server.vikrambots.in/edit_desc", {
-        method: "POST",
-        headers: {
-          "x-access-token": localStorage.getItem("token")!,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({description: oneLiner})
-      })
-      const data = await response.json()
-      setOneLinerLoading(false)
-      console.log(data)
-      if (data.success === true) {
-        toast.success("Role description updated successfully!")
-      } else {
-        toast.error("Something went wrong. Please try again.")
-      }
-    }
-
+    //
     const [progress, setProgress] = useState(0)
 
     useEffect(()=>{
@@ -1205,18 +1242,159 @@ function ChatArea(props: {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center gap-2 my-2 mb-8">
-                  <span className="text-semibold text-center">Edit your One Liner Description</span>
-                  <span className="text-xs font-light mb-4">This Short Description is shown wherever your bot gets a chance to be previewed to audience.</span>
-                  <textarea placeholder='Enter one liner description' rows={1} cols={4} value={oneLiner} onChange={(e)=>{setOneLiner(e.target.value)}} className="text-sm text-white py-2 text-center mx-2 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%] h-full" />
-                  <Button
-                    title="Update description"
-                    buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto mt-4'
-                    onClick={updateDesc}
-                    Icon={()=> {return oneLinerLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
-                  />
+                <div className="w-full grid grid-cols-12 gap-2 mt-4 mb-8">
+                  
+                  <div className="col-span-8 flex flex-col items-center gap-1">
+                    <span className="text-semibold text-center">Edit your One Liner Description</span>
+                    <span className="text-xs font-light mb-4">This Short Description is shown wherever your bot gets a chance to be previewed to audience.</span>
+                    <input
+                    type="text"
+                      placeholder='Enter one liner description'
+                      value={oneLiner}
+                      onChange={(e)=>{setOneLiner(e.target.value)}}
+                      className="text-sm text-white p-2 text-center align-middle h-fit mx-2 bg-transparent outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%]" />
+                    <Button
+                      title="Update description"
+                      buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto mt-4'
+                      onClick={updateDesc}
+                      Icon={()=> {return oneLinerLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
+                    />
+                    <span className="text-semibold text-center mt-8">Edit your Brief Description</span>
+                    <span className="text-xs font-light mb-4">This Description will be shown on your Profile Page to the audience.</span>
+                    {
+                      botInfo ? 
+                      <textarea
+                        placeholder='Enter brief description about your Bot'
+                        rows={4}
+                        cols={4}
+                        value={botInfo.long_description ? botInfo.long_description : ""}
+                        onChange={(e)=>{
+                          if (botInfo) {
+                            setBotInfo({...botInfo, long_description: e.target.value})
+                          }
+                        }}
+                        className="text-sm text-white py-2 mx-2 bg-transparent p-2 outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%] h-full" />
+                      :
+                      <RiLoader4Line className="animate-spin" />
+                    }
+                    <Button
+                      title="Update description"
+                      buttonStyle='w-full font-semibold mt-10 mb-0 lg:w-fit mx-auto mt-4'
+                      onClick={updateLongDesc}
+                      Icon={()=> {return oneLinerLoading === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2 col-span-4 pr-2">
+                    <span className="text-semibold text-center">Edit your Socials</span>
+                    <span className="text-xs font-light mb-4">Add your social media handles to your profile page</span>
+                    <div className="flex flex-col gap-3">
+                      
+                      {
+                        botInfo ? 
+                        <>
+                          <div className="flex flex-row gap-3 items-center">
+                            <RiLinkedinBoxFill className="w-10 h-10 min-w-10 min-h-10" />
+                            <input
+                              type="text"
+                              placeholder='Enter your LinkedIn handle'
+                              value={botInfo.socials  ? botInfo.socials.find((social)=>{return social?.social === "linkedin"})?.link : ""}
+                              onChange={(e)=>{
+                                if (botInfo) {
+                                  if (botInfo?.socials) {
+                                    let tempBotInfo = {...botInfo}
+                                    tempBotInfo.socials = tempBotInfo?.socials?.map((social)=>{
+                                      if (social?.social === "linkedin") {
+                                        social.link = e.target.value
+                                      }
+                                      return social
+                                    })
+                                    if (tempBotInfo?.socials?.find((social)=>{return social?.social === "linkedin"}) === undefined) {
+                                      tempBotInfo?.socials?.push({social: "linkedin", link: e.target.value})
+                                    }
+                                    setBotInfo(tempBotInfo)
+                                    // setBotInfo({...botInfo, socials: botInfo?.socials ? [...botInfo?.socials, {social: "linkedin", link: e.target.value}] : [{social: "linkedin", link: e.target.value}]})
+                                  } else {
+                                    setBotInfo({...botInfo, socials: [{social: "linkedin", link: e.target.value}]})
+                                  }
+                                }
+                              }}
+                              className="text-sm text-white p-2 text-center align-middle h-fit mx-2 bg-transparent outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%]" />
+                          </div>
+                          <div className="flex flex-row gap-3 items-center">
+                            <RiInstagramFill className="w-10 h-10 min-w-10 min-h-10" />
+                            <input
+                              type="text"
+                              placeholder='Enter your Instagram handle'
+                              value={botInfo?.socials?.find((social)=>{return social?.social === "instagram"})?.link}
+                              onChange={(e)=>{
+                                if (botInfo) {
+                                  if (botInfo?.socials) {
+                                    let tempBotInfo = {...botInfo}
+                                    tempBotInfo.socials = tempBotInfo?.socials?.map((social)=>{
+                                      if (social?.social === "instagram") {
+                                        social.link = e.target.value
+                                      }
+                                      return social
+                                    })
+                                    if (tempBotInfo?.socials?.find((social)=>{return social?.social === "instagram"}) === undefined) {
+                                      tempBotInfo?.socials?.push({social: "instagram", link: e.target.value})
+                                    }
+                                    setBotInfo(tempBotInfo)
+                                    // setBotInfo({...botInfo, socials: botInfo?.socials ? [...botInfo?.socials, {social: "instagram", link: e.target.value}] : [{social: "instagram", link: e.target.value}]})
+                                  } else {
+                                    setBotInfo({...botInfo, socials: [{social: "instagram", link: e.target.value}]})
+                                  }
+                                }
+                              }}
+                              className="text-sm text-white p-2 text-center align-middle h-fit mx-2 bg-transparent outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%]" />
+                          </div>
+                          <div className="flex flex-row gap-3 items-center">
+                            <RiWhatsappFill className="w-10 h-10 min-w-10 min-h-10" />
+                            <input
+                              type="text"
+                              placeholder='Enter your Whatsapp Number'
+                              value={botInfo?.socials?.find((social)=>{return social?.social === "whatsapp"})?.link}
+                              onChange={(e)=>{
+                                if (botInfo) {
+                                  if (botInfo?.socials) {
+                                    let tempBotInfo = {...botInfo}
+                                    tempBotInfo.socials = tempBotInfo?.socials?.map((social)=>{
+                                      if (social?.social === "whatsapp") {
+                                        social.link = e.target.value
+                                      }
+                                      return social
+                                    })
+                                    if (tempBotInfo?.socials?.find((social)=>{return social?.social === "whatsapp"}) === undefined) {
+                                      tempBotInfo?.socials?.push({social: "whatsapp", link: e.target.value})
+                                    }
+                                    setBotInfo(tempBotInfo)
+                                    // setBotInfo({...botInfo, socials: botInfo?.socials ? [...botInfo?.socials, {social: "whatsapp", link: e.target.value}] : [{social: "whatsapp", link: e.target.value}]})
+                                  } else {
+                                    setBotInfo({...botInfo, socials: [{social: "whatsapp", link: e.target.value}]})
+                                  }
+                                }
+                              }}
+                              className="text-sm text-white p-2 text-center align-middle h-fit mx-2 bg-transparent outline-none border-[1px] border-[#DDD6D6] rounded-md w-[90%]" />
+                          </div>
+                        </>
+                      :
+                        <RiLoader4Line className="w-10 h-10 animate-spin" />
+                      }
+
+                      <Button 
+                        title="Update Socials"
+                        buttonStyle="mt-2"
+                        onClick={updateSocials}
+                        Icon={()=> {return botInfoUpdating === true ? <img src="/assets/loading-circle.svg" alt="loading..." className="w-5 h-5 self-center ml-2"  /> : <></>}}
+                      />
+                    </div>
+
+                  </div>
+
                 </div>
               </div>
+
                 <div className=" flex flex-col items-center gap-1 md:gap-2 mt-3 lg:gap-0 lg:grid lg:grid-cols-3 lg:mt-auto justify-between">
                     <OutlineButton title="Show sample rules" buttonStyle='text-sm w-full lg:w-fit mr-auto' onClick={()=>{ setShowSampleRules(true) }} />
                     {/* <Button title="Submit" buttonStyle='w-full font-semibold mt-2 mb-0 lg:w-fit mx-auto' onClick={()=>{ 
@@ -1442,7 +1620,23 @@ function ChatArea(props: {
             {/* knowledgebase pdf upload dropdown upload */}
             <span className="bg-neutral-400 p-2 px-3 select-none text-bg-900 text-sm md:text-base rounded-lg font-medium cursor-pointer hover:bg-neutral-200" onClick={()=>{ setShowFileUploadDialog(!showFileUploadDialog) }}>Upload some Knowledgebase?</span>
             <div className={`flex flex-col gap-3 bg-bg-dark-blue backdrop-blur-md absolute top-12 max-w-[90vw] rounded-xl mt-2 md:right-0 bg-[rgba(255, 255, 255, 0.4)] p-4 ${showFileUploadDialog ? "block" : "hidden"}`} ref={knowledgebaseRef}>
-              <input type="file" accept="application/pdf" name="file" id="" placeholder="File" onChange={(e)=>{ setKnowledgebaseFile(e.target.files![0]) }} />
+              <input
+                type="file"
+                accept="application/pdf"
+                name="file"
+                id=""
+                placeholder="File"
+                onChange={(e)=>{
+                  if (e.target.files![0].size > 10485760) {
+                    toast.error("File size should be less than 10MB")
+                    return
+                  } else if (e.target.files![0].type !== "application/pdf") {
+                    toast.error("File type should be PDF")
+                    return
+                  } else {
+                    setKnowledgebaseFile(e.target.files![0])
+                  }
+                }} />
               <CancelOutlined className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-4 right-5" onClick={()=>{ setShowFileUploadDialog(false); setKnowledgebaseFile(""); setKnowledgebaseLoading(false) }} />
               {/* <Delete className="w-6 h-6 fill-neutral-500 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400 absolute top-7 right-5" onClick={()=>{ setKnowledgebaseFile("") }} /> */}
               <span className="text-xs text-neutral-500">Upload a PDF file containing the knowledgebase for your bot. The bot will use this knowledgebase to answer questions asked by others.</span>
@@ -1494,13 +1688,13 @@ function ChatArea(props: {
                       knowledgebases.map((pdf: any, index: number)=>{
                         return <div className="flex flex-row gap-2 items-center">
                           <img src="/assets/pdf.png" alt="pdf" className="w-10 h-10" />
-                          <span className="text-sm font-medium grow">{pdf.title}.pdf</span>
+                          <a href={`https://server.vikrambots.in/assets/${pdf.title+".pdf"}`} target="_blank" className="text-sm font-medium grow cursor-pointer hover:text-blue-300 break-all">{pdf.title}.pdf</a>
                           {
                             pdfIdToDelete === pdf.id && deletingKnowledgebase ?
                             <RiLoader4Line className="w-5 h-5 animate-spin text-red-500" />
                             :
                             <RiDeleteBin2Line
-                              className="w-5 h-5 cursor-pointer text-neutral-50 hover:text-red-500"
+                              className="w-5 min-w-[20px] h-5 min-h-[20px] cursor-pointer text-neutral-50 hover:text-red-500"
                               onClick={()=>{ deleteKnowledgebase(pdf.id) }} />
                           }
                         </div>

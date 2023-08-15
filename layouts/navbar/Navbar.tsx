@@ -151,15 +151,15 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
         {
           ((router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) && business) ? (
             <Link href="/explore-bots" className='mr-4'>
-              <span className="py-2 px-5 rounded-full bg-gradient-to-r from-gradient-dull-pink to-gradient-blue opacity-80 hover:opacity-100 hover:from-gradient-blue hover:to-gradient-pink duration-200 cursor-pointer flex gap-2">
+              <span className="py-2 px-5 rounded-full bg-gradient-to-r from-gradient-dull-pink to-gradient-blue opacity-80 hover:opacity-100 hover:from-gradient-blue hover:to-gradient-pink duration-200 cursor-pointer flex items-center gap-2">
                 <BsArrowLeft className="w-5 h-5 text-white" />
-                <span className="text-white font-medium text-sm">Explore Other Bots</span>
+                <span className="text-white font-medium text-xs md:text-sm">Explore Other Bots</span>
               </span>
             </Link>
           ) : null
         }
         
-        <Link href="/" className={`navbar-logo cursor-pointer relative ${router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots") ? "mr-auto" : ""}`}>
+        <Link href="/" className={`navbar-logo cursor-pointer relative ${(router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) && business ? "hidden md:block md:mr-auto" : ""}`}>
             <Image src='/assets/navlogo1.png' alt='VIKRAM Logo' width={55} height={34} priority />
             <span className="absolute bottom-0 -right-2 text-white font-bold text-[0.6rem] p-0.5 px-1 rounded-md bg-warning-500">BETA</span>
         </Link>

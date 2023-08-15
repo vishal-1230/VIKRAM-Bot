@@ -23,7 +23,7 @@ function Makers() {
         <div className="grid grid-cols 1 md:grid-cols-3 gap-x-5 gap-y-10 mt-10 mx-auto">
             <MakerCard name="Moumita Shee" image="/team/moumita.jpeg" designation="Brand Artisan" description="Logo Designer Extraordinaire" linkedin="https://www.linkedin.com/in/moumita-shee-798505226" college="Sister Nivedita University" />
             <MakerCard name="ARTHLEX Research" image="/team/arthlex.jpeg" designation="Owner" description="Radical Problems Real Innovation" imageStyle="!w-64 !object-contain" linkedin="https://www.linkedin.com/company/arthlex-limited/" />
-            <MakerCard name="Code8" image="/team/code8.jpeg" designation="Project Manager" linkedin="https://www.linkedin.com/company/code8-connect/" />
+            <MakerCard name="Codeate" image="/team/code8.jpeg" designation="Project Manager" linkedin="https://www.linkedin.com/company/code8-connect/" />
         </div>
 
         {/* manager and founder */}

@@ -10,12 +10,12 @@ function TemporaryRegisterPage() {
 
     const router = useRouter()
 
-    if (router.query.userId === undefined || router.query.userId === null) {
-        router.replace("/auth/login")
-    }
     let userId = router.query.userId as string
     
     useEffect(()=>{
+      if (router.query.userId === undefined || router.query.userId === null) {
+          router.replace("/auth/login")
+      }
       if (userId === undefined || userId === null) {
         userId = router.query.userId as string
       } else {

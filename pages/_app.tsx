@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     console.log(router.pathname)
 
-    if (router.pathname.startsWith('/auth')) {
+    if (router.pathname.startsWith('/auth') || router.pathname.startsWith("/quick-login")) {
       setIsAuthPage(true)
     } else {
       setIsAuthPage(false)

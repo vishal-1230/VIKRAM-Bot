@@ -23,7 +23,7 @@ function ChatBot() {
   const router = useRouter()
 
   useEffect(()=>{
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
       console.log("token found")
     } else {
       console.log("token not found")

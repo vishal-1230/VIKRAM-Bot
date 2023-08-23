@@ -104,7 +104,11 @@ function TempRegister(props: {userId: string}) {
         if (data.success === true) {
             toast.success("User created successfully")
             localStorage.setItem("temptoken", data.token)
-            router.push(`/try-vikram-bots/${props.userId}`)
+            if (props.userId === "me") {
+                router.push("/chat-bot")
+            } else {
+                router.push(`/try-vikram-bots/${props.userId}`)
+            }
         } else {
             toast.error("Error creating user")
         }
@@ -145,26 +149,32 @@ function TempRegister(props: {userId: string}) {
                     {otpSent ? "Resend OTP" : "Send OTP"}
                 </span>}}
         />
-        <InputGroup
-            label="OTP"
-            placeholder="123456"
-            value={otp?.toString()}
-            onChange={setOtp}
-            hintAccessory={()=>{
-                return <span
-                    className={`text-xs cursor-pointer font-semibold ${otpSent ? "text-blue-500" : "text-blue-400 cursor-not-allowed"}`}
-                    onClick={()=>{
-                        if(otpSent) {
-                            verifyOtp()
-                        }
-                    }}
-                >
-                    Verify OTP
-                </span>
-            }}
-            disabled={!otpSent}
-            type="text"
-        />
+
+        {
+            otpSent ? 
+            <InputGroup
+                label="OTP"
+                placeholder="123456"
+                value={otp?.toString()}
+                onChange={setOtp}
+                hintAccessory={()=>{
+                    return <span
+                        className={`text-xs cursor-pointer font-semibold ${otpSent ? "text-blue-500" : "text-blue-400 cursor-not-allowed"}`}
+                        onClick={()=>{
+                            if(otpSent) {
+                                verifyOtp()
+                            }
+                        }}
+                    >
+                        Verify OTP
+                    </span>
+                }}
+                disabled={!otpSent}
+                type="text"
+            />
+            :
+            null
+        }
         <Button
             title='Try Out VIKRAM'
             Icon={undefined}
@@ -172,6 +182,18 @@ function TempRegister(props: {userId: string}) {
             onClick={createTempUser}
             disabled={!otpVerified}
         />
+        <span className="text-sm font-medium text-gray-500 self-end mt-4">
+            Or Already have an account? <span className="text-blue-600 font-semibold cursor-pointer" onClick={()=>{router.push('/auth/login')}}>Login</span>
+        </span>
+        <div className="flex w-full flex-row items-center mt-4">
+            <div className="h-[1px] grow bg-gray-400"></div>
+            <span className="text-gray-500 font-semibold mx-2">or</span>
+            <div className="h-[1px] grow bg-gray-400"></div>
+        </div>
+            <span className="text-sm cursor-pointer font-semibold text-blue-600 text-center mt-5 p-2 px-4 border rounded-lg border-blue-600" onClick={()=>{router.push('/auth/create-account')}}>
+                Create your own bot?
+                {/* <span className="text-blue-600 cursor-pointer" >Register</span> */}
+            </span>
     </RightAuthContainer>
   )
 }

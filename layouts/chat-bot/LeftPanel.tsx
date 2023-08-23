@@ -26,6 +26,8 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
     const [showSettingsInMobile, setShowSettingsInMobile] = [props.showSettingsInMobile, props.setShowSettingsInMobile]
 
+    const [tempuser, setTempuser] = useState(false)
+
     async function getChats() {
         setHistoryLoading(true)
         const res = await fetch("https://server.vikrambots.in/history", {
@@ -65,13 +67,21 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         const data = await res.json()
         console.log(data)
         if (data.username != data.username_b){
+            localStorage.getItem("token") ? 
             getNotif()
+            :
+            null
             setShowHistory(true)
+            console.log("Set show history to true")
             setPersonal(true)
             getChats()
         } else {
+            localStorage.getItem("token") ? 
             getNotif()
+            :
+            null
             setShowHistory(false)
+            console.log("Set show history to false")
             setPersonal(false)
         }
         if (data.username_b != "None") {
@@ -84,7 +94,10 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     // const [showSettingsInMobile, setShowSettingsInMobile] =  [showSettings().showSettingsMenu, showSettings().setShowSettingsMenu]
 
     useEffect(()=>{
-        if (localStorage.getItem("token")) {
+        if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
+            if (localStorage.getItem("temptoken")) {
+                setTempuser(true)
+            }
             userInfo()
         } else {
             router.replace("/auth/login")
@@ -98,11 +111,19 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
             <div className="flex flex-col gap-4 min-w-max">
                 
+                {
+                    // !tempuser ?
                 <span className={`text-sm font-semibold ${mode === "day" ? "text-bg-900" :"text-white"} flex gap-2.5 flex-row items-center mb-1`}>
                     <RiChatHistoryLine className="text-2xl" />
                     People Talked to Your Bot
                 </span>
+                // :
+                // null
+                // :
+                // null
+                }
                 {
+                    // !tempuser ?
                     notificationsLoading ? (
                         <img src="/assets/loading-circle.svg" alt="" className="w-6 h-6 animate-spin self-center" />
                     ) : notifications.length === 0 ? (
@@ -116,6 +137,10 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                             )
                         })
                     )
+                    // :
+                    // null
+                    // :
+                    // null
                 }
                 {/* <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">Lorem ipsum or sit amet cohabsckj Right man?</span> */}
                 {/* <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">Lorem ipsum or sit amet cohabsckj Right man?</span> */}
@@ -188,7 +213,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                 FAQs
             </Link>
 
-            <span className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex cursor-pointer items-center gap-2.5`} onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.href = "/"}}>
+            <span className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex cursor-pointer items-center gap-2.5`} onClick={()=>{localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}}>
                 <LogoutOutlined />
                 Logout
             </span>

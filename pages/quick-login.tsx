@@ -21,7 +21,11 @@ function TemporaryRegisterPage() {
       } else {
         if (localStorage.getItem("temptoken") || localStorage.getItem("token")) {
           console.log("token found")
-          router.replace(`/try-vikram-bots/${userId}`)
+          if (userId === "me") {
+            router.replace("/chat-bot")
+          } else {
+            router.replace(`/try-vikram-bots/${userId}`)
+          }
         }
       }
     }, [userId])

@@ -23,7 +23,7 @@ function ChatList(props: ChatListProps) {
         {
             props.chats.map((chat, index) => {
                 return (
-                    <Message mode={props.mode} sender={chat.sender} botIcon={chat.sender=="bot" ? props.botIcon ? props.botIcon : undefined : undefined} key={index}>{chat.message}</Message>
+                    <Message mode={props.mode} sender={chat.sender} botIcon={chat.sender=="bot" ? props.botIcon ? props.botIcon.endsWith("False") ? undefined : props.botIcon : undefined : undefined} key={index}>{chat.message}</Message>
                 )
             })
         }

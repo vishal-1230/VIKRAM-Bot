@@ -38,7 +38,16 @@ function Profile() {
     useEffect(()=>{
         console.log("Finding for", userId)
         if (userId != undefined && userId != null) {
-          getUserData()
+          if (userId === "me"){
+            if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
+              // setUserData(JSON.parse(localStorage.getItem("user")!)) // general tab will come
+              router.replace("/chat-bot")
+            } else {
+              router.replace("/quick-login?userId=me")
+            }
+          } else {
+            getUserData()
+          }
           if (localStorage.getItem("temptoken") || localStorage.getItem("token")) {
               setLoggedIn(true)
           } else {

@@ -53,6 +53,11 @@ function ChatArea(props: {
     const [connectedBot, setConnectedBot] = useState<string | null>(null)
     const [connectedBotIcon, setConnectedBotIcon] = useState<string | undefined>(undefined)
 
+    useEffect(()=>{
+      setConnectedBot(null)
+      setToConnectWith("")
+    }, [chatCategory])
+
 
     const [categories, setCategories] = useState<{text: string, onClick: any}[]>([
       {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
@@ -64,7 +69,7 @@ function ChatArea(props: {
     async function getInfo() {
       const res = await fetch("https://server.vikrambots.in/ginfo", {
         headers: {
-          "x-access-token": localStorage.getItem("token")!
+          "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!
         }
       })
       const data = await res.json()
@@ -111,21 +116,37 @@ function ChatArea(props: {
       if (userDetails.username){
         setChatCategory("personal")
         if (userDetails.username_b) {
-          setCategories([
-            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
-            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
-            {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
-            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
-            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
-          ])
-          localStorage.getItem("token") && fetchMessage()
+          if (localStorage.getItem("token")) {
+            setCategories([
+              {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+              {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
+              {text: "My Business Bot (Training)", onClick: () => {setChatCategory("business")}},
+              {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+              {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+            ])
+            fetchMessage()
+          } else {
+            setCategories([
+              {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+              {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+              {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+            ])
+          }
         } else {
-          setCategories([
-            {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
-            {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
-            {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
-            {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
-          ])
+          if (localStorage.getItem("token")) {
+            setCategories([
+              {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+              {text: "Personal Bot (Testing)", onClick: ()=> {setChatCategory("personaltraining")}},
+              {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+              {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+            ])
+          } else {
+            setCategories([
+              {text: "My Personal Bot", onClick: () => {setChatCategory("personal");}},
+              {text: "Connect to someone's bot", onClick: () => {setChatCategory("initiator")}},
+              {text: "Connect to a Business", onClick: () => {setChatCategory("business_initiator")}},
+            ])
+          }
         }
         getOtherInfo(userDetails.username)
       } else if (userDetails.username_b) {
@@ -183,7 +204,7 @@ function ChatArea(props: {
         if (chatCategory === "personal" || chatCategory === "initiator" || chatCategory === "business_initiator") {
           fetch(uri, {
             headers: {
-              "x-access-token": localStorage.getItem("token")!,
+              "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!
             }
           })
             .then((response) => response.json())
@@ -249,7 +270,7 @@ function ChatArea(props: {
           fetch(uri, {
             method: "POST",
             headers: {
-              "x-access-token": localStorage.getItem("token")!,
+              "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
             },
             body: formData
           })
@@ -297,7 +318,7 @@ function ChatArea(props: {
       } else if (plugin === "News") {
         fetch(`https://server.vikrambots.in/news/${message}`, {
             headers: {
-                "x-access-token": localStorage.getItem("token")!
+                "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!
             }
         })
           .then((response) => response.json())
@@ -324,7 +345,7 @@ function ChatArea(props: {
       } else if (plugin === "Weather") {
         fetch(`https://server.vikrambots.in/weather/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!
           }
       })
           .then((response) => response.json())
@@ -351,7 +372,7 @@ function ChatArea(props: {
       } else if (plugin === "IMDB") {
         fetch(`https://server.vikrambots.in/imdb/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!
           }
       })
           .then((response) => response.json())
@@ -378,7 +399,7 @@ function ChatArea(props: {
       } else if (plugin === "Google") {
         fetch(`https://server.vikrambots.in/google/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!
           }
       })
           .then((response) => response.json())
@@ -405,7 +426,7 @@ function ChatArea(props: {
       } else if (plugin === "YouTube") {
         fetch(`https://server.vikrambots.in/yt/${message}`, {
           headers: {
-              "x-access-token": localStorage.getItem("token")!
+              "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!
           }
       })
           .then((response) => response.json())
@@ -443,7 +464,7 @@ function ChatArea(props: {
       try{
         const response = await fetch(`https://server.vikrambots.in/check-username-exists/${ chatCategory==="initiator" ? toConnectWith : toConnectWith.endsWith("_b") ? toConnectWith : toConnectWith+"_b"}`, {
           headers: {
-            "x-access-token": localStorage.getItem("token")!,
+            "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
           }
         })
         const data = await response.json()
@@ -472,16 +493,17 @@ function ChatArea(props: {
       console.log("Details", userDetails)
       const response = await fetch(`https://server.vikrambots.in/gchats`, {
         headers: {
-          "x-access-token": localStorage.getItem("token")!,
+          "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
         }
       })
       const data = await response.json()
-      console.log("DATA", data)
+      console.log("DATA msgs", data)
       // data.message format is [ {Bot: "Hello", User: "bot"}, {Bot: "Hi", sendeuser: "user"}] that has to be converted to [{message: "Hello", sender: "bot"}, {message: "Hi", sender: "user"}]
       let temp:{message: string, sender: string}[] = []
-      if (data.message!=false) data.message.map((item: { Bot: any; User: any })=>{
-        temp.push({message: item.Bot, sender: "bot"})
-        temp.push({message: item.User, sender: "user"})
+      if (data.success!=false) data.messages.map((item: { bot: string; user: string })=>{
+        console.log('Gpt msg', item)
+        temp.push({message: item.bot, sender: "bot"})
+        temp.push({message: item.user, sender: "user"})
       })
       console.log("TEMP", temp)
       setChats(temp.reverse())
@@ -495,7 +517,7 @@ function ChatArea(props: {
     async function pastConnections () {
       const response = await fetch("https://server.vikrambots.in/get-connections", {
         headers: {
-          "x-access-token": localStorage.getItem("token")!,
+          "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
         }
       })
       const data = await response.json()
@@ -510,12 +532,12 @@ function ChatArea(props: {
 
       console.log(data)
       let temp:{message: string, sender: string}[] = []
-      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
-        temp.push({message: item.Bot, sender: "bot"})
-        temp.push({message: item.User, sender: "user"})
+      if (data.success == true) data.messages.map((item: { bot: any; user: any })=>{
+        temp.push({message: item.bot, sender: "bot"})
+        temp.push({message: item.user, sender: "user"})
       })
       console.log("TEMP", temp)
-      setThirdChats(temp)
+      setThirdChats(temp.reverse())
     }
 
     async function fetchTheirWithMyMessages (toConnectWith: string) {
@@ -527,12 +549,12 @@ function ChatArea(props: {
 
       console.log(data)
       let temp:{message: string, sender: string}[] = []
-      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
-        temp.push({message: item.Bot, sender: "bot"})
-        temp.push({message: item.User, sender: "user"})
+      if (data.success == true) data.messages.map((item: { bot: any; user: any })=>{
+        temp.push({message: item.bot, sender: "bot"})
+        temp.push({message: item.user, sender: "user"})
       })
       console.log("TEMP", temp)
-      setTempChats(temp)
+      setTempChats(temp.reverse())
     }
     }
 
@@ -544,12 +566,12 @@ function ChatArea(props: {
 
       console.log(data)
       let temp:{message: string, sender: string}[] = []
-      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
-        temp.push({message: item.Bot, sender: "bot"})
-        temp.push({message: item.User, sender: "user"})
+      if (data.success == true) data.messages.map((item: { bot: any; user: any })=>{
+        temp.push({message: item.bot, sender: "bot"})
+        temp.push({message: item.user, sender: "user"})
       })
       console.log("TEMP", temp)
-      setThirdBusinessChats(temp)
+      setThirdBusinessChats(temp.reverse())
       console.log("3rd bizz", data)
     }
 
@@ -560,15 +582,15 @@ function ChatArea(props: {
       setUserDetails(userDetails)
       const response = await fetch(`https://server.vikrambots.in/gchats`, {
         headers: {
-          "x-access-token": localStorage.getItem("token")!,
+          "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
         }
       })
       const data = await response.json()
       console.log(data)
       let temp:{message: string, sender: string}[] = []
-      if (data.message!=false) data.message.map((item: { Bot: any; User: any })=>{
-        temp.push({message: item.Bot, sender: "bot"})
-        temp.push({message: item.User, sender: "user"})
+      if (data.success!=false) data.message.map((item: { bot: any; user: any })=>{
+        temp.push({message: item.bot, sender: "bot"})
+        temp.push({message: item.user, sender: "user"})
       })
       setTrainingChats(temp.reverse())
     }
@@ -594,10 +616,15 @@ function ChatArea(props: {
 
     useEffect(()=>{
       // delete this calling
-      pastConnections()
+      if (localStorage.getItem("token")) {
+        pastConnections()
+      }
       
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token") as string)
+        getInfo()
+      } else if (localStorage.getItem("temptoken")) {
+        setToken(localStorage.getItem("temptoken") as string)
         getInfo()
       } else {
         toast.error("You are not logged in. Please login to continue.", {
@@ -652,7 +679,7 @@ function ChatArea(props: {
       const response = await fetch(`https://server.vikrambots.in/gprofile/${userId}`, {
         method: "GET",
         headers: {
-          "x-access-token": localStorage.getItem("token")!,
+          "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
         }
       })
       const data = await response.json()
@@ -668,7 +695,7 @@ function ChatArea(props: {
       const response = await fetch("https://server.vikrambots.in/edit_desc", {
         method: "POST",
         headers: {
-          "x-access-token": localStorage.getItem("token")!,
+          "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({description: oneLiner})
@@ -689,7 +716,7 @@ function ChatArea(props: {
       const response = await fetch("https://server.vikrambots.in/edit_socials", {
         method: "POST",
         headers: {
-          "x-access-token": localStorage.getItem("token")!,
+          "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({socials: botInfo!.socials})

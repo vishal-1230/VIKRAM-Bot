@@ -3,6 +3,7 @@ import { Tooltip } from "@mui/material"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { BsRobot } from "react-icons/bs"
 import { RiChatHistoryLine } from "react-icons/ri"
 
 function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: boolean, setShowPersonalBotDialog: any, showBusinessBotDialog: boolean, setShowBusinessBotDialog: any, changeChatTo: string | null, setChangeChatTo: any, changeChatToNotif: string | null, setChangeChatToNotif: any, showSettingsInMobile: boolean, setShowSettingsInMobile: any}) {
@@ -80,6 +81,9 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
             getNotif()
             :
             null
+            localStorage.getItem("temptoken") ?
+            setShowHistory(true)
+            :
             setShowHistory(false)
             console.log("Set show history to false")
             setPersonal(false)
@@ -109,21 +113,16 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
         <CancelOutlined className="block md:!hidden text-neutral-50 fill-neutral-50 cursor-pointer absolute top-3 right-5 text-xl" onClick={()=>{setShowSettingsInMobile(false)}} />
         <div className="flex flex-col gap-8 overflow-y-auto overflow-x-clip">
 
+        {
+            !tempuser ?
             <div className="flex flex-col gap-4 min-w-max">
                 
-                {
-                    // !tempuser ?
                 <span className={`text-sm font-semibold ${mode === "day" ? "text-bg-900" :"text-white"} flex gap-2.5 flex-row items-center mb-1`}>
                     <RiChatHistoryLine className="text-2xl" />
                     People Talked to Your Bot
                 </span>
-                // :
-                // null
-                // :
-                // null
-                }
+
                 {
-                    // !tempuser ?
                     notificationsLoading ? (
                         <img src="/assets/loading-circle.svg" alt="" className="w-6 h-6 animate-spin self-center" />
                     ) : notifications.length === 0 ? (
@@ -139,12 +138,13 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
                     )
                     // :
                     // null
-                    // :
-                    // null
                 }
                 {/* <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">Lorem ipsum or sit amet cohabsckj Right man?</span> */}
                 {/* <span className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#aaa] flex-wrap">Lorem ipsum or sit amet cohabsckj Right man?</span> */}
             </div>
+            :
+            null
+        }
 
         {
             Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-8 h-8 self-center" /> : showHistory &&
@@ -180,6 +180,15 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
 
         <div className="flex flex-col gap-3 mt-8 pt-4 border-t-2 border-bg-500 pr-2">
 
+        {
+            tempuser ?
+            <Link href="/auth/create-account" className={`font-medium text-sm ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5`}>
+                <BsRobot className="text-xl ml-[0.2rem] my-1" />
+                Create your own Bot
+            </Link>
+            :
+            null
+        }    
     {
         Object.keys(userDetails).length === 0 ? <img src="/assets/loading-circle.svg" className="w-6 h-6 my-2 self-center" /> : (personal &&
             <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowPersonalBotDialog(true); setShowSettingsInMobile(false)}}>
@@ -189,7 +198,7 @@ function LeftPanel(props: {mode: string, setMode: any, showPersonalBotDialog: bo
     }
 
     {
-        (Object.keys(userDetails).length != 0 && business) &&
+        (Object.keys(userDetails).length != 0 && business && !tempuser) &&
             <span className={`font-medium text-sm select-none ${mode === "day" ? "text-bg-900" :"text-white"} flex items-center gap-2.5 cursor-pointer duration-200`} onClick={()=>{props.setShowBusinessBotDialog(true); setShowSettingsInMobile(false)}}>
                 <SettingsOutlined />
                 Business Bot Settings

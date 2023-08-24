@@ -386,12 +386,12 @@ function ChatArea(props: {
 
       console.log(data)
       let temp:{message: string, sender: string}[] = []
-      if (data.messages.length > 0) data.messages.map((item: { Bot: any; User: any })=>{
-        temp.push({message: item.Bot, sender: "bot"})
-        temp.push({message: item.User, sender: "user"})
+      if (data.success == true) data.messages.map((item: { bot: any; user: any })=>{
+        temp.push({message: item.bot, sender: "bot"})
+        temp.push({message: item.user, sender: "user"})
       })
       console.log("TEMP", temp)
-      setThirdChats(temp)
+      setThirdChats(temp.reverse())
     }
 
     async function fetchTheirWithMyMessages (toConnectWith: string) {
@@ -408,7 +408,7 @@ function ChatArea(props: {
         temp.push({message: item.User, sender: "user"})
       })
       console.log("TEMP", temp)
-      setTempChats(temp)
+      setTempChats(temp.reverse())
     }
     }
 
@@ -535,6 +535,7 @@ function ChatArea(props: {
       </div> */}
 
         <ChatList
+          className="!pt-20"
           botIcon={connectedBotIcon ? connectedBotIcon : undefined}
           chats={ thirdChats }
           mode={mode}
@@ -558,12 +559,14 @@ function ChatArea(props: {
               placeholder="Text area"
               value={userMessage}
               id="userMessage"
-              onKeyUp={(e) => {
-                if (e.key === "Enter" && e.shiftKey) {
-                  // add next line
+              onKeyDown={(e) => {
+                if(e.shiftKey){
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    setUserMessage(userMessage + "\n")
+                  }
+                } else if(e.key === "Enter"){
                   e.preventDefault()
-                  setUserMessage(userMessage + "\n")
-                } else if (e.key === "Enter") {
                   sendMessage()
                 }
               }}

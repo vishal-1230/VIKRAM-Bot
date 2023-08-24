@@ -74,6 +74,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
   const [updatingProfile, setUpdatingProfile] = useState<boolean>(false)
 
   const [business, setBusiness] = useState<boolean>(false)
+  const [tempuser, setTempuser] = useState<boolean>(false)
 
   async function uploadProfile() {
     setUpdatingProfile(true)
@@ -129,6 +130,9 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
   useEffect(()=>{
     if (localStorage.getItem("token") || localStorage.getItem("temptoken")) {
       setLoggedIn(true)
+      if (localStorage.getItem("temptoken")) {
+        setTempuser(true)
+      }
       try{ 
         getInfo()
       } catch (err) {
@@ -149,7 +153,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
     <div className={`bg-bg-900 flex flex-row duration-200 justify-between ${(router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) ? "px-5 md:px-32 md:pl-8" : "px-6 md:px-48"} items-center w-screen h-20 px-0 py-8 z-50 ${inter.className}`} style={{boxShadow: "0px 20px 24px -4px rgba(3, 5, 12, 0.08), 0px 8px 8px -4px rgba(3, 5, 12, 0.03)"}}>
         
         {
-          ((router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) && business) ? (
+          ((router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) && (business || tempuser)) ? (
             <Link href="/explore-bots" className='mr-4'>
               <span className="py-2 px-5 rounded-full bg-gradient-to-r from-gradient-dull-pink to-gradient-blue opacity-80 hover:opacity-100 hover:from-gradient-blue hover:to-gradient-pink duration-200 cursor-pointer flex items-center gap-2">
                 <BsArrowLeft className="w-5 h-5 text-white" />
@@ -159,7 +163,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
           ) : null
         }
         
-        <Link href="/" className={`navbar-logo cursor-pointer relative ${(router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) && business ? "hidden md:block md:mr-auto" : ""}`}>
+        <Link href="/" className={`navbar-logo cursor-pointer relative ${(router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) && (business || tempuser) ? "hidden md:block md:mr-auto" : ""}`}>
             <Image src='/assets/navlogo1.png' alt='VIKRAM Logo' width={55} height={34} priority />
             <span className="absolute bottom-0 -right-2 text-white font-bold text-[0.6rem] p-0.5 px-1 rounded-md bg-warning-500">BETA</span>
         </Link>
@@ -186,7 +190,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
             (router.pathname.startsWith("/chat-bot") || router.pathname.startsWith("/try-vikram-bots")) ? (
               <div className="flex gap-10">
                 {/* <span className="text-warning-500 font-medium flex gap-3 self-end">Upgrade Plan <img src="/assets/thunder-gold.svg" alt="" className="w-3.5 self-start mt-1" /></span> */}
-                <span className="text-white hidden md:block" onClick={()=>{router.push("/contact-us")}}>Help</span>
+                <span className="text-white hidden md:block" onClick={()=>{router.push("/contact-us")}}>Help & Feedback</span>
               </div>
             ) : (
               <Link href="/contact-us" className='hidden md:block'>
@@ -223,15 +227,21 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   }}  />
                 }
               {
-              showInfoBox && (!vikramTry ? <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
+              showInfoBox
+              &&
+              (
+                // !tempuser ?
+                <div className="bg-bg-500 absolute top-[35px] min-w-[14rem] pb-6 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col" ref={wrapperRef}>
                 {
                   infoLoading ? <img src="/assets/loading-circle.svg" alt="" className="w-10 mb-8 self-center mt-10" /> :
                 <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
                   {/* <span className="font-medium text-sm">Logged in as</span> */}
                   {/* <Image src='/assets/avatar4.png' alt='Profile' className='w-20 h-20 rounded-full self-center' width={30} height={30} /> */}
                   <div className="w-fit h-fit rounded-full relative mb-2 self-center" onMouseOver={()=>{
+                    tempuser ? null :
                     setShowImageEditPencil(true)
                   }} onMouseLeave={()=>{
+                    tempuser ? null :
                     setShowImageEditPencil(false)
                   }}>
                     <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover rounded-full" />
@@ -249,7 +259,7 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name}</span>
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12" onClick={()=>{
                     // clipboard cpoy
-                    navigator.clipboard.writeText(`https://dev-vikram.vercel.app/${userDetails?.username}`)
+                    navigator.clipboard.writeText(`https://vikrambots.ai/${userDetails?.username}`)
                     toast.success("Bot Link Copied to clipboard", {
                       position: "bottom-right",
                       autoClose: 1000
@@ -263,7 +273,11 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                     className="w-5 h-5 text-neutral-50 mb-1 fill-neutral-50 cursor-pointer ml-auto" />
                     </Tooltip>
                   </span>
-                  <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><MailOutline /> {userDetails?.email_id || userDetails?.email}</span>
+                  {userDetails?.email_id || userDetails?.email ?
+                    <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><MailOutline /> {userDetails?.email_id || userDetails?.email}</span>
+                    :
+                    null
+                  }
                   <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone}</span>
                   {
                     userDetails?.b_username && <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><AlternateEmail /> {userDetails?.b_username}</span>
@@ -280,25 +294,26 @@ function Navbar({showPersonalEditBox, setShowPersonalEditBox, showBusinessEditBo
                 }
                   <PrimaryButton buttonStyle='text-sm z-50 p-3 self-end mr-5 bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
               </div>
-              :
-              <div className='bg-bg-500 absolute top-[35px] min-w-[14rem] pt-3 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col' ref={wrapperRef}>
-                {
-                  infoLoading ? <RiLoader4Fill className="animate-spin w-10 mb-8 self-center mt-10" />
-                  :
-                <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
-                    <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
-                    <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name ? userDetails?.name : "Your Name"}</span>
-                    <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone ? userDetails?.phone : "+91 8373958829"}</span>
-                  {/* <Link href="/explore-bots" onClick={()=>{
-                    setShowInfoBox(false)
-                  }}>
-                    <Button title="Explore More Bots" buttonStyle='mt-4 font-medium' /> 
-                  </Link> */}
-                  {/* <PrimaryButton buttonStyle='text-sm p-3 self-end mt-2' title="Create Your own Bot" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} /> */}
-                  <PrimaryButton buttonStyle='text-sm p-3 self-end bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
-                </div>
-                }
-              </div>)
+              // :
+              // <div className='bg-bg-500 absolute top-[35px] min-w-[14rem] pt-3 rounded-lg w-max -right-14 md:right-0 flex shadow-lg drop-shadow-md flex-col' ref={wrapperRef}>
+              //   {
+              //     infoLoading ? <RiLoader4Fill className="animate-spin w-10 mb-8 self-center mt-10" />
+              //     :
+              //   <div className="flex text-neutral-50 flex-col gap-1 p-6 items-start justify-center">
+              //       <img src={userDetails?.pic ? `https://server.vikrambots.in/assets/${userDetails?.pic}` : "/assets/avatar4.png"} alt="" className="w-24 h-24 object-cover self-center rounded-full" />
+              //       <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Person /> {userDetails?.name ? userDetails?.name : "Your Name"}</span>
+              //       <span className="font-medium flex flex-row items-center gap-2 my-1 text-sm pr-12"><Call /> {userDetails?.phone ? userDetails?.phone : "+91 8373958829"}</span>
+              //     {/* <Link href="/explore-bots" onClick={()=>{
+              //       setShowInfoBox(false)
+              //     }}>
+              //       <Button title="Explore More Bots" buttonStyle='mt-4 font-medium' /> 
+              //     </Link> */}
+              //     {/* <PrimaryButton buttonStyle='text-sm p-3 self-end mt-2' title="Create Your own Bot" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} /> */}
+              //     <PrimaryButton buttonStyle='text-sm p-3 self-end bg-red-500 mt-2' title="Logout" onClick={() => {localStorage.removeItem("token"); localStorage.removeItem("temptoken"); localStorage.removeItem("user"); window.location.href = "/"}} />
+              //   </div>
+              //   }
+              // </div>
+              )
               }
                     <Dialog open={showImageEditDialog} onClose={()=>setShowImageEditDialog(false)}>
                       <div className={`flex flex-col gap-8 p-6 items-center justify-center bg-white rounded-xl ${inter.className}`}>

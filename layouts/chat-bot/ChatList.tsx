@@ -19,7 +19,7 @@ function ChatList(props: ChatListProps) {
   }, [props.chats]);
 
   return (
-    <div ref={messagesEndRef} className="overflow-y-auto grow max-h-full w-full px-0 absolute pt-48 md:pt-40 pb-48">
+    <div ref={messagesEndRef} className={`overflow-y-auto grow max-h-full w-full px-0 absolute pt-48 md:pt-40 pb-48 ${props.className}`}>
         {
             props.chats.map((chat, index) => {
                 return (
@@ -35,7 +35,8 @@ interface ChatListProps {
     chats: Chats[],
     mode: string,
     setMode: any,
-    botIcon?: string
+    botIcon?: string,
+    className?: string
 }
 
 interface Chats {

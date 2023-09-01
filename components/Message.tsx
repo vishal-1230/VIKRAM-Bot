@@ -11,10 +11,17 @@ function Message({ children, mode, sender, botIcon } : {children: string, mode:s
   const [liked, setLiked] = useState<boolean>(false)
   const [disliked, setDisliked] = useState<boolean>(false)
 
+  const [formattedMessage, setFormattedMessage] = useState<any>("")
+
   useEffect(()=>{
     console.log("message rendered", children)
-    // document.getElementById("messagespan")?.innerHTML = Parser(children)
-    // document.getElementById("messagespan")?.scrollIntoView({behavior: "smooth"})
+
+    // setFormattedMessage(Parser(children))
+    // linkifying the message
+    let linkifiedMessage = children.replace(/(https?:\/\/[^\s]+)/g, ' <a href="$1" class="font-semibold hover:text-gradient-blue" target="_blank">$1</a>')
+    console.log(linkifiedMessage)
+    setFormattedMessage(linkifiedMessage)
+    // console.log(formattedMessage)
   }, [children])
 
   // const CC = dynamic(() => import("react-copy-to-clipboard").then(mod => mod.CopyToClipboard), { ssr: false })
@@ -34,7 +41,7 @@ function Message({ children, mode, sender, botIcon } : {children: string, mode:s
         }
         <div className={`duration-200 ${mode === "night" ? "text-neutral-500" : "text-bg-50"} grow`}>
           {
-            children != "Loading..." ? <div dangerouslySetInnerHTML={{ __html: children}} className="whitespace-pre-wrap"></div> : <img src="/assets/chatLoading2.svg" alt="" className="w-10 h-10 self-center" />
+            children != "Loading..." ? <div dangerouslySetInnerHTML={{ __html: formattedMessage}} className="whitespace-pre-wrap"></div> : <img src="/assets/chatLoading2.svg" alt="" className="w-10 h-10 self-center" />
           }
         </div>
 

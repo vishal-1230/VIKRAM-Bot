@@ -165,6 +165,10 @@ function ChatArea(props: {
     async function sendMessage() {
       const message = userMessage
       setUserMessage("")
+      if (message === "") {
+        toast.info("Please enter a message to send.")
+        return
+      }
       console.log(message)
       if (chatCategory === "personal") {
         setChats([...chats, {message: message, sender: "user"}, {message: "Loading...", sender: "bot"}])
@@ -1918,27 +1922,27 @@ function ChatArea(props: {
           <div className="flex flex-col gap-3 w-full">
             {
               // ==================SELECTED FILE PREVIEW=======================
-              // fileToSend != "" && <div className="flex flex-row gap-2 items-end">
-              //   <span className="text-sm font-medium min-w-max">File to send:</span>
-              //   <div className="flex flex-col gap-1">
-              //   <img
-              //     src={typeof fileToSend === "object" ? URL.createObjectURL(fileToSend) : fileToSend.toString()}
-              //     alt="file to send"
-              //     className="w-fit h-14 rounded-md"
-              //   />
-              //   <span className="text-sm text-neutral-500">{fileToSend?.name!}</span>
-              //   </div>
-              //   <CancelRounded className='cursor-pointer w-5 text-red-400 self-center' onClick={() => {
-              //     setFileToSend("")
-              //   }} />
-              // </div>
+              fileToSend != "" && <div className="flex flex-row gap-2 items-end">
+                <span className="text-sm font-medium min-w-max">File to send:</span>
+                <div className="flex flex-col gap-1">
+                <img
+                  src={typeof fileToSend === "object" ? URL.createObjectURL(fileToSend) : fileToSend.toString()}
+                  alt="file to send"
+                  className="w-fit h-14 rounded-md"
+                />
+                <span className="text-sm text-neutral-500">{fileToSend?.name!}</span>
+                </div>
+                <CancelRounded className='cursor-pointer w-5 text-red-400 self-center' onClick={() => {
+                  setFileToSend("")
+                }} />
+              </div>
             }
           <div className={`flex flex-row items-center justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
             <textarea
               // type="text"
               ref={messageRef}
               className={`bg-transparent grow text-sm border-none overflow-y-auto pr-2 pl-1 resize-none h-fit max-h-[120px] break-all outline-none ${mode === "day" ? "text-bg-50" : "text-neutral-500"}}`}
-              placeholder="Text area"
+              placeholder={fileToSend == "" ? "Text area" : "Enter caption to be stored with Image"}
               value={userMessage}
               id="userMessage"
               onKeyDown={(e)=>{
@@ -1957,7 +1961,7 @@ function ChatArea(props: {
               }}
             />
             <div className="icons flex gap-5">
-              {/* <input
+              <input
                 type="file"
                 className="hidden w-0 h-0"
                 id="send-img"
@@ -1969,13 +1973,20 @@ function ChatArea(props: {
                 }} />
               <ImAttachment className="w-5 h-5 text-bg-50 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" onClick={()=>{
                 document.getElementById("send-img")?.click()
-              }} /> */}
+              }} />
               {
                 (chats.length>0 && chats[chats?.length-1]?.message==="Loading..." || thirdChats.length>0 && thirdChats[thirdChats?.length-1]?.message==="Loading..." || thirdBusinessChats.length>0 && thirdBusinessChats[thirdBusinessChats?.length-1]?.message==="Loading..." || trainingChats.length>0 && trainingChats[trainingChats?.length-1]?.message==="Loading..." || personalTrainingChats.length>0 && personalTrainingChats[personalTrainingChats?.length-1]?.message==="Loading...")
                 ?
                 <RiLoader4Line className="w-5 h-5 fill-bg-100 animate-spin" />
                 :
-                <SendOutlined onClick={()=> {console.log(chats); (chats.length>0 && chats[chats?.length-1]?.message==="Loading...") ? console.log('l') : sendMessage()}} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
+                <SendOutlined onClick={()=> {
+                  console.log(chats);
+                  (chats.length>0 && chats[chats?.length-1]?.message==="Loading...")
+                  ?
+                  console.log('l')
+                  :
+                  sendMessage()
+                }} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
               }
               </div>
           </div>

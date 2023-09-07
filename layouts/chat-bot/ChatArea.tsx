@@ -35,7 +35,7 @@ function ChatArea(props: {
     const [personalTrainingChats, setPersonalTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [trainingChats, setTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [thirdChats, setThirdChats] = useState<{message: string, sender: string}[]>([])
-    const [thirdBusinessChats, setThirdBusinessChats] = useState<{message: string, sender: string}[]>([])
+    const [thirdBusinessChats, setThirdBusinessChats] = useState<{message: string, sender: string, links?: string[]}[]>([])
     const [tempChats, setTempChats] = useState<{message: string, sender: string}[]>([])
 
     const [toConnectWith, setToConnectWith] = useState<string>("")
@@ -47,6 +47,8 @@ function ChatArea(props: {
     const [connecting, setConnecting] = useState(false)
 
     const [userMessage, setUserMessage] = useState("")
+
+    const [fileToSend, setFileToSend] = useState<any>("")
 
     const [token, setToken] = useState<string>("")
 
@@ -165,6 +167,14 @@ function ChatArea(props: {
     async function sendMessage() {
       const message = userMessage
       setUserMessage("")
+      if (message === "") {
+        toast.info("Please enter a message to send.")
+        return
+      }
+      if (chatCategory === "business" && fileToSend !="") {
+        sendImage()
+        return
+      }
       console.log(message)
       if (chatCategory === "personal") {
         setChats([...chats, {message: message, sender: "user"}, {message: "Loading...", sender: "bot"}])
@@ -226,7 +236,7 @@ function ChatArea(props: {
                 setThirdBusinessChats([
                   ...thirdBusinessChats,
                   { message: message, sender: "user" },
-                  { message: data.message, sender: "bot" },
+                  { message: data.message, sender: "bot", links: data.links },
                 ]);
               }
             })
@@ -453,6 +463,37 @@ function ChatArea(props: {
       }
     }
 
+    async function sendImage() {
+      try {
+        const formData = new FormData()
+        formData.append("file", fileToSend)
+        formData.append("description", userMessage)
+
+        const repsonse = await fetch(`https://server.vikrambots.in/upload-image`, {
+          method: "POST",
+          headers: {
+            "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
+          },
+          body: formData
+        })
+        const data = await repsonse.json()
+
+        console.log(data)
+
+        if (data.success === true) {
+          toast.success("Image sent successfully!")
+          setTrainingChats([...trainingChats, {message: userMessage, sender: "user"}, {message: data.message, sender: "bot"}])
+        } else {
+          toast.error("Couldn't send image. Please try again.")
+        }
+      } catch (err) {
+        console.log("Err", err)
+        toast.error("Couldn't send image. Please try again.", {
+          autoClose: 1500
+        })
+      }
+    }
+
     async function checkBotExists (toConnectWith: string) {
 
       setConnecting(true)
@@ -599,9 +640,9 @@ function ChatArea(props: {
       const data = await response.json()
       console.log(data)
       let temp:{message: string, sender: string}[] = []
-      if (data.success!=false) data.message.map((item: { bot: any; user: any })=>{
-        temp.push({message: item.bot, sender: "bot"})
-        temp.push({message: item.user, sender: "user"})
+      if (data.success!=false) data.message.map((item: { Bot: any; User: any })=>{
+        temp.push({message: item.Bot, sender: "bot"})
+        temp.push({message: item.User, sender: "user"})
       })
       setTrainingChats(temp.reverse())
     }
@@ -1145,8 +1186,6 @@ function ChatArea(props: {
       setPdfIdToDelete("")
       setDeletingKnowledgebase(false)
     }
-
-    const [fileToSend, setFileToSend] = useState<any>("")
 
     interface MessageRefType extends HTMLTextAreaElement {
       style: CSSStyleDeclaration;
@@ -1918,27 +1957,27 @@ function ChatArea(props: {
           <div className="flex flex-col gap-3 w-full">
             {
               // ==================SELECTED FILE PREVIEW=======================
-              // fileToSend != "" && <div className="flex flex-row gap-2 items-end">
-              //   <span className="text-sm font-medium min-w-max">File to send:</span>
-              //   <div className="flex flex-col gap-1">
-              //   <img
-              //     src={typeof fileToSend === "object" ? URL.createObjectURL(fileToSend) : fileToSend.toString()}
-              //     alt="file to send"
-              //     className="w-fit h-14 rounded-md"
-              //   />
-              //   <span className="text-sm text-neutral-500">{fileToSend?.name!}</span>
-              //   </div>
-              //   <CancelRounded className='cursor-pointer w-5 text-red-400 self-center' onClick={() => {
-              //     setFileToSend("")
-              //   }} />
-              // </div>
+              fileToSend != "" && <div className="flex flex-row gap-2 items-end">
+                <span className="text-sm font-medium min-w-max">File to send:</span>
+                <div className="flex flex-col gap-1">
+                <img
+                  src={typeof fileToSend === "object" ? URL.createObjectURL(fileToSend) : fileToSend.toString()}
+                  alt="file to send"
+                  className="w-fit h-14 rounded-md"
+                />
+                <span className="text-sm text-neutral-500">{fileToSend?.name!}</span>
+                </div>
+                <CancelRounded className='cursor-pointer w-5 text-red-400 self-center' onClick={() => {
+                  setFileToSend("")
+                }} />
+              </div>
             }
           <div className={`flex flex-row items-center justify-between p-3 rounded duration-200 ${mode === "day" ? "bg-white" : "bg-bg-600"} border ${mode === "user" ? "border-bg-50" : "border-bg-500"}`}>
             <textarea
               // type="text"
               ref={messageRef}
               className={`bg-transparent grow text-sm border-none overflow-y-auto pr-2 pl-1 resize-none h-fit max-h-[120px] break-all outline-none ${mode === "day" ? "text-bg-50" : "text-neutral-500"}}`}
-              placeholder="Text area"
+              placeholder={fileToSend == "" ? "Text area" : "Enter caption to be stored with Image"}
               value={userMessage}
               id="userMessage"
               onKeyDown={(e)=>{
@@ -1957,7 +1996,7 @@ function ChatArea(props: {
               }}
             />
             <div className="icons flex gap-5">
-              {/* <input
+              <input
                 type="file"
                 className="hidden w-0 h-0"
                 id="send-img"
@@ -1969,13 +2008,20 @@ function ChatArea(props: {
                 }} />
               <ImAttachment className="w-5 h-5 text-bg-50 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" onClick={()=>{
                 document.getElementById("send-img")?.click()
-              }} /> */}
+              }} />
               {
                 (chats.length>0 && chats[chats?.length-1]?.message==="Loading..." || thirdChats.length>0 && thirdChats[thirdChats?.length-1]?.message==="Loading..." || thirdBusinessChats.length>0 && thirdBusinessChats[thirdBusinessChats?.length-1]?.message==="Loading..." || trainingChats.length>0 && trainingChats[trainingChats?.length-1]?.message==="Loading..." || personalTrainingChats.length>0 && personalTrainingChats[personalTrainingChats?.length-1]?.message==="Loading...")
                 ?
                 <RiLoader4Line className="w-5 h-5 fill-bg-100 animate-spin" />
                 :
-                <SendOutlined onClick={()=> {console.log(chats); (chats.length>0 && chats[chats?.length-1]?.message==="Loading...") ? console.log('l') : sendMessage()}} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
+                <SendOutlined onClick={()=> {
+                  console.log(chats);
+                  (chats.length>0 && chats[chats?.length-1]?.message==="Loading...")
+                  ?
+                  console.log('l')
+                  :
+                  sendMessage()
+                }} className={`w-5 h-5 ${chats[chats?.length-1]?.message==="Loading..." ? "fill-bg-300" : "fill-bg-50"} fill-bg-50 cursor-pointer ${chats[chats?.length-1]?.message==="Loading..." ? "" : "hover:fill-neutral-700 focus:fill-neutral-400"}`} />
               }
               </div>
           </div>

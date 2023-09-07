@@ -22,7 +22,12 @@ function ChatList(props: ChatListProps) {
     <div ref={messagesEndRef} className={`overflow-y-auto grow max-h-full w-full px-0 absolute pt-48 md:pt-40 pb-48 ${props.className}`}>
         {
             props.chats.map((chat, index) => {
-                return (
+                return chat.links ?
+                  chat.links.length>0 ? (
+                    <Message mode={props.mode} type="image" images={chat.links} sender={chat.sender} botIcon={chat.sender=="bot" ? props.botIcon ? props.botIcon.endsWith("False") ? undefined : props.botIcon : undefined : undefined} key={index} />
+                    ) : (
+                    <Message mode={props.mode} sender={chat.sender} botIcon={chat.sender=="bot" ? props.botIcon ? props.botIcon.endsWith("False") ? undefined : props.botIcon : undefined : undefined} key={index}>{chat.message}</Message>
+                  ) : (
                     <Message mode={props.mode} sender={chat.sender} botIcon={chat.sender=="bot" ? props.botIcon ? props.botIcon.endsWith("False") ? undefined : props.botIcon : undefined : undefined} key={index}>{chat.message}</Message>
                 )
             })
@@ -41,7 +46,8 @@ interface ChatListProps {
 
 interface Chats {
     message: string,
-    sender: string
+    sender: string,
+    links?: string[]
 }
 
 ChatList.defaultProps = {

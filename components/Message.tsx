@@ -6,22 +6,59 @@ import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import Parser from "html-react-parser"
 
-function Message({ children, mode, sender, botIcon } : {children: string, mode:string, sender: string, botIcon?: string}) {
+function Message({ children, type, images, mode, sender, botIcon } : {children?: string, type?: "text" | "image", images?: string[], mode:string, sender: string, botIcon?: string}) {
 
   const [liked, setLiked] = useState<boolean>(false)
   const [disliked, setDisliked] = useState<boolean>(false)
 
+  const [formattedMessage, setFormattedMessage] = useState<any>("")
+
   useEffect(()=>{
-    console.log("message rendered", children)
-    // document.getElementById("messagespan")?.innerHTML = Parser(children)
-    // document.getElementById("messagespan")?.scrollIntoView({behavior: "smooth"})
+    if (children != null || children != undefined) {
+      console.log("message rendered", children)
+  
+      // setFormattedMessage(Parser(children))
+      // linkifying the message
+      if (children === "Loading...") {
+        setFormattedMessage(children)
+        return
+      } else if (children == null) {
+        setFormattedMessage(children)
+        return
+      }
+      let linkifiedMessage = children.replace(/(https?:\/\/[^\s]+)/g, ' <a href="$1" class="font-semibold hover:text-gradient-blue" target="_blank">$1</a>')
+      console.log(linkifiedMessage)
+      setFormattedMessage(linkifiedMessage)
+      // console.log(formattedMessage)
+    }
   }, [children])
 
   // const CC = dynamic(() => import("react-copy-to-clipboard").then(mod => mod.CopyToClipboard), { ssr: false })
-
+  const [showImage, setShowImage] = useState<boolean>(false)
+  const [image, setImage] = useState<string>("")
 
   return (
     <div className={`flex flex-col md:flex-row duration-200 gap-4 md:gap-8 items-start md:items-center w-full h-fit px-7 md:px-28 py-5 md:py-8 ${sender === "user" ? mode === "night" ? "bg-bg-800" : "bg-white" : mode === "night" ? "bg-bg-700" : "bg-gray-3"}`}>
+      {
+        showImage ?
+        <div className="fixed top-0 left-0 h-screen w-screen z-[10000000] bg-[rgba(0,0,0,0.4)]" onClick={()=>{
+          setShowImage(false)
+        }} onMouseOver={()=>{
+            setShowImage(true)
+        }} onMouseOut={()=>{
+            setShowImage(false)
+        }}>
+          <img src={image} alt="" className="fixed rounded-lg shadow-lg z-[1000000] top-1/2 left-1/2 -translate-x-1/2 mt-5 -translate-y-1/2 h-[75vh]" onMouseOver={()=>{
+            setShowImage(true)
+          }} onClick={()=>{
+            setShowImage(false)
+          }} onMouseOut={()=>{
+            setShowImage(false)
+          }} />
+        </div>
+        :
+        null
+      }
       {/* <ToastContainer autoClose={1000} position="bottom-right" /> */}
         {
             sender === "user" || sender === "User" ? (
@@ -34,7 +71,34 @@ function Message({ children, mode, sender, botIcon } : {children: string, mode:s
         }
         <div className={`duration-200 ${mode === "night" ? "text-neutral-500" : "text-bg-50"} grow`}>
           {
-            children != "Loading..." ? <div dangerouslySetInnerHTML={{ __html: children}} className="whitespace-pre-wrap"></div> : <img src="/assets/chatLoading2.svg" alt="" className="w-10 h-10 self-center" />
+            children != "Loading..."
+            ? type === "image" ? (
+              <div className="flex flex-row items-start flex-wrap gap-2">
+                {
+                  images && images.length > 0 ? images.map((image, index) => {
+                    return (
+                      <img
+                        src={`https://server.vikrambots.in/assets/${image}`}
+                        alt=""
+                        className="h-48 rounded-xl object-cover"
+                        key={index}
+                        onMouseOver={()=>{
+                            setImage(`https://server.vikrambots.in/assets/${image}`)
+                            setShowImage(true)
+                          // setShowImage(true)
+                        }}
+                        onMouseOut={()=>{
+                          setShowImage(false)
+                        }}
+                      />
+                    )
+                  }) : null
+                }
+              </div>
+            ) :
+            <div dangerouslySetInnerHTML={{ __html: formattedMessage}} className="whitespace-pre-wrap"></div>
+            :
+            <img src="/assets/chatLoading2.svg" alt="" className="w-10 h-10 self-center" />
           }
         </div>
 
@@ -59,7 +123,7 @@ function Message({ children, mode, sender, botIcon } : {children: string, mode:s
                   <ThumbDownAltOutlined className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} onClick={()=>{setDisliked(true); setLiked(false)}} />
                 )
               }
-                <ContentCopyRounded className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} onClick={() => {navigator.clipboard.writeText(children); toast.success("Copied to Clipboard!", {autoClose: 1000, position: "bottom-right"})}} />
+                <ContentCopyRounded className={`w-5 h-5 cursor-pointer duration-200 ${mode === "night" ? "fill-neutral-500" : "fill-neutral-900"}`} onClick={() => {children ? navigator.clipboard.writeText(children) : null; toast.success("Copied to Clipboard!", {autoClose: 1000, position: "bottom-right"})}} />
               </div>
             )
           }

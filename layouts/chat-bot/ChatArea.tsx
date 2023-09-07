@@ -35,7 +35,7 @@ function ChatArea(props: {
     const [personalTrainingChats, setPersonalTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [trainingChats, setTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [thirdChats, setThirdChats] = useState<{message: string, sender: string}[]>([])
-    const [thirdBusinessChats, setThirdBusinessChats] = useState<{message: string, sender: string}[]>([])
+    const [thirdBusinessChats, setThirdBusinessChats] = useState<{message: string, sender: string, links?: string[]}[]>([])
     const [tempChats, setTempChats] = useState<{message: string, sender: string}[]>([])
 
     const [toConnectWith, setToConnectWith] = useState<string>("")
@@ -47,6 +47,8 @@ function ChatArea(props: {
     const [connecting, setConnecting] = useState(false)
 
     const [userMessage, setUserMessage] = useState("")
+
+    const [fileToSend, setFileToSend] = useState<any>("")
 
     const [token, setToken] = useState<string>("")
 
@@ -169,6 +171,10 @@ function ChatArea(props: {
         toast.info("Please enter a message to send.")
         return
       }
+      if (chatCategory === "business" && fileToSend !="") {
+        sendImage()
+        return
+      }
       console.log(message)
       if (chatCategory === "personal") {
         setChats([...chats, {message: message, sender: "user"}, {message: "Loading...", sender: "bot"}])
@@ -230,7 +236,7 @@ function ChatArea(props: {
                 setThirdBusinessChats([
                   ...thirdBusinessChats,
                   { message: message, sender: "user" },
-                  { message: data.message, sender: "bot" },
+                  { message: data.message, sender: "bot", links: data.links },
                 ]);
               }
             })
@@ -457,6 +463,37 @@ function ChatArea(props: {
       }
     }
 
+    async function sendImage() {
+      try {
+        const formData = new FormData()
+        formData.append("file", fileToSend)
+        formData.append("description", userMessage)
+
+        const repsonse = await fetch(`https://server.vikrambots.in/upload-image`, {
+          method: "POST",
+          headers: {
+            "x-access-token": (localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken"))!,
+          },
+          body: formData
+        })
+        const data = await repsonse.json()
+
+        console.log(data)
+
+        if (data.success === true) {
+          toast.success("Image sent successfully!")
+          setTrainingChats([...trainingChats, {message: userMessage, sender: "user"}, {message: data.message, sender: "bot"}])
+        } else {
+          toast.error("Couldn't send image. Please try again.")
+        }
+      } catch (err) {
+        console.log("Err", err)
+        toast.error("Couldn't send image. Please try again.", {
+          autoClose: 1500
+        })
+      }
+    }
+
     async function checkBotExists (toConnectWith: string) {
 
       setConnecting(true)
@@ -603,9 +640,9 @@ function ChatArea(props: {
       const data = await response.json()
       console.log(data)
       let temp:{message: string, sender: string}[] = []
-      if (data.success!=false) data.message.map((item: { bot: any; user: any })=>{
-        temp.push({message: item.bot, sender: "bot"})
-        temp.push({message: item.user, sender: "user"})
+      if (data.success!=false) data.message.map((item: { Bot: any; User: any })=>{
+        temp.push({message: item.Bot, sender: "bot"})
+        temp.push({message: item.User, sender: "user"})
       })
       setTrainingChats(temp.reverse())
     }
@@ -1149,8 +1186,6 @@ function ChatArea(props: {
       setPdfIdToDelete("")
       setDeletingKnowledgebase(false)
     }
-
-    const [fileToSend, setFileToSend] = useState<any>("")
 
     interface MessageRefType extends HTMLTextAreaElement {
       style: CSSStyleDeclaration;

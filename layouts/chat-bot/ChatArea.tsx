@@ -2006,9 +2006,14 @@ function ChatArea(props: {
                 onChange={(e)=>{
                   e?.target?.files && setFileToSend(e?.target?.files[0])
                 }} />
-              <ImAttachment className="w-5 h-5 text-bg-50 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" onClick={()=>{
-                document.getElementById("send-img")?.click()
-              }} />
+                {
+                  chatCategory == "business" ?
+                  <ImAttachment className="w-5 h-5 text-bg-50 fill-bg-50 cursor-pointer hover:fill-neutral-700 focus:fill-neutral-400" onClick={()=>{
+                    document.getElementById("send-img")?.click()
+                  }} />
+                  :
+                  null
+                }
               {
                 (chats.length>0 && chats[chats?.length-1]?.message==="Loading..." || thirdChats.length>0 && thirdChats[thirdChats?.length-1]?.message==="Loading..." || thirdBusinessChats.length>0 && thirdBusinessChats[thirdBusinessChats?.length-1]?.message==="Loading..." || trainingChats.length>0 && trainingChats[trainingChats?.length-1]?.message==="Loading..." || personalTrainingChats.length>0 && personalTrainingChats[personalTrainingChats?.length-1]?.message==="Loading...")
                 ?

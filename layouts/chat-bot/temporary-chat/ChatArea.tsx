@@ -22,7 +22,7 @@ function ChatArea(props: {
     
     const [personalTrainingChats, setPersonalTrainingChats] = useState<{message: string, sender: string}[]>([])
     const [trainingChats, setTrainingChats] = useState<{message: string, sender: string}[]>([])
-    const [thirdChats, setThirdChats] = useState<{message: string, sender: string}[]>([])
+    const [thirdChats, setThirdChats] = useState<{message: string, sender: string, links?: string[]}[]>([])
     const [thirdBusinessChats, setThirdBusinessChats] = useState<{message: string, sender: string}[]>([])
     const [tempChats, setTempChats] = useState<{message: string, sender: string}[]>([])
 
@@ -112,6 +112,10 @@ function ChatArea(props: {
       
       uri = `https://server.vikrambots.in/connect-personal/${props.usernameToConnect}/${message}`
       console.log("URI=>", uri)
+      if (props.usernameToConnect.endsWith("_b")) {
+        uri = `https://server.vikrambots.in/connect-business/${props.usernameToConnect}/${message}`
+        console.log("URI=>", uri)
+      }
 
       if (plugin === "none") {
         let token = localStorage.getItem("token") ? localStorage.getItem("token") : localStorage.getItem("temptoken")
@@ -127,7 +131,7 @@ function ChatArea(props: {
                 setThirdChats([
                   ...thirdChats,
                   { message: message, sender: "user" },
-                  { message: data.message, sender: "bot" },
+                  { message: data.message, sender: "bot", links: data.links },
                 ]);
             })
             .catch((err) => {
@@ -264,7 +268,7 @@ function ChatArea(props: {
             setThirdChats([
               ...thirdChats,
               { message: message, sender: "user" },
-              { message: data.message, sender: "bot" },
+              { message: data.message, sender: "bot", links: data.links },
             ]);
           })
           .catch((err) => {
